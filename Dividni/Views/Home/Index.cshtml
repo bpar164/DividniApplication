@@ -1,8 +1,69 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+  ViewData["Title"] = "About";
+  ViewData["Heading"] = "Individualised Assessments";
+  ViewData["Description"] = "Enhancing learning via assessments unique to every student";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="section container blue lighten-5" id="main">
+  <div class="row">
+    <div class="col s12">
+      <h5 class="teal-text">About Dividni</h5>
+      <div id="about">
+        <p>Dividni is a tool for creating individualised assessments.
+          These are assessments where the answer options can differ between copies of the same assessment.
+          One of the main benefits of individualisation is that students cannot cheat easily by sharing answers to a
+          question,
+          because each student should have a different set of answers for that question.
+          Individualisation helps to encourage students to engage with concepts rather than attempting to memorize a set
+          of questions and answers.
+          Additionally, instructors can reuse the questions and corresponding answers that they have written to generate
+          new assessments or different versions of the same assessment,
+          which reduces the time spent on writing assessments and helps to reinforce student learning.
+        </p>
+        <p>Dividni can be used to create individualised assessments consisting of different types of multiple-choice
+          questions.
+          These can be questions where there is just one correct answer ('truth'), or where the answer is a combination
+          of
+          some of the available options ('xyz').
+          Simple questions are those where the user fills-in all of the possible question answers.
+          Advanced questions give users the ability to write C# code for generating the question description and
+          answers.
+          This question type provides a powerful way to create questions that are truly unique for each different
+          version of an assessment.
+          An assessment then consists of a number of these questions.
+          Different versions of the same assessment will have different answers for each question, provided that a
+          sufficient number of answer options are provided when the question is written.
+        </p>
+        <p>In addition to creating standalone assessments, Dividni can also generate question banks that are compatible
+          with
+          learning management systems such as Canvas, Moodle, and Inspera.
+          This means that the questions created using this system are versatile, as they can be used for generating
+          Dividni assessments,
+          or can be used to create assessments for learning management systems that are often already integrated into
+          university courses.
+          Dividni provides a convenient option for managing existing questions and assessments, that can then be
+          exported to the user's assessment platform of choice.
+        </p>
+      </div>
+      <h5 class="teal-text">Getting Started</h5>
+      <div id="start">
+        <p>In order to create questions and generate assessments, you must have a Google Account.
+          Click on the profile icon <i class="tiny material-icons">account_box</i> at the top right of the screen to
+          log in.
+        </p>
+        <p>To get started, you will first need to create some questions.
+          The <a asp-controller="Tutorial" asp-action="Simple" target="_blank">simple multiple-choice tutorial <i
+              class="tiny material-icons">open_in_new</i></a>
+          explains how to create a simple question, and lists all of the actions that can be performed on a question
+          once it
+          has been created. This is the recommended starting point for new users.
+          You may then move on to the <a asp-controller="Tutorial" asp-action="Advanced" target="_blank">advanced
+            multiple-choice tutorial <i class="tiny material-icons">open_in_new</i></a> which explains how to create and
+          manage code-based questions.
+          Once you have written some questions, you can review the
+          <a asp-controller="Tutorial" asp-action="Assessment" target="_blank">assessment tutorial <i
+              class="tiny material-icons">open_in_new</i></a>
+          to learn how to create an assessment.
+        </p>
+      </div>
+</section>

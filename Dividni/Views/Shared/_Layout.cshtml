@@ -1,49 +1,135 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+    <link rel="stylesheet" href="~/css/styles.css" />
     <title>@ViewData["Title"] - Dividni</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
 </head>
+
 <body>
+
+    <!-- navbar -->
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="nav-wrapper blue darken-4">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Dividni</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                    <partial name="_LoginPartial" />
-                </div>
+                <a asp-controller="Home" asp-action="Index" class="brand-logo logo">
+                    <img src="~/media/logo.png">
+                    <span>Dividni</span>
+                </a>
+                <a href="" class="sidenav-trigger" data-target="mobile-menu">
+                    <i class="material-icons">menu</i>
+                </a>
+                <ul class="right">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li><a href="#" class="dropdown-trigger tooltipped btn-floating btn-med teal"
+                                data-target="dropdownLogout" data-tooltip="@User.Identity.Name">
+                                <i class="material-icons">account_box</i>
+                            </a></li>
+                    }
+                    else
+                    {
+                        <li><a href="#" class="dropdown-trigger tooltipped btn-floating btn-med teal"
+                                data-target="dropdownLogin" data-tooltip="Account">
+                                <i class="material-icons">account_box</i>
+                            </a></li>
+                    }
+                </ul>
+                <ul class="right hide-on-med-and-down">
+                    <li><a href="#" class="dropdown-trigger-nav" data-target="dropdownSimple">Simple</a></li>
+                    <li><a href="#" class="dropdown-trigger-nav" data-target="dropdownAdv">Advanced</a></li>
+                    <li><a href="#" class="dropdown-trigger-nav" data-target="dropdownAssess">Assessments</a></li>
+                    <li><a href="#" class="dropdown-trigger-nav" data-target="dropdownTut">Tutorials</a></li>
+                </ul>
+                <ul class="sidenav" id="mobile-menu">
+                    <li><a asp-controller="Home" asp-action="Index"
+                            class="blue darken-4 white-text left-align"><b>Dividni</b></a></li>
+                    <li><a href="#" class="grey lighten-2 black-text left-align not-active">Simple</a></li>
+                    <li><a asp-controller="Simple" asp-action="Create">Create</a></li>
+                    <li><a asp-controller="Simple" asp-action="Manage">Manage</a></li>
+                    <li><a href="#" class="grey lighten-2 black-text left-align not-active">Advanced</a></li>
+                    <li><a asp-controller="Advanced" asp-action="Create">Create</a></li>
+                    <li><a asp-controller="Advanced" asp-action="Manage">Manage</a></li>
+                    <li><a href="#" class="grey lighten-2 black-text left-align not-active">Assessments</a></li>
+                    <li><a asp-controller="Assessment" asp-action="Create">Create</a></li>
+                    <li><a asp-controller="Assessment" asp-action="Manage">Manage</a></li>
+                    <li><a href="#" class="grey lighten-2 black-text left-align not-active">Tutorials</a></li>
+                    <li><a asp-controller="Tutorial" asp-action="Simple">Simple</a></li>
+                    <li><a asp-controller="Tutorial" asp-action="Advanced">Advanced</a></li>
+                    <li><a asp-controller="Tutorial" asp-action="Assessment">Assessments</a></li>
+                </ul>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - Dividni - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <!-- dropdown lists for navbar -->
+    <ul id="dropdownSimple" class="dropdown-content">
+        <li><a asp-controller="Simple" asp-action="Create">Create</a></li>
+        <li><a asp-controller="Simple" asp-action="Manage">Manage</a></li>
+    </ul>
+    <ul id="dropdownAdv" class="dropdown-content">
+        <li><a asp-controller="Advanced" asp-action="Create">Create</a></li>
+        <li><a asp-controller="Advanced" asp-action="Manage">Manage</a></li>
+    </ul>
+    <ul id="dropdownAssess" class="dropdown-content">
+        <li><a asp-controller="Assessment" asp-action="Create">Create</a></li>
+        <li><a asp-controller="Assessment" asp-action="Manage">Manage</a></li>
+    </ul>
+    <ul id="dropdownTut" class="dropdown-content">
+        <li><a asp-controller="Tutorial" asp-action="Simple">Simple</a></li>
+        <li><a asp-controller="Tutorial" asp-action="Advanced">Advanced</a></li>
+        <li><a asp-controller="Tutorial" asp-action="Assessment">Assessments</a></li>
+    </ul>
+    <ul id="dropdownLogin" class="dropdown-content">
+        <li>
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Login">
+                <div class="row center">
+                    <button type="submit" class="btn-flat teal-text">Login</button>
+                </div>
+            </form>
+        </li>
+    </ul>
+    <ul id="dropdownLogout" class="dropdown-content">
+        <li>
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
+                asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <div class="row center">
+                    <button type="submit" class="btn-flat teal-text">Logout</button>
+                </div>
+            </form>
+        </li>
+    </ul>
+
+    <!-- intro -->
+    <section class="section container center-align grey" id="intro">
+        <div class="row">
+            <h4 class="white-text">@ViewData["Heading"]</h4>
+            <p class="white-text">@ViewData["Description"]</p>
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    </section>
+
+    @RenderBody()
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+    <script src="https://cdn.tiny.cloud/1/koqs6gayybvta89xtlc1j2yq34sncoacvwia8or6vgn7o34i/tinymce/5/tinymce.min.js"
+        referrerpolicy="origin"></script>
+    <script src="~/js/script.js"></script>
+    <script src="~/js/simple-create.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
+
 </html>

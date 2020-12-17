@@ -15603,6 +15603,11 @@
   "RootNamespace": "Dividni",
   "Documents": [
     {
+      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Tutorial\\Simple.cshtml",
+      "TargetPath": "Views\\Tutorial\\Simple.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Simple\\Index.cshtml",
       "TargetPath": "Views\\Simple\\Index.cshtml",
       "FileKind": "mvc"
@@ -15610,6 +15615,11 @@
     {
       "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Simple\\Create.cshtml",
       "TargetPath": "Views\\Simple\\Create.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Tutorial\\Advanced.cshtml",
+      "TargetPath": "Views\\Tutorial\\Advanced.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -15633,8 +15643,18 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Simple\\Make.cshtml",
+      "TargetPath": "Views\\Simple\\Make.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\_ViewImports.cshtml",
       "TargetPath": "Views\\_ViewImports.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Tutorial\\Assessment.cshtml",
+      "TargetPath": "Views\\Tutorial\\Assessment.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -15673,11 +15693,6 @@
       "FileKind": "mvc"
     },
     {
-      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Shared\\_LoginPartial.cshtml",
-      "TargetPath": "Views\\Shared\\_LoginPartial.cshtml",
-      "FileKind": "mvc"
-    },
-    {
       "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Areas\\Identity\\Pages\\Account\\Manage\\_ViewImports.cshtml",
       "TargetPath": "Areas\\Identity\\Pages\\Account\\Manage\\_ViewImports.cshtml",
       "FileKind": "mvc"
@@ -15700,11 +15715,6 @@
     {
       "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Simple\\Details.cshtml",
       "TargetPath": "Views\\Simple\\Details.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Home\\Privacy.cshtml",
-      "TargetPath": "Views\\Home\\Privacy.cshtml",
       "FileKind": "mvc"
     }
   ],
