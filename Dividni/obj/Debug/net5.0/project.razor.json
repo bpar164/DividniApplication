@@ -15643,11 +15643,6 @@
       "FileKind": "mvc"
     },
     {
-      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Simple\\Make.cshtml",
-      "TargetPath": "Views\\Simple\\Make.cshtml",
-      "FileKind": "mvc"
-    },
-    {
       "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\_ViewImports.cshtml",
       "TargetPath": "Views\\_ViewImports.cshtml",
       "FileKind": "mvc"

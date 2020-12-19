@@ -16,11 +16,6 @@ $(document).ready(() => {
     toolbar: 'undo redo | styleselect | bold italic underline strikethrough superscript subscript removeformat | bullist numlist table | ',
     plugins: ['lists table']
   });
-  /* //Check if there is data for a question that needs to be populated
-  let questionMode = document.getElementById('questionMode');
-  if (questionMode) {
-    setTimeout(() => { populateQuestionForm(questionMode.getAttribute('data-question-id')); }, 500); //Give tinyMCE time to load
-  } */
 });
 
 //For question slots
@@ -219,14 +214,7 @@ $("#questionForm").submit((event) => {
     document.getElementById('optionsModalRetry').classList.remove("disabled");
   } else { //All required fields filled in
     document.getElementById('optionsModalRetry').classList.add("disabled");
-    /* //Check if question is being edited or being created
-    let questionMode = document.getElementById('questionMode');
-    if ((questionMode) && (questionMode.getAttribute('data-question-action') === 'EDIT')) {
-      updateQuestion(questionMode.getAttribute('data-question-id')); //Edit question
-    } else {
-      generateQuestion(); //Create question
-    } */
-    generateQuestion(); //Create question !!!!!!
+    generateQuestion(); 
   }
 });
 
@@ -235,12 +223,13 @@ checkForDuplicateAnswers = (array) => {
   return (new Set(array)).size !== array.length;
 }
 
-//Make the actual request to add the question to the database
+//Add the question to the database
 generateQuestion = () => {
   document.getElementById('optionsModalContent').innerHTML = '<p>Generating question...</p>';
+  
+  document.getElementById('optionsModalContent').innerHTML = '<p>Question generated.</p>'; // !!!!
   //Get the values from the form
   let question = fetchFormValues();
-  document.getElementById('optionsModalContent').innerHTML = '<p>Question generated.</p>'; // !!!!
   console.log(question);
   /* $.ajax({
     url: 'multiple-choice/currentUserID',
