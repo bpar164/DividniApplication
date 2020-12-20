@@ -468,7 +468,6 @@ C:\Users\Ben Parker\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Areas\Iden
 C:\Users\Ben Parker\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Areas\Identity\Pages\Account\_ViewImports.cshtml.g.cs
 C:\Users\Ben Parker\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Areas\Identity\Pages\_ValidationScriptsPartial.cshtml.g.cs
 C:\Users\Ben Parker\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Areas\Identity\Pages\_ViewImports.cshtml.g.cs
-C:\Users\Ben Parker\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Simple\Make.cshtml.g.cs
 C:\Users\Ben Parker\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Tutorial\Advanced.cshtml.g.cs
 C:\Users\Ben Parker\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Tutorial\Assessment.cshtml.g.cs
 C:\Users\Ben Parker\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Tutorial\Simple.cshtml.g.cs

@@ -17,12 +17,12 @@
         for help.</p>
     </div>
   </div>
-  <form id="questionForm" asp-action="Create">
+  <form id="questionForm">
     <div class="row">
       <div class="col s12 m8 l5">
         <div class="input-field">
-          <label asp-for="Name">Question name</label>
-          <input asp-for="Name" type="text" id="name" name="name" required pattern="^[a-zA-Z0-9][a-zA-Z0-9 ]*">
+          <label for="Name">Question name</label>
+          <input for="Name" type="text" id="name" name="name" required pattern="^[a-zA-Z0-9][a-zA-Z0-9 ]*">
         </div>
         <div class="input-field">
           <p>Question type:</p>
@@ -36,11 +36,10 @@
                 onClick="createAnswers('Xyz', null, null);">
               <span>XYZ</span>
             </label></p>
-            <input asp-for="Type" type="hidden"/>
         </div>
         <div class="input-field">
-          <label asp-for="Marks" for="marks">Marks</label>
-          <input asp-for="Marks" type="number" min="0" max="10" step="0.5" id="marks" name="marks" required>
+          <label for="Marks" for="marks">Marks</label>
+          <input for="Marks" type="number" min="0" max="10" step="0.5" id="marks" name="marks" required>
         </div>         
       </div>
     </div>
@@ -48,7 +47,6 @@
       <div class="col s12 m10 l8">
         <h6>Question Text</h6>
         <div class="input-field tinymce-description required-field" id="questionText" name="questionText"></div>
-        <input asp-for="QuestionText" type="hidden"/>
       </div>
     </div>
     <div class="row">
@@ -60,7 +58,6 @@
             onClick="addAnswer('correct', false);">
             <i class="material-icons">add</i>
           </a>
-          <input asp-for="CorrectAnswers" type="hidden"/> 
         </div>
       </div>
       <div class="col s12 m8 l5 offset-l2">
@@ -71,10 +68,8 @@
             onClick="addAnswer('incorrect', false);">
             <i class="material-icons">add</i>
           </a>
-          <input asp-for="IncorrectAnswers" type="hidden"/>
         </div>
       </div>
-      <input asp-for="UserEmail" type="hidden" value="@User.Identity.Name"/>
     </div>
     <div class="row">
       <a class="waves-effect waves-light btn right disabled modal-trigger" id="preview" href="#previewModal"
@@ -89,6 +84,49 @@
     </div>
   </form>
 </section>
+
+<form asp-action="Create">
+  <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+  <input type="hidden" asp-for="Id" />
+  <div class="form-group">
+    <label asp-for="Name" class="control-label"></label>
+    <input asp-for="Name" class="form-control" />
+    <span asp-validation-for="Name" class="text-danger"></span>
+  </div>
+            <div class="form-group">
+                <label asp-for="Type" class="control-label"></label>
+                <input asp-for="Type" class="form-control" />
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Marks" class="control-label"></label>
+                <input asp-for="Marks" class="form-control" />
+                <span asp-validation-for="Marks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuestionText" class="control-label"></label>
+                <input asp-for="QuestionText" class="form-control" />
+                <span asp-validation-for="QuestionText" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CorrectAnswers" class="control-label"></label>
+                <input asp-for="CorrectAnswers" class="form-control" />
+                <span asp-validation-for="CorrectAnswers" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IncorrectAnswers" class="control-label"></label>
+                <input asp-for="IncorrectAnswers" class="form-control" />
+                <span asp-validation-for="IncorrectAnswers" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserEmail" class="control-label"></label>
+                <input asp-for="UserEmail" class="form-control" value="@User.Identity.Name"/>
+                <span asp-validation-for="UserEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+</form>
 
 <!-- Preview Modal -->
 <div id="previewModal" class="modal modal-fixed-footer">
