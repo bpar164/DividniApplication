@@ -15653,6 +15653,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Advanced\\Details.cshtml",
+      "TargetPath": "Views\\Advanced\\Details.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Shared\\_ValidationScriptsPartial.cshtml",
       "TargetPath": "Views\\Shared\\_ValidationScriptsPartial.cshtml",
       "FileKind": "mvc"
@@ -15673,6 +15678,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Advanced\\Index.cshtml",
+      "TargetPath": "Views\\Advanced\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Simple\\Delete.cshtml",
       "TargetPath": "Views\\Simple\\Delete.cshtml",
       "FileKind": "mvc"
@@ -15688,8 +15698,18 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Advanced\\Edit.cshtml",
+      "TargetPath": "Views\\Advanced\\Edit.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Areas\\Identity\\Pages\\Account\\Manage\\_ViewImports.cshtml",
       "TargetPath": "Areas\\Identity\\Pages\\Account\\Manage\\_ViewImports.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Advanced\\Create.cshtml",
+      "TargetPath": "Views\\Advanced\\Create.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -15710,6 +15730,11 @@
     {
       "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Simple\\Details.cshtml",
       "TargetPath": "Views\\Simple\\Details.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Advanced\\Delete.cshtml",
+      "TargetPath": "Views\\Advanced\\Delete.cshtml",
       "FileKind": "mvc"
     }
   ],

@@ -471,3 +471,8 @@ C:\Users\Ben Parker\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Areas\Iden
 C:\Users\Ben Parker\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Tutorial\Advanced.cshtml.g.cs
 C:\Users\Ben Parker\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Tutorial\Assessment.cshtml.g.cs
 C:\Users\Ben Parker\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Tutorial\Simple.cshtml.g.cs
+C:\Users\Ben Parker\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Advanced\Create.cshtml.g.cs
+C:\Users\Ben Parker\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Advanced\Delete.cshtml.g.cs
+C:\Users\Ben Parker\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Advanced\Details.cshtml.g.cs
+C:\Users\Ben Parker\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Advanced\Edit.cshtml.g.cs
+C:\Users\Ben Parker\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Advanced\Index.cshtml.g.cs

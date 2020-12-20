@@ -223,14 +223,14 @@ checkForDuplicateAnswers = (array) => {
   return (new Set(array)).size !== array.length;
 }
 
-//Add the question to the database
+//Add the question details to asp form and submit the form
 generateQuestion = () => {
   document.getElementById('optionsModalContent').innerHTML = '<p>Generating question...</p>';
-  
-  document.getElementById('optionsModalContent').innerHTML = '<p>Question generated.</p>'; // !!!!
   //Get the values from the form
   let question = fetchFormValues();
-  console.log(question);
+  //Set the values in the hidden form
+  setAspFormValues(question);
+
   /* $.ajax({
     url: 'multiple-choice/currentUserID',
     method: 'POST',
@@ -252,6 +252,11 @@ generateQuestion = () => {
   }); */
   document.getElementById('optionsModalCreate').classList.remove("disabled");
   document.getElementById('optionsModalView').classList.remove("disabled");
+}
+
+setAspFormValues = (question) => { 
+  document.getElementById('aspName').value = question.name;
+  console.log(question.name);
 }
 
 /* //Make the actual request to update the question in the database
