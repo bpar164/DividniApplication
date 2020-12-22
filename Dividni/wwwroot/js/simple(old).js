@@ -6,6 +6,8 @@ const minIncorrectTruth = 4;
 const minCorrectXYZ = 3;
 const minIncorrectXYZ = 3;
 const limit = 25;
+let currentQuestionID;
+let currentQuestionName;
 
 $(document).ready(() => {
   //Create questionText editor
@@ -16,6 +18,11 @@ $(document).ready(() => {
     toolbar: 'undo redo | styleselect | bold italic underline strikethrough superscript subscript removeformat | bullist numlist table | ',
     plugins: ['lists table']
   });
+  //Check if there is data for a question that needs to be populated
+  let questionMode = document.getElementById('questionMode');
+  if (questionMode) {
+    setTimeout(() => { populateQuestionForm(questionMode.getAttribute('data-question-id')); }, 500); //Give tinyMCE time to load
+  }
 });
 
 //For question slots
@@ -36,7 +43,7 @@ createAnswers = (type, correctAnswers, incorrectAnswers) => {
   document.getElementById('addCorrect').classList.remove("disabled");
   document.getElementById('addIncorrect').classList.remove("disabled");
   document.getElementById('preview').classList.remove("disabled");
-  //Answers will be empty unless the method is loading an existing question
+  //Answers will be empty unless the method is called by template or edit
   if (!(correctAnswers)) {
     //Fetch any existing answers 
     correctAnswers = [];
@@ -214,7 +221,13 @@ $("#questionForm").submit((event) => {
     document.getElementById('optionsModalRetry').classList.remove("disabled");
   } else { //All required fields filled in
     document.getElementById('optionsModalRetry').classList.add("disabled");
-    generateQuestion(); 
+    //Check if question is being edited or being created
+    let questionMode = document.getElementById('questionMode');
+    if ((questionMode) && (questionMode.getAttribute('data-question-action') === 'EDIT')) {
+      updateQuestion(questionMode.getAttribute('data-question-id')); //Edit question
+    } else {
+      generateQuestion(); //Create question
+    }
   }
 });
 
@@ -223,15 +236,12 @@ checkForDuplicateAnswers = (array) => {
   return (new Set(array)).size !== array.length;
 }
 
-//Add the question details to asp form and submit the form
+//Make the actual request to add the question to the database
 generateQuestion = () => {
   document.getElementById('optionsModalContent').innerHTML = '<p>Generating question...</p>';
   //Get the values from the form
   let question = fetchFormValues();
-  //Set the values in the hidden form
-  setAspFormValues(question);
-
-  /* $.ajax({
+  $.ajax({
     url: 'multiple-choice/currentUserID',
     method: 'POST',
     data: question,
@@ -249,17 +259,12 @@ generateQuestion = () => {
       document.getElementById('optionsModalContent').innerHTML = '<p>Error generating question.</p>';
       document.getElementById('optionsModalRetry').classList.remove("disabled");
     }
-  }); */
+  });
   document.getElementById('optionsModalCreate').classList.remove("disabled");
   document.getElementById('optionsModalView').classList.remove("disabled");
 }
 
-setAspFormValues = (question) => { 
-  document.getElementById('aspName').value = question.name;
-  console.log(question.name);
-}
-
-/* //Make the actual request to update the question in the database
+//Make the actual request to update the question in the database
 updateQuestion = (id) => {
   document.getElementById('optionsModalContent').innerHTML = '<p>Editing question...</p>';
   //Get the values from the form
@@ -285,11 +290,162 @@ updateQuestion = (id) => {
   });
   document.getElementById('optionsModalCreate').classList.remove("disabled");
   document.getElementById('optionsModalView').classList.remove("disabled");
-} */
+}
+
+//Used when a question in a list is clicked-on 
+setCurrentQuestion = (id, name) => {
+  currentQuestionID = id;
+  currentQuestionName = name;
+}
+
+//Creates a confirmation modal
+confirmDialog = (action) => {
+  //Reset buttons
+  document.getElementById('confirmModalNo').innerHTML = "NO";
+  document.getElementById('confirmModalYes').classList.remove("disabled");
+  //Build the display string and set the correct onClick function for the yes button
+  let content = '<p>';
+  if (action === 'DELETE') {
+    content += 'Delete question:</br><b>' + currentQuestionName + '</b>';
+    document.getElementById('confirmModalYes').setAttribute('onClick', `deleteQuestion('` + currentQuestionID + `');`);
+  } else if (action === 'EDIT') {
+    content += 'Edit question:</br><b>' + currentQuestionName + '</b>';
+    document.getElementById('confirmModalYes').setAttribute('onClick', `editQuestion('` + currentQuestionID + `');`);
+  } else if (action === 'TEMPLATE') {
+    content += 'Use the following question as a template:</br><b>' + currentQuestionName + '</b>';
+    document.getElementById('confirmModalYes').setAttribute('onClick', `templateQuestion('` + currentQuestionID + `');`);
+  } else if (action === 'SHARE') {
+    content += 'Share the following question with a different user:</br><b>' + currentQuestionName + '</b>';
+    document.getElementById('confirmModalYes').classList.remove('modal-close');
+    document.getElementById('confirmModalYes').setAttribute('onClick', `shareQuestion('` + currentQuestionID + `');`);
+  }
+  content += '</p>'
+  //Set the contents of the modal
+  document.getElementById('confirmModalContent').innerHTML = content;
+}
+
+//Fetches question from database and displays it
+previewQuestion = () => {
+  document.getElementById('previewModalContent').innerHTML = '<p>Fetching question...</p>';
+  $.ajax({
+    url: 'multiple-choice-my/' + currentQuestionID,
+    method: 'GET',
+    dataType: 'json',
+    success: (res) => {
+      if (res.question) {
+        //Call a function to generate the HTML content
+        content = generatePreviewContent(res.question);
+        //Add the content to the display
+        document.getElementById('previewModalContent').innerHTML = content;
+      } else {
+        document.getElementById('previewModalContent').innerHTML = '<p>Error fetching question.</p>';
+      }
+    },
+    error: () => {
+      document.getElementById('previewModalContent').innerHTML = '<p>Error fetching question.</p>';
+    }
+  });
+}
+
+//Removes question from database
+deleteQuestion = (id) => {
+  document.getElementById(id).remove();
+  $.ajax({
+    url: 'multiple-choice-my/' + id,
+    method: 'delete'
+  })
+}
+
+//Sets the id value and 'edit' in the backend and redirects to the create page
+editQuestion = (id) => {
+  $.ajax({
+    url: 'edit-question/' + id,
+    method: 'GET',
+    success: (res) => {
+      window.location.href = "multiple-choice";
+    }
+  });
+}
+
+//Sets the id value and 'template' in the backend and redirects to the create page
+templateQuestion = (id) => {
+  $.ajax({
+    url: 'template-question/' + id,
+    method: 'GET',
+    success: (res) => {
+      window.location.href = "multiple-choice";
+    }
+  });
+}
+
+//Creates a small form in the current modal, for submitting an email
+shareQuestion = () => {
+  let content = `<form onSubmit="return submitShareForm(event)">
+                  <div class="input-field">
+                    <label for="name">Email</label>
+                    <input type="email" id="email" name="email" required>
+                  </div> 
+                  <button class="btn waves-effect waves-light right" type="submit"> 
+                    SHARE<i class="material-icons right">send</i>
+                  </button> 
+                </form>`;
+  document.getElementById('confirmModalNo').innerHTML = "CANCEl";
+  document.getElementById('confirmModalYes').classList.add("disabled");
+  document.getElementById('confirmModalContent').innerHTML = content;
+}
+
+//When the email form is submitted, load the user id, load the question details, and upload a copy of that question to the new user
+submitShareForm = (event) => {
+  event.preventDefault();
+  let email = event.target.elements.email.value;
+  document.getElementById('confirmModalContent').innerHTML = '<p>Sharing question...</p>'
+  $.ajax({
+    url: 'users/' + email,
+    method: 'GET',
+    success: (res) => {
+      if (res) {
+        let userId = res._id;
+        //Find question by id
+        $.ajax({
+          url: 'multiple-choice-my/' + currentQuestionID,
+          method: 'GET',
+          dataType: 'json',
+          success: (res) => {
+            if (res.question) {
+              let question = res.question;
+              //Upload new question
+              $.ajax({
+                url: 'multiple-choice/' + userId,
+                method: 'POST',
+                data: question,
+                success: (res) => {
+                  if (res === 'true') {
+                    document.getElementById('confirmModalContent').innerHTML = '<p>Question shared.</p>';
+                  } else if (res === 'false') {
+                    document.getElementById('confirmModalContent').innerHTML = '<p>Error sharing question.</p>';
+                  }
+                }
+              });
+            } else {
+              document.getElementById('confirmModalContent').innerHTML = '<p>Error fetching question.</p>';
+            }
+          }
+        });
+      } else { //Could not find user
+        document.getElementById('confirmModalContent').innerHTML = '<p>Could not find user.</p>';
+      }
+    },
+    error: () => {
+      document.getElementById('confirmModalContent').innerHTML = '<p>Error sharing question.</p>';
+    }
+  });
+  document.getElementById('confirmModalNo').innerHTML = "CLOSE";
+  document.getElementById('confirmModalYes').classList.add('modal-close');
+}
 
 populateQuestionForm = (id) => {
   //Fetch question
-  /* $.ajax({
+  $.ajax({
     url: 'multiple-choice-my/' + id,
     method: 'GET',
     dataType: 'json',
@@ -317,7 +473,7 @@ populateQuestionForm = (id) => {
       $('#previewModal').modal();
       document.getElementById('previewModalContent').innerHTML = '<p>Error loading question.</p>';
     }
-  }); */
+  });
 }
 
 

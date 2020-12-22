@@ -6,8 +6,6 @@ const minIncorrectTruth = 4;
 const minCorrectXYZ = 3;
 const minIncorrectXYZ = 3;
 const limit = 25;
-let currentQuestionID;
-let currentQuestionName;
 
 $(document).ready(() => {
   //Create questionText editor
@@ -18,11 +16,6 @@ $(document).ready(() => {
     toolbar: 'undo redo | styleselect | bold italic underline strikethrough superscript subscript removeformat | bullist numlist table | ',
     plugins: ['lists table']
   });
-  //Check if there is data for a question that needs to be populated
-  let questionMode = document.getElementById('questionMode');
-  if (questionMode) {
-    setTimeout(() => { populateQuestionForm(questionMode.getAttribute('data-question-id')); }, 500); //Give tinyMCE time to load
-  }
 });
 
 //For question slots
@@ -43,7 +36,7 @@ createAnswers = (type, correctAnswers, incorrectAnswers) => {
   document.getElementById('addCorrect').classList.remove("disabled");
   document.getElementById('addIncorrect').classList.remove("disabled");
   document.getElementById('preview').classList.remove("disabled");
-  //Answers will be empty unless the method is called by template or edit
+  //Answers will be empty unless the method is loading an existing question
   if (!(correctAnswers)) {
     //Fetch any existing answers 
     correctAnswers = [];
@@ -186,11 +179,11 @@ generatePreviewContent = (question) => {
   return content;
 }
 
-//When form is submitted, check for required fields and generate the options modal
+//When form is submitted, check for required fields and generate the status modal
 $("#questionForm").submit((event) => {
   event.preventDefault();
-  //Display options modal
-  $('#optionsModal').modal('open');
+  //Display status modal
+  $('#statusModal').modal('open');
   //Check that all required text fields have values
   let requiredFields = document.getElementsByClassName('required-field');
   let missingFieldIDs = [];
@@ -201,6 +194,9 @@ $("#questionForm").submit((event) => {
       missingFieldIDs.push(field.id);
     }
   });
+
+  //Run in while loop so that required checked and only move on to next 
+
   //Check that answers are not duplicated
   let question = fetchFormValues();
   let dupCorrects = checkForDuplicateAnswers(question.correctAnswers);
@@ -217,235 +213,41 @@ $("#questionForm").submit((event) => {
     if ((dupCorrects) || (dupIncorrects)) {
       content += '<p>Please ensure that all answers are unique.</p>'
     }
-    document.getElementById('optionsModalContent').innerHTML = content;
-    document.getElementById('optionsModalRetry').classList.remove("disabled");
+    document.getElementById('statusModalContent').innerHTML = content;
   } else { //All required fields filled in
-    document.getElementById('optionsModalRetry').classList.add("disabled");
-    //Check if question is being edited or being created
-    let questionMode = document.getElementById('questionMode');
-    if ((questionMode) && (questionMode.getAttribute('data-question-action') === 'EDIT')) {
-      updateQuestion(questionMode.getAttribute('data-question-id')); //Edit question
-    } else {
-      generateQuestion(); //Create question
-    }
+    generateQuestion(); 
   }
 });
 
 //True if there are duplicates
 checkForDuplicateAnswers = (array) => {
+  //Trim off empty answer fields (all required fields are filled in at this point)
+
   return (new Set(array)).size !== array.length;
+  
+  
 }
 
-//Make the actual request to add the question to the database
+//Add the question details to asp form and submit the form
 generateQuestion = () => {
-  document.getElementById('optionsModalContent').innerHTML = '<p>Generating question...</p>';
+  document.getElementById('statusModalContent').innerHTML = '<p>Generating question...</p>';
+  document.getElementById('statusModalClose').classList.add("disabled");
   //Get the values from the form
   let question = fetchFormValues();
-  $.ajax({
-    url: 'multiple-choice/currentUserID',
-    method: 'POST',
-    data: question,
-    success: (res) => {
-      if (res === 'true') {
-        //Question generated
-        document.getElementById('optionsModalContent').innerHTML = '<p>Question generated.</p>';
-      } else if (res === 'false') {
-        //Question not generated
-        document.getElementById('optionsModalContent').innerHTML = '<p>Error generating question.</p>';
-        document.getElementById('optionsModalRetry').classList.remove("disabled");
-      }
-    },
-    error: () => {
-      document.getElementById('optionsModalContent').innerHTML = '<p>Error generating question.</p>';
-      document.getElementById('optionsModalRetry').classList.remove("disabled");
-    }
-  });
-  document.getElementById('optionsModalCreate').classList.remove("disabled");
-  document.getElementById('optionsModalView').classList.remove("disabled");
-}
-
-//Make the actual request to update the question in the database
-updateQuestion = (id) => {
-  document.getElementById('optionsModalContent').innerHTML = '<p>Editing question...</p>';
-  //Get the values from the form
-  let question = fetchFormValues();
-  $.ajax({
-    url: 'multiple-choice/' + id,
-    method: 'PUT',
-    data: question,
-    success: (res) => {
-      if (res === 'true') {
-        //Question updated
-        document.getElementById('optionsModalContent').innerHTML = '<p>Question edited.</p>';
-      } else if (res === 'false') {
-        //Question not updated
-        document.getElementById('optionsModalContent').innerHTML = '<p>Error editing question.</p>';
-        document.getElementById('optionsModalRetry').classList.remove("disabled");
-      }
-    },
-    error: () => {
-      document.getElementById('optionsModalContent').innerHTML = '<p>Error editing question.</p>';
-      document.getElementById('optionsModalRetry').classList.remove("disabled");
-    }
-  });
-  document.getElementById('optionsModalCreate').classList.remove("disabled");
-  document.getElementById('optionsModalView').classList.remove("disabled");
-}
-
-//Used when a question in a list is clicked-on 
-setCurrentQuestion = (id, name) => {
-  currentQuestionID = id;
-  currentQuestionName = name;
-}
-
-//Creates a confirmation modal
-confirmDialog = (action) => {
-  //Reset buttons
-  document.getElementById('confirmModalNo').innerHTML = "NO";
-  document.getElementById('confirmModalYes').classList.remove("disabled");
-  //Build the display string and set the correct onClick function for the yes button
-  let content = '<p>';
-  if (action === 'DELETE') {
-    content += 'Delete question:</br><b>' + currentQuestionName + '</b>';
-    document.getElementById('confirmModalYes').setAttribute('onClick', `deleteQuestion('` + currentQuestionID + `');`);
-  } else if (action === 'EDIT') {
-    content += 'Edit question:</br><b>' + currentQuestionName + '</b>';
-    document.getElementById('confirmModalYes').setAttribute('onClick', `editQuestion('` + currentQuestionID + `');`);
-  } else if (action === 'TEMPLATE') {
-    content += 'Use the following question as a template:</br><b>' + currentQuestionName + '</b>';
-    document.getElementById('confirmModalYes').setAttribute('onClick', `templateQuestion('` + currentQuestionID + `');`);
-  } else if (action === 'SHARE') {
-    content += 'Share the following question with a different user:</br><b>' + currentQuestionName + '</b>';
-    document.getElementById('confirmModalYes').classList.remove('modal-close');
-    document.getElementById('confirmModalYes').setAttribute('onClick', `shareQuestion('` + currentQuestionID + `');`);
-  }
-  content += '</p>'
-  //Set the contents of the modal
-  document.getElementById('confirmModalContent').innerHTML = content;
-}
-
-//Fetches question from database and displays it
-previewQuestion = () => {
-  document.getElementById('previewModalContent').innerHTML = '<p>Fetching question...</p>';
-  $.ajax({
-    url: 'multiple-choice-my/' + currentQuestionID,
-    method: 'GET',
-    dataType: 'json',
-    success: (res) => {
-      if (res.question) {
-        //Call a function to generate the HTML content
-        content = generatePreviewContent(res.question);
-        //Add the content to the display
-        document.getElementById('previewModalContent').innerHTML = content;
-      } else {
-        document.getElementById('previewModalContent').innerHTML = '<p>Error fetching question.</p>';
-      }
-    },
-    error: () => {
-      document.getElementById('previewModalContent').innerHTML = '<p>Error fetching question.</p>';
-    }
-  });
-}
-
-//Removes question from database
-deleteQuestion = (id) => {
-  document.getElementById(id).remove();
-  $.ajax({
-    url: 'multiple-choice-my/' + id,
-    method: 'delete'
-  })
-}
-
-//Sets the id value and 'edit' in the backend and redirects to the create page
-editQuestion = (id) => {
-  $.ajax({
-    url: 'edit-question/' + id,
-    method: 'GET',
-    success: (res) => {
-      window.location.href = "multiple-choice";
-    }
-  });
-}
-
-//Sets the id value and 'template' in the backend and redirects to the create page
-templateQuestion = (id) => {
-  $.ajax({
-    url: 'template-question/' + id,
-    method: 'GET',
-    success: (res) => {
-      window.location.href = "multiple-choice";
-    }
-  });
-}
-
-//Creates a small form in the current modal, for submitting an email
-shareQuestion = () => {
-  let content = `<form onSubmit="return submitShareForm(event)">
-                  <div class="input-field">
-                    <label for="name">Email</label>
-                    <input type="email" id="email" name="email" required>
-                  </div> 
-                  <button class="btn waves-effect waves-light right" type="submit"> 
-                    SHARE<i class="material-icons right">send</i>
-                  </button> 
-                </form>`;
-  document.getElementById('confirmModalNo').innerHTML = "CANCEl";
-  document.getElementById('confirmModalYes').classList.add("disabled");
-  document.getElementById('confirmModalContent').innerHTML = content;
-}
-
-//When the email form is submitted, load the user id, load the question details, and upload a copy of that question to the new user
-submitShareForm = (event) => {
-  event.preventDefault();
-  let email = event.target.elements.email.value;
-  document.getElementById('confirmModalContent').innerHTML = '<p>Sharing question...</p>'
-  $.ajax({
-    url: 'users/' + email,
-    method: 'GET',
-    success: (res) => {
-      if (res) {
-        let userId = res._id;
-        //Find question by id
-        $.ajax({
-          url: 'multiple-choice-my/' + currentQuestionID,
-          method: 'GET',
-          dataType: 'json',
-          success: (res) => {
-            if (res.question) {
-              let question = res.question;
-              //Upload new question
-              $.ajax({
-                url: 'multiple-choice/' + userId,
-                method: 'POST',
-                data: question,
-                success: (res) => {
-                  if (res === 'true') {
-                    document.getElementById('confirmModalContent').innerHTML = '<p>Question shared.</p>';
-                  } else if (res === 'false') {
-                    document.getElementById('confirmModalContent').innerHTML = '<p>Error sharing question.</p>';
-                  }
-                }
-              });
-            } else {
-              document.getElementById('confirmModalContent').innerHTML = '<p>Error fetching question.</p>';
-            }
-          }
-        });
-      } else { //Could not find user
-        document.getElementById('confirmModalContent').innerHTML = '<p>Could not find user.</p>';
-      }
-    },
-    error: () => {
-      document.getElementById('confirmModalContent').innerHTML = '<p>Error sharing question.</p>';
-    }
-  });
-  document.getElementById('confirmModalNo').innerHTML = "CLOSE";
-  document.getElementById('confirmModalYes').classList.add('modal-close');
+  //Set the values in the hidden form
+  document.getElementById('aspName').value = question.name;
+  document.getElementById('aspType').value = question.type;
+  document.getElementById('aspMarks').value = question.marks;
+  document.getElementById('aspQuestionText').value = question.questionText;
+  document.getElementById('aspCorrectAnswers').value = JSON.stringify(question.correctAnswers);
+  document.getElementById('aspIncorrectAnswers').value = JSON.stringify(question.incorrectAnswers);
+  //Submit the hidden form
+  document.getElementById("aspQuestionForm").submit();
 }
 
 populateQuestionForm = (id) => {
   //Fetch question
-  $.ajax({
+  /* $.ajax({
     url: 'multiple-choice-my/' + id,
     method: 'GET',
     dataType: 'json',
@@ -473,7 +275,7 @@ populateQuestionForm = (id) => {
       $('#previewModal').modal();
       document.getElementById('previewModalContent').innerHTML = '<p>Error loading question.</p>';
     }
-  });
+  }); */
 }
 
 

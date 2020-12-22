@@ -83,15 +83,14 @@
       </button>
     </div>
   </form>
-  <form asp-action="Create">                         
-    <input asp-for="Name" id="aspName"/>            
-    <input asp-for="Type" id="aspType"/>
-    <input asp-for="Marks" id="aspMarks"/>
-    <input asp-for="QuestionText" id="aspQuestionText"/>
-    <input asp-for="CorrectAnswers" id="aspCorrectAnswers"/>
-    <input asp-for="IncorrectAnswers" id="aspIncorrectAnswers"/>
-    <input asp-for="UserEmail" value="@User.Identity.Name"/>
-    <input type="submit"/>
+  <form asp-action="Create" id="aspQuestionForm">                         
+    <input asp-for="Name" id="aspName" type="hidden"/>            
+    <input asp-for="Type" id="aspType" type="hidden"/>
+    <input asp-for="Marks" id="aspMarks" type="hidden"/>
+    <input asp-for="QuestionText" id="aspQuestionText" type="hidden"/>
+    <input asp-for="CorrectAnswers" id="aspCorrectAnswers" type="hidden"/>
+    <input asp-for="IncorrectAnswers" id="aspIncorrectAnswers" type="hidden"/>
+    <input asp-for="UserEmail" value="@User.Identity.Name" type="hidden"/>
 </form>
 </section>
 
@@ -107,18 +106,14 @@
   </div>
 </div>
 
-<!-- Options Modal -->
-<div id="optionsModal" class="modal modal-fixed-footer modal-not-dismissible dialog-modal">
+<!-- Status Modal -->
+<div id="statusModal" class="modal modal-fixed-footer dialog-modal">
   <div class="modal-content">
-    <h4>Options</h4>
-    <div id="optionsModalContent"></div>
+    <h4>Status</h4>
+    <div id="statusModalContent"></div>
   </div>
-  <div class="modal-footer" id="optionsModalFooter">
-    <a href="#!" class="modal-close waves-effect waves-green btn-flat disabled" id="optionsModalRetry">RETRY</a>
-    <a href="multiple-choice" class="modal-close waves-effect waves-green btn-flat disabled"
-      id="optionsModalCreate">CREATE NEW</a>
-    <a href="multiple-choice-my" class="modal-close waves-effect waves-green btn-flat disabled"
-      id="optionsModalView">VIEW CREATED</a>
+  <div class="modal-footer">
+    <a href="#!" class="modal-close waves-effect waves-green btn-flat" id="statusModalClose">CLOSE</a>
   </div>
 </div>
 
