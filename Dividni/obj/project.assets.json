@@ -7944,19 +7944,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Ben Parker\\.nuget\\packages\\": {}
+    "C:\\Users\\benpa\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Dividni.csproj",
+      "projectUniqueName": "C:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Dividni.csproj",
       "projectName": "Dividni",
-      "projectPath": "C:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Dividni.csproj",
-      "packagesPath": "C:\\Users\\Ben Parker\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Ben Parker\\DividniApplication\\Dividni\\obj\\",
+      "projectPath": "C:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Dividni.csproj",
+      "packagesPath": "C:\\Users\\benpa\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Ben Parker\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\benpa\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net5.0"

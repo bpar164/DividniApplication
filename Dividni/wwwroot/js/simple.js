@@ -182,57 +182,50 @@ generatePreviewContent = (question) => {
 //When form is submitted, check for required fields and generate the status modal
 $("#questionForm").submit((event) => {
   event.preventDefault();
+  //Reset the answer editors to remove empty fields
+  createAnswers(currentType, null, null);
   //Display status modal
   $('#statusModal').modal('open');
+  let content = '';
+  let generate = false;
   //Check that all required text fields have values
   let requiredFields = document.getElementsByClassName('required-field');
   let missingFieldIDs = [];
-  let missingRequired = false;
   Array.from(requiredFields).forEach(field => {
     if (tinyMCE.get(field.id).getContent() === '') {
-      missingRequired = true;
       missingFieldIDs.push(field.id);
     }
   });
-
-  //Run in while loop so that required checked and only move on to next 
-
-  //Check that answers are not duplicated
-  let question = fetchFormValues();
-  let dupCorrects = checkForDuplicateAnswers(question.correctAnswers);
-  let dupIncorrects = checkForDuplicateAnswers(question.incorrectAnswers);
-  if ((missingRequired) || (dupCorrects) || (dupIncorrects)) {
-    let content = '';
-    if (missingRequired) {
-      content += '<p>Please complete the following fields:<ul>'
-      missingFieldIDs.forEach(id => {
-        content += '<li>' + id + '</li>'
-      });
-      content += '</ul></p>';
-    } 
-    if ((dupCorrects) || (dupIncorrects)) {
-      content += '<p>Please ensure that all answers are unique.</p>'
-    }
-    document.getElementById('statusModalContent').innerHTML = content;
-  } else { //All required fields filled in
-    generateQuestion(); 
-  }
+  if (missingFieldIDs.length > 0) {
+    content += '<p>Please complete the following fields:<ul>'
+    missingFieldIDs.forEach(id => {
+      content += '<li>' + id + '</li>'
+    });
+    content += '</ul></p>';
+  } else { //Check that answers are not duplicated
+    let question = fetchFormValues();
+    let duplicates = checkForDuplicateAnswers(question.correctAnswers.concat(question.incorrectAnswers));
+    if (duplicates) {
+      content = '<p>Please ensure that all answers are unique.</p>'
+    } else { //All required fields filled in and not duplicated
+      content = '<p>Generating question...</p>';
+      generate = true;
+    }  
+  } 
+  document.getElementById('statusModalContent').innerHTML = content;
+  if (generate === true) {
+    document.getElementById('statusModalClose').classList.add("disabled");
+    generateQuestion();
+  }    
 });
 
 //True if there are duplicates
 checkForDuplicateAnswers = (array) => {
-  //Trim off empty answer fields (all required fields are filled in at this point)
-
   return (new Set(array)).size !== array.length;
-  
-  
 }
 
 //Add the question details to asp form and submit the form
 generateQuestion = () => {
-  document.getElementById('statusModalContent').innerHTML = '<p>Generating question...</p>';
-  document.getElementById('statusModalClose').classList.add("disabled");
-  //Get the values from the form
   let question = fetchFormValues();
   //Set the values in the hidden form
   document.getElementById('aspName').value = question.name;
