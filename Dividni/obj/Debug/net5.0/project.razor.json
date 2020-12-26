@@ -1,5 +1,5 @@
 {
-  "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Dividni.csproj",
+  "FilePath": "c:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Dividni.csproj",
   "Configuration": {
     "ConfigurationName": "MVC-3.0",
     "LanguageVersion": "5.0",
@@ -15603,138 +15603,138 @@
   "RootNamespace": "Dividni",
   "Documents": [
     {
-      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Tutorial\\Simple.cshtml",
-      "TargetPath": "Views\\Tutorial\\Simple.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Simple\\Index.cshtml",
-      "TargetPath": "Views\\Simple\\Index.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Simple\\Create.cshtml",
-      "TargetPath": "Views\\Simple\\Create.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Tutorial\\Advanced.cshtml",
-      "TargetPath": "Views\\Tutorial\\Advanced.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\_ViewStart.cshtml",
-      "TargetPath": "Views\\_ViewStart.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Areas\\Identity\\Pages\\Account\\ExternalLogin.cshtml",
-      "TargetPath": "Areas\\Identity\\Pages\\Account\\ExternalLogin.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Areas\\Identity\\Pages\\_ValidationScriptsPartial.cshtml",
-      "TargetPath": "Areas\\Identity\\Pages\\_ValidationScriptsPartial.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Shared\\Error.cshtml",
-      "TargetPath": "Views\\Shared\\Error.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\_ViewImports.cshtml",
-      "TargetPath": "Views\\_ViewImports.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Tutorial\\Assessment.cshtml",
+      "FilePath": "c:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Views\\Tutorial\\Assessment.cshtml",
       "TargetPath": "Views\\Tutorial\\Assessment.cshtml",
       "FileKind": "mvc"
     },
     {
-      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Advanced\\Details.cshtml",
-      "TargetPath": "Views\\Advanced\\Details.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Shared\\_ValidationScriptsPartial.cshtml",
-      "TargetPath": "Views\\Shared\\_ValidationScriptsPartial.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Simple\\Edit.cshtml",
-      "TargetPath": "Views\\Simple\\Edit.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Home\\Index.cshtml",
-      "TargetPath": "Views\\Home\\Index.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Areas\\Identity\\Pages\\_ViewStart.cshtml",
-      "TargetPath": "Areas\\Identity\\Pages\\_ViewStart.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Advanced\\Index.cshtml",
-      "TargetPath": "Views\\Advanced\\Index.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Simple\\Delete.cshtml",
-      "TargetPath": "Views\\Simple\\Delete.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Shared\\_Layout.cshtml",
-      "TargetPath": "Views\\Shared\\_Layout.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Areas\\Identity\\Pages\\Account\\Manage\\_ManageNav.cshtml",
-      "TargetPath": "Areas\\Identity\\Pages\\Account\\Manage\\_ManageNav.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Advanced\\Edit.cshtml",
-      "TargetPath": "Views\\Advanced\\Edit.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Areas\\Identity\\Pages\\Account\\Manage\\_ViewImports.cshtml",
-      "TargetPath": "Areas\\Identity\\Pages\\Account\\Manage\\_ViewImports.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Advanced\\Create.cshtml",
-      "TargetPath": "Views\\Advanced\\Create.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Areas\\Identity\\Pages\\Account\\_ViewImports.cshtml",
+      "FilePath": "c:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Areas\\Identity\\Pages\\Account\\_ViewImports.cshtml",
       "TargetPath": "Areas\\Identity\\Pages\\Account\\_ViewImports.cshtml",
       "FileKind": "mvc"
     },
     {
-      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Areas\\Identity\\Pages\\Account\\Login.cshtml",
+      "FilePath": "c:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Areas\\Identity\\Pages\\_ViewStart.cshtml",
+      "TargetPath": "Areas\\Identity\\Pages\\_ViewStart.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Views\\Shared\\_Layout.cshtml",
+      "TargetPath": "Views\\Shared\\_Layout.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Views\\Shared\\Error.cshtml",
+      "TargetPath": "Views\\Shared\\Error.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Views\\Tutorial\\Advanced.cshtml",
+      "TargetPath": "Views\\Tutorial\\Advanced.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Areas\\Identity\\Pages\\Account\\Login.cshtml",
       "TargetPath": "Areas\\Identity\\Pages\\Account\\Login.cshtml",
       "FileKind": "mvc"
     },
     {
-      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Areas\\Identity\\Pages\\_ViewImports.cshtml",
+      "FilePath": "c:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Views\\Shared\\_ValidationScriptsPartial.cshtml",
+      "TargetPath": "Views\\Shared\\_ValidationScriptsPartial.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Views\\Simple\\Index.cshtml",
+      "TargetPath": "Views\\Simple\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Areas\\Identity\\Pages\\Account\\Manage\\_ViewImports.cshtml",
+      "TargetPath": "Areas\\Identity\\Pages\\Account\\Manage\\_ViewImports.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Views\\Advanced\\Delete.cshtml",
+      "TargetPath": "Views\\Advanced\\Delete.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Areas\\Identity\\Pages\\_ViewImports.cshtml",
       "TargetPath": "Areas\\Identity\\Pages\\_ViewImports.cshtml",
       "FileKind": "mvc"
     },
     {
-      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Simple\\Details.cshtml",
+      "FilePath": "c:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Areas\\Identity\\Pages\\Account\\ExternalLogin.cshtml",
+      "TargetPath": "Areas\\Identity\\Pages\\Account\\ExternalLogin.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Views\\Simple\\Edit.cshtml",
+      "TargetPath": "Views\\Simple\\Edit.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Views\\_ViewImports.cshtml",
+      "TargetPath": "Views\\_ViewImports.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Views\\Advanced\\Index.cshtml",
+      "TargetPath": "Views\\Advanced\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Views\\Home\\Index.cshtml",
+      "TargetPath": "Views\\Home\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Views\\Tutorial\\Simple.cshtml",
+      "TargetPath": "Views\\Tutorial\\Simple.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Areas\\Identity\\Pages\\_ValidationScriptsPartial.cshtml",
+      "TargetPath": "Areas\\Identity\\Pages\\_ValidationScriptsPartial.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Views\\Advanced\\Details.cshtml",
+      "TargetPath": "Views\\Advanced\\Details.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Areas\\Identity\\Pages\\Account\\Manage\\_ManageNav.cshtml",
+      "TargetPath": "Areas\\Identity\\Pages\\Account\\Manage\\_ManageNav.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Views\\_ViewStart.cshtml",
+      "TargetPath": "Views\\_ViewStart.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Views\\Advanced\\Edit.cshtml",
+      "TargetPath": "Views\\Advanced\\Edit.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Views\\Simple\\Create.cshtml",
+      "TargetPath": "Views\\Simple\\Create.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Views\\Simple\\Details.cshtml",
       "TargetPath": "Views\\Simple\\Details.cshtml",
       "FileKind": "mvc"
     },
     {
-      "FilePath": "c:\\Users\\Ben Parker\\DividniApplication\\Dividni\\Views\\Advanced\\Delete.cshtml",
-      "TargetPath": "Views\\Advanced\\Delete.cshtml",
+      "FilePath": "c:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Views\\Simple\\Delete.cshtml",
+      "TargetPath": "Views\\Simple\\Delete.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Views\\Advanced\\Create.cshtml",
+      "TargetPath": "Views\\Advanced\\Create.cshtml",
       "FileKind": "mvc"
     }
   ],

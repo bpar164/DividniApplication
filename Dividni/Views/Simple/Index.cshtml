@@ -6,68 +6,75 @@
     ViewData["Description"] = "Manage your simple multiple-choice questions";
 }
 
-<h1>Index</h1>
+<section class="section container blue lighten-5" id="main">
+    <div class="row">
+        <div class="col">
+            <h5 class="teal-text">My Questions</h5>
+            <p>Below are all of the simple multiple-choice questions that you have created, and that have been shared
+                with you.</p>
+            <p>You can write a new question on the <a asp-controller="Simple" asp-action="Create" target="_blank">create
+                    <i class="tiny material-icons">open_in_new</i></a> page.</p>
+            <p>Review the <a asp-controller="Tutorial" asp-action="Simple" target="_blank">tutorial <i
+                        class="tiny material-icons">open_in_new</i></a>
+                for help.</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12 m10 l8">
+            <table class="table white">
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Type)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.QuestionText)
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="tooltipped" data-tooltip="Details"
+                                    data-position="right"><i class="material-icons">pageview</i></a>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="tooltipped" data-tooltip="Edit"
+                                    data-position="right"><i class="material-icons">edit</i></a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="tooltipped" data-tooltip="Delete"
+                                    data-position="right"><i class="material-icons">delete</i></a>
+                                <a><i class="material-icons" class="tooltipped" data-tooltip="Details"
+                                        data-position="Copy">content_copy</i></a>
+                                <a><i class="material-icons" class="tooltipped" data-tooltip="Details"
+                                        data-position="Share">share</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Type)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Marks)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.QuestionText)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CorrectAnswers)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IncorrectAnswers)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserEmail)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Marks)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.QuestionText)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CorrectAnswers)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IncorrectAnswers)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserEmail)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+<!-- Preview Modal -->
+<div id="previewModal" class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <h4>Question Preview</h4>
+        <div id="previewModalContent"></div>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">CLOSE</a>
+    </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div id="confirmModal" class="modal modal-fixed-footer dialog-modal">
+    <div class="modal-content">
+        <h4>Confirm Action</h4>
+        <div id="confirmModalContent"></div>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat" id="confirmModalNo">NO</a>
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat" id="confirmModalYes">YES</a>
+    </div>
+</div>
