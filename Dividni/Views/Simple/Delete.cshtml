@@ -1,63 +1,42 @@
 @model Dividni.Models.Simple
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Simple: Delete";
+    ViewData["Heading"] = "Simple Multiple-Choice Question Deletion";
+    ViewData["Description"] = "Delete a simple multiple-choice question";
 }
 
-<h1>Delete</h1>
-
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Simple</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Type)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Type)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Marks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Marks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.QuestionText)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.QuestionText)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CorrectAnswers)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CorrectAnswers)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IncorrectAnswers)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IncorrectAnswers)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UserEmail)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UserEmail)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
-</div>
+<section class="section container blue lighten-5" id="main">
+    <div class="row">
+        <div class="col">
+            <h5 class="teal-text">Question Deletion</h5>
+            <p>Delete the following question?</p>
+            <div>
+                <b>Name: </b>@Html.DisplayFor(model => model.Name)</br>
+                </br><b>Type: </b>@Html.DisplayFor(model => model.Type)</br>
+                </br><b>Marks: </b>@Html.DisplayFor(model => model.Marks)</br>
+                </br><b>Question Text:</b></br>
+                <div id="questionText" value="@Html.DisplayFor(model => model.QuestionText)"></div></br>
+                <b>Correct Answers:</b>
+                <ol id="correct" value="@Html.DisplayFor(model => model.CorrectAnswers)"></ol>
+                <b>Incorrect Answers:</b>
+                <ol id="incorrect" value="@Html.DisplayFor(model => model.IncorrectAnswers)"></ol></br>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="Id" />
+                        <button type="submit" class="btn red">Delete<i class="material-icons right">delete</i></button>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <a class="waves-effect waves-light btn" asp-action="Index">
+                        Return to list<i class="material-icons right">list</i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

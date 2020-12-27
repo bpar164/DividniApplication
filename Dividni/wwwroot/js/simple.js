@@ -16,7 +16,30 @@ $(document).ready(() => {
     toolbar: 'undo redo | styleselect | bold italic underline strikethrough superscript subscript removeformat | bullist numlist table | ',
     plugins: ['lists table']
   });
+  //For certain pages
+  let location = window.location.href;
+  if (location.includes('/Simple/Details') || location.includes('/Simple/Delete')) {
+    displayQuestionHTML();
+  }
 });
+
+//Set the inner html values for question text and answers
+displayQuestionHTML = () => {
+  let questionText = document.getElementById('questionText').getAttribute('value');
+  document.getElementById('questionText').innerHTML = questionText;
+  appendChildElement(document.getElementById('correct'));
+  appendChildElement(document.getElementById('incorrect'));
+}
+
+//Fetches JSON from value attribute of parent and appends each element as a new li
+appendChildElement = (parentElement) => {
+  jsonObject = JSON.parse(parentElement.getAttribute('value'));
+  for (let item in jsonObject) {
+    let li = document.createElement('li');
+    li.innerHTML = jsonObject[item];
+    parentElement.appendChild(li);
+  }
+}
 
 //For question slots
 loadAnswerEditors = () => {

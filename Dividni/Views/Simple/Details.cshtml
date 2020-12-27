@@ -1,60 +1,29 @@
 @model Dividni.Models.Simple
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Simple: Details";
+    ViewData["Heading"] = "Simple Multiple-Choice Question Details";
+    ViewData["Description"] = "View the details of a simple multiple-choice question";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Simple</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Type)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Type)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Marks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Marks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.QuestionText)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.QuestionText)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CorrectAnswers)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CorrectAnswers)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IncorrectAnswers)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IncorrectAnswers)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UserEmail)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UserEmail)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<section class="section container blue lighten-5" id="main">
+    <div class="row">
+        <div class="col">
+            <h5 class="teal-text">Question Details</h5>
+            <div>
+                <b>Name: </b>@Html.DisplayFor(model => model.Name)</br>
+                </br><b>Type: </b>@Html.DisplayFor(model => model.Type)</br>
+                </br><b>Marks: </b>@Html.DisplayFor(model => model.Marks)</br>
+                </br><b>Question Text:</b></br>
+                <div id="questionText" value="@Html.DisplayFor(model => model.QuestionText)"></div></br>
+                <b>Correct Answers:</b>
+                <ol id="correct" value="@Html.DisplayFor(model => model.CorrectAnswers)"></ol>
+                <b>Incorrect Answers:</b>
+                <ol id="incorrect" value="@Html.DisplayFor(model => model.IncorrectAnswers)"></ol></br>
+            </div>
+                <a class="waves-effect waves-light btn" asp-action="Index">
+                    Return to list<i class="material-icons right">list</i>
+                </a>
+        </div>
+    </div>
+</section>
