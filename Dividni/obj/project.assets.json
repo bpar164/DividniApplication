@@ -7949,11 +7949,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Dividni.csproj",
+      "projectUniqueName": "C:\\Users\\benpa\\DividniApplication\\Dividni\\Dividni.csproj",
       "projectName": "Dividni",
-      "projectPath": "C:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Dividni.csproj",
+      "projectPath": "C:\\Users\\benpa\\DividniApplication\\Dividni\\Dividni.csproj",
       "packagesPath": "C:\\Users\\benpa\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\obj\\",
+      "outputPath": "C:\\Users\\benpa\\DividniApplication\\Dividni\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\benpa\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -8047,7 +8047,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
       }
     }
   }

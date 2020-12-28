@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "0Q36mv/UJdpuWJVDtBfQLEEU6P4bN4d888sIs2GPdvH2fsdRJ6HP6RqGUJ/C76Mv5H0HOe/8WsQjh7zpJPQgCw==",
+  "dgSpecHash": "qH/gdY5MeniKVBlOfdIyv6HnEw8Rq6KBDuAxoRsMrBC2FfoVsZwGd4dxy6tkAjhCOhzZ/DLhMQGsyJ5hzF61+A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\benpa\\Desktop\\DividniApplication\\Dividni\\Dividni.csproj",
+  "projectFilePath": "C:\\Users\\benpa\\DividniApplication\\Dividni\\Dividni.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\benpa\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\benpa\\.nuget\\packages\\microsoft.aspnetcore.authentication.google\\5.0.1\\microsoft.aspnetcore.authentication.google.5.0.1.nupkg.sha512",

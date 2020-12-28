@@ -20,6 +20,8 @@ $(document).ready(() => {
   let location = window.location.href;
   if (location.includes('/Simple/Details') || location.includes('/Simple/Delete')) {
     displayQuestionHTML();
+  } else if (location.includes('/Simple/Edit')) {
+    setTimeout(() => { populateQuestionForm(); }, 500); //Give tinyMCE time to load
   }
 });
 
@@ -39,6 +41,21 @@ appendChildElement = (parentElement) => {
     li.innerHTML = jsonObject[item];
     parentElement.appendChild(li);
   }
+}
+
+//Fetch values passed from controller and populate the form
+populateQuestionForm = () => {
+  let type = document.getElementById('type').getAttribute('value');
+  if (type === "Truth") {
+    document.getElementById('truth').setAttribute("checked", true);
+  } else {
+    document.getElementById('xyz').setAttribute("checked", true);
+  }
+  let questionText = document.getElementById('questionText').getAttribute('value');
+  tinyMCE.get('questionText').setContent(questionText);
+  let correctAnswers = JSON.parse(document.getElementById('correct').getAttribute('value'));
+  let incorrectAnswers = JSON.parse(document.getElementById('incorrect').getAttribute('value'));
+  createAnswers(type, correctAnswers, incorrectAnswers);         
 }
 
 //For question slots
@@ -261,38 +278,7 @@ generateQuestion = () => {
   document.getElementById("aspQuestionForm").submit();
 }
 
-populateQuestionForm = (id) => {
-  //Fetch question
-  /* $.ajax({
-    url: 'multiple-choice-my/' + id,
-    method: 'GET',
-    dataType: 'json',
-    success: (res) => {
-      if (!(res.question)) {
-        //Display message if no question found
-        $('#previewModal').modal();
-        document.getElementById('previewModalContent').innerHTML = '<p>Error loading question.</p>';
-      } else {
-        //Populate form
-        document.getElementById('name').value = res.question.name;
-        if (res.question.type === "Truth") {
-          document.getElementById('truth').setAttribute("checked", true);
-        } else {
-          document.getElementById('xyz').setAttribute("checked", true);
-        }
-        document.getElementById('marks').value = res.question.marks;
-        let correctAnswers = res.question.correctAnswers;
-        let incorrectAnswers = res.question.incorrectAnswers;
-        createAnswers(res.question.type, correctAnswers, incorrectAnswers);
-        tinyMCE.get('questionText').setContent(res.question.questionText);
-      }
-    },
-    error: () => {
-      $('#previewModal').modal();
-      document.getElementById('previewModalContent').innerHTML = '<p>Error loading question.</p>';
-    }
-  }); */
-}
+
 
 
 
