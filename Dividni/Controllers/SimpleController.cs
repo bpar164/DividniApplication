@@ -148,6 +148,39 @@ namespace Dividni.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // GET: Simple/Template/5
+        public async Task<IActionResult> Template(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var simple = await _context.Simple.FindAsync(id);
+            if (simple == null)
+            {
+                return NotFound();
+            }
+            return View(simple);
+        }
+
+        // POST: Simple/Template
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Template([Bind("Id,Name,Type,Marks,QuestionText,CorrectAnswers,IncorrectAnswers,UserEmail")] Simple simple)
+        {
+            if (ModelState.IsValid)
+            {
+                simple.Id = Guid.NewGuid();
+                _context.Add(simple);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(simple);
+        }
+
         private bool SimpleExists(Guid id)
         {
             return _context.Simple.Any(e => e.Id == id);

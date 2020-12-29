@@ -1,7 +1,7 @@
 @{
     ViewData["Title"] = "Tutorial: Simple";
     ViewData["Heading"] = "Tutorial: Simple Questions";
-    ViewData["Description"] = "Learn how to create simple multiple-choice questions";
+    ViewData["Description"] = "Learn how to create and manage simple multiple-choice questions";
 }
 
 <section class="section container blue lighten-5" id="main">
@@ -70,41 +70,36 @@
             <img src="~/images/types.png">
             <p>Question 1 is of type XYZ and question 2 is of type Truth.
                 The question content and answers are the same for both questions - the only difference is the type.</p>
-            <h5 class="teal-text">Viewing your Questions</h5>
-            <p>The <a asp-controller="Simple" asp-action="Manage" target="_blank">simple question management <i
+            <h5 class="teal-text">Managing your Questions</h5>
+            <p>The <a asp-controller="Simple" asp-action="Index" target="_blank">simple question management <i
                         class="tiny material-icons">open_in_new</i></a> page displays all of the simple questions that
                 you have
                 created/that have been shared with you.
             </p>
-            <p>You can click on the <i class="tiny material-icons">more_vert</i> next to the question name to see the
-                list of
-                actions that you can perform.</p>
-            <p>Select <b>PREVIEW</b> to see the details of the question.</p>
-            <h5 class="teal-text">Editing a Question</h5>
-            <p>Select <b>EDIT</b> from the actions list. A window will be displayed asking you to confirm your choice.
+            <p>You can click on the icons next to each question to perform a number of actions, each of which will open
+                a new page:</p>
+            <h6 class="teal-text">Viewing a Question <i class="material-icons">pageview</i></h6>
+            <p>Displays all of the question details.</p>
+            <h6 class="teal-text">Editing a Question <i class="material-icons">edit</i></h6>
+            <p>Loads the question details into a form that can be edited. Any changes need to be saved before
+                exiting.</p>
+            <h6 class="teal-text">Deleting a Question <i class="material-icons">delete</i></h6>
+            <p>The question details are displayed before you confirm the deletion.</p>
+            <h6 class="teal-text">Using a Question as a Template <i class="material-icons">content_copy</i>
+            </h6>
+            <p>Loads the question details into a form that can be edited. The question must be generated
+                before exiting.</p>
+            <p>Note that using a question as a template generates a new question and leaves the original unchanged.</p>
+            <h6 class="teal-text">Sharing a Question <i class="material-icons">share</i></h6>
+            <p>Select <b>SHARE</b> from the actions list. A window will be displayed asking you to
+                confirm your choice.
             </p>
-            <p>You will be redirected to the create multiple-choice question page and the details of the question will
-                be
-                pre-loaded into the form.</p>
-            <p>To save any changes, you will need to preview and generate the question.</p>
-            <h5 class="teal-text">Deleting a Question</h5>
-            <p>Select <b>DELETE</b> from the actions list. A window will be displayed asking you to confirm your choice.
-            </p>
-            <h5 class="teal-text">Using a Question as a Template</h5>
-            <p>Select <b>TEMPLATE</b> from the actions list. A window will be displayed asking you to confirm your
-                choice.</p>
-            <p>You will be redirected to the create multiple-choice question page and the details of the question will
-                be
-                pre-loaded into the form.</p>
-            <p>To save the new question, you will need to preview and generate it. Note that using a question as a
-                template leaves
-                the original question unchanged.</p>
-            <h5 class="teal-text">Sharing a Question</h5>
-            <p>Select <b>SHARE</b> from the actions list. A window will be displayed asking you to confirm your choice.
-            </p>
-            <p>A small form will be displayed where you can enter the email of the user with whom you wish to share the
-                question. Click <b>SHARE </b><i class="tiny material-icons">send</i> to complete the process.</p>
-            <p>Note that the other user will receive a copy of the question, and any changes he or she makes to it will
+            <p>A small form will be displayed where you can enter the email of the user with whom
+                you wish to share the
+                question. Click <b>SHARE </b><i class="tiny material-icons">send</i> to complete the
+                process.</p>
+            <p>Note that the other user will receive a copy of the question, and any changes he or
+                she makes to it will
                 not
                 be reflected on your version of the question.</p>
         </div>

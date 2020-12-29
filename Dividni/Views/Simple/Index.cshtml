@@ -42,10 +42,10 @@
                                     data-position="right"><i class="material-icons">edit</i></a>
                                 <a asp-action="Delete" asp-route-id="@item.Id" class="tooltipped" data-tooltip="Delete"
                                     data-position="right"><i class="material-icons">delete</i></a>
-                                <a><i class="material-icons" class="tooltipped" data-tooltip="Details"
-                                        data-position="Copy">content_copy</i></a>
-                                <a><i class="material-icons" class="tooltipped" data-tooltip="Details"
-                                        data-position="Share">share</a>
+                                <a asp-action="Template" asp-route-id="@item.Id" class="tooltipped" data-tooltip="Template"
+                                        data-position="right"><i class="material-icons" >content_copy</i></a>
+                                <a asp-action="" asp-route-id="@item.Id" class="tooltipped" data-tooltip="Share"
+                                        data-position="right"><i class="material-icons" >share</i></a>
                             </td>
                         </tr>
                     }

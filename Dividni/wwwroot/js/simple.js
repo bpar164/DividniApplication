@@ -20,7 +20,7 @@ $(document).ready(() => {
   let location = window.location.href;
   if (location.includes('/Simple/Details') || location.includes('/Simple/Delete')) {
     displayQuestionHTML();
-  } else if (location.includes('/Simple/Edit')) {
+  } else if (location.includes('/Simple/Edit') || location.includes('/Simple/Template')){
     setTimeout(() => { populateQuestionForm(); }, 500); //Give tinyMCE time to load
   }
 });
@@ -248,7 +248,7 @@ $("#questionForm").submit((event) => {
     if (duplicates) {
       content = '<p>Please ensure that all answers are unique.</p>'
     } else { //All required fields filled in and not duplicated
-      content = '<p>Generating question...</p>';
+      content = '<p>Saving question...</p>';
       generate = true;
     }  
   } 
