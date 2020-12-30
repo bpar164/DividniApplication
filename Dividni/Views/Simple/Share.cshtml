@@ -1,0 +1,45 @@
+@model Dividni.Models.Simple
+
+@{
+    ViewData["Title"] = "Simple: Share";
+    ViewData["Heading"] = "Simple Multiple-Choice Questions";
+    ViewData["Description"] = "Share a simple multiple-choice question with another user";
+}
+
+<section class="section container blue lighten-5" id="main">
+    <div class="row">
+        <div class="col">
+            <h5 class="teal-text">Question Details</h5>
+            <p>Share the following question?</p>
+            <div>
+                <b>Name: </b>@Html.DisplayFor(model => model.Name)</br>
+                </br><b>Type: </b>@Html.DisplayFor(model => model.Type)</br>
+                </br><b>Marks: </b>@Html.DisplayFor(model => model.Marks)</br>
+                </br><b>Question Text:</b></br>
+                <div id="questionText" value="@Html.DisplayFor(model => model.QuestionText)"></div></br>
+                <b>Correct Answers:</b>
+                <ol id="correct" value="@Html.DisplayFor(model => model.CorrectAnswers)"></ol>
+                <b>Incorrect Answers:</b>
+                <ol id="incorrect" value="@Html.DisplayFor(model => model.IncorrectAnswers)"></ol></br>
+            </div>
+            <form>
+                Enter user email:
+                <div class="input-field inline"><input type="email" name="SearchString"></div>
+                <button type="submit" class="waves-effect waves-light btn orange">Share<i
+                        class="material-icons right">share</i></button>
+            </form>
+            <a class="waves-effect waves-light btn" asp-action="Index">
+                Return to list<i class="material-icons right">list</i>
+            </a>
+        </div>
+    </div>
+    <form asp-action="Create" id="aspQuestionForm">
+        <input asp-for="Name" id="aspName" type="hidden" value="@Html.DisplayFor(model => model.Name)"/>
+        <input asp-for="Type" id="aspType" type="hidden" />
+        <input asp-for="Marks" id="aspMarks" type="hidden" />
+        <input asp-for="QuestionText" id="aspQuestionText" type="hidden" />
+        <input asp-for="CorrectAnswers" id="aspCorrectAnswers" type="hidden" />
+        <input asp-for="IncorrectAnswers" id="aspIncorrectAnswers" type="hidden" />
+        <input asp-for="UserEmail" type="hidden" value="" />
+    </form>
+</section>

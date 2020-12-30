@@ -9,7 +9,7 @@
 <section class="section container blue lighten-5" id="main">
     <div class="row">
         <div class="col">
-            <h5 class="teal-text">Question Deletion</h5>
+            <h5 class="teal-text">Question Details</h5>
             <p>Delete the following question?</p>
             <div>
                 <b>Name: </b>@Html.DisplayFor(model => model.Name)</br>
@@ -26,7 +26,7 @@
                 <div class="col">
                     <form asp-action="Delete">
                         <input type="hidden" asp-for="Id" />
-                        <button type="submit" class="btn red">Delete<i class="material-icons right">delete</i></button>
+                        <button type="submit" class="waves-effect waves-light btn red">Delete<i class="material-icons right">delete</i></button>
                     </form>
                 </div>
             </div>

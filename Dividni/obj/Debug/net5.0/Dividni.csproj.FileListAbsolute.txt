@@ -1433,3 +1433,4 @@ C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\ref\Dividni.dll
 C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Dividni.pdb
 C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Dividni.genruntimeconfig.cache
 C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Simple\Template.cshtml.g.cs
+C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Simple\Share.cshtml.g.cs

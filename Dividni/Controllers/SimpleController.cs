@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Dividni.Controllers
 {
-    [Authorize]  
+    [Authorize]
     public class SimpleController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,9 +22,19 @@ namespace Dividni.Controllers
         }
 
         // GET: Simple
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            return View(await _context.Simple.ToListAsync());
+            var simple =
+                from s in _context.Simple
+                where s.UserEmail.Equals(User.Identity.Name)
+                select s;
+            
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                simple = simple.Where(s => s.Name.Contains(searchString));
+            }
+
+            return View(await simple.ToListAsync());
         }
 
         // GET: Simple/Details/5
@@ -178,6 +188,24 @@ namespace Dividni.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            return View(simple);
+        }
+
+        // GET: Simple/Share/5
+        public async Task<IActionResult> Share(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var simple = await _context.Simple
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (simple == null)
+            {
+                return NotFound();
+            }
+
             return View(simple);
         }
 

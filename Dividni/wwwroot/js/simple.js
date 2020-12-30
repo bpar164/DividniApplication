@@ -18,7 +18,7 @@ $(document).ready(() => {
   });
   //For certain pages
   let location = window.location.href;
-  if (location.includes('/Simple/Details') || location.includes('/Simple/Delete')) {
+  if (location.includes('/Simple/Details') || location.includes('/Simple/Delete') || location.includes('/Simple/Share')) {
     displayQuestionHTML();
   } else if (location.includes('/Simple/Edit') || location.includes('/Simple/Template')){
     setTimeout(() => { populateQuestionForm(); }, 500); //Give tinyMCE time to load
