@@ -36,6 +36,9 @@
                                 @Html.DisplayFor(modelItem => item.Name)
                             </td>
                             <td>
+                                @Html.DisplayFor(modelItem => item.ModifiedDate)
+                            </td>
+                            <td>
                                 <div align="right">
                                     <a asp-action="Details" asp-route-id="@item.Id" class="tooltipped"
                                         data-tooltip="Details" data-position="right"><i

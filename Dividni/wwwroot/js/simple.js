@@ -274,6 +274,7 @@ generateQuestion = () => {
   document.getElementById('aspQuestionText').value = question.questionText;
   document.getElementById('aspCorrectAnswers').value = JSON.stringify(question.correctAnswers);
   document.getElementById('aspIncorrectAnswers').value = JSON.stringify(question.incorrectAnswers);
+  document.getElementById('aspModifiedDate').value = new Date().toISOString().slice(0, 10);
   //Submit the hidden form
   document.getElementById("aspQuestionForm").submit();
 }

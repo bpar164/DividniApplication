@@ -27,11 +27,12 @@ namespace Dividni.Controllers
             var simple =
                 from s in _context.Simple
                 where s.UserEmail.Equals(User.Identity.Name)
+                orderby s.ModifiedDate
                 select s;
-            
+
             if (!String.IsNullOrEmpty(searchString))
             {
-                simple = simple.Where(s => s.Name.Contains(searchString));
+                simple = simple.Where(s => s.Name.Contains(searchString)).OrderByDescending(s => s.ModifiedDate);
             }
 
             return View(await simple.ToListAsync());
@@ -66,7 +67,7 @@ namespace Dividni.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Type,Marks,QuestionText,CorrectAnswers,IncorrectAnswers,UserEmail")] Simple simple)
+        public async Task<IActionResult> Create([Bind("Id,Name,Type,Marks,QuestionText,CorrectAnswers,IncorrectAnswers,UserEmail,ModifiedDate")] Simple simple)
         {
             if (ModelState.IsValid)
             {
@@ -99,7 +100,7 @@ namespace Dividni.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Type,Marks,QuestionText,CorrectAnswers,IncorrectAnswers,UserEmail")] Simple simple)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Type,Marks,QuestionText,CorrectAnswers,IncorrectAnswers,UserEmail,ModifiedDate")] Simple simple)
         {
             if (id != simple.Id)
             {
@@ -179,7 +180,7 @@ namespace Dividni.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Template([Bind("Id,Name,Type,Marks,QuestionText,CorrectAnswers,IncorrectAnswers,UserEmail")] Simple simple)
+        public async Task<IActionResult> Template([Bind("Id,Name,Type,Marks,QuestionText,CorrectAnswers,IncorrectAnswers,UserEmail,ModifiedDate")] Simple simple)
         {
             if (ModelState.IsValid)
             {

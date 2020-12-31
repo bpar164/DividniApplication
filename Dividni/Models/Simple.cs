@@ -14,5 +14,8 @@ namespace Dividni.Models
         public string CorrectAnswers { get; set; }
         public string IncorrectAnswers { get; set; }
         public string UserEmail { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime ModifiedDate { get; set; }
     }
 }
