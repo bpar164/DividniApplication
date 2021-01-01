@@ -22,20 +22,46 @@ namespace Dividni.Controllers
         }
 
         // GET: Simple
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
-            var simple =
-                from s in _context.Simple
-                where s.UserEmail.Equals(User.Identity.Name)
-                orderby s.ModifiedDate
-                select s;
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = sortOrder == "name" ? "name_desc" : "name";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
+            var simple = from s in _context.Simple
+                         where s.UserEmail.Equals(User.Identity.Name)
+                         select s;
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                simple = simple.Where(s => s.Name.Contains(searchString)).OrderByDescending(s => s.ModifiedDate);
+                simple = simple.Where(s => s.Name.ToUpper().Contains(searchString.ToUpper()));
             }
 
-            return View(await simple.ToListAsync());
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    simple = simple.OrderByDescending(s => s.Name);
+                    break;
+                case "name":
+                    simple = simple.OrderBy(s => s.Name);
+                    break;
+                default:
+                    simple = simple.OrderByDescending(s => s.ModifiedDate);
+                    break;
+            }
+
+            int pageSize = 10;
+            return View(await PaginatedList<Simple>.CreateAsync(simple.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Simple/Details/5

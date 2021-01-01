@@ -1,4 +1,4 @@
-@model IEnumerable<Dividni.Models.Simple>
+@model PaginatedList<Dividni.Models.Simple>
 
 @{
     ViewData["Title"] = "Simple: Manage";
@@ -23,9 +23,16 @@
         <div class="col s12 m10 l8">
             <form asp-controller="Simple" asp-action="Index" align="right">
                 Search by name:
-                <div class="input-field inline"><input type="text" name="SearchString"></div>
-                <button type="submit" class="waves-effect waves-light btn">Search<i class="material-icons right">search</i></button>
-                <a asp-controller="Simple" class="waves-effect waves-light btn">Reset<i class="material-icons right">undo</i></a>
+                <div class="input-field inline"><input type="text" name="SearchString"
+                        value="@ViewData["CurrentFilter"]"></div>
+                <button type="submit" class="waves-effect waves-light btn">Search<i
+                        class="material-icons right">search</i></button>
+                <a asp-controller="Simple" class="waves-effect waves-light btn">Reset<i
+                        class="material-icons right">undo</i></a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]"
+                    asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                    class="btn-floating waves-effect waves-light red"><i
+                        class="material-icons right">sort_by_alpha</i></a>
             </form>
             <table class="table white">
                 <tbody>
@@ -58,6 +65,21 @@
                     }
                 </tbody>
             </table>
+            @{
+                var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+            }
+            <p></p>
+            <a asp-action="Index" asp-route-sortOrder="@ViewData["CurrentSort"]"
+                asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                class="waves-effect waves-light btn @prevDisabled">
+                Previous
+            </a>
+            <a asp-action="Index" asp-route-sortOrder="@ViewData["CurrentSort"]"
+                asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                class="waves-effect waves-light btn @nextDisabled">
+                Next
+            </a>
         </div>
     </div>
 </section>
