@@ -155,6 +155,11 @@ namespace Dividni.Controllers
             }
             return View(simple);
         }
+        private bool SimpleExists(Guid id)
+        {
+            return _context.Simple.Any(e => e.Id == id);
+
+        }
 
         // GET: Simple/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
@@ -236,9 +241,34 @@ namespace Dividni.Controllers
             return View(simple);
         }
 
-        private bool SimpleExists(Guid id)
+        // POST: Simple/Share
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Share([Bind("Id,Name,Type,Marks,QuestionText,CorrectAnswers,IncorrectAnswers,UserEmail,ModifiedDate")] Simple simple)
         {
-            return _context.Simple.Any(e => e.Id == id);
+            if (!UserExists(simple.UserEmail))
+            {
+                ViewData["Message"] = "Could not find user with email: " + simple.UserEmail;
+                return View(simple);
+            }
+            else
+            {
+                if (ModelState.IsValid)
+                {
+                    simple.Id = Guid.NewGuid();
+                    _context.Add(simple);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(simple);
+            }
+        }
+
+        private bool UserExists(string email)
+        {
+            return _context.Users.Any(u => u.UserName == email);
         }
     }
 }

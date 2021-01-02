@@ -6,6 +6,8 @@
     ViewData["Description"] = "Share a simple multiple-choice question with another user";
 }
 
+<div id="message" value="@ViewData["Message"]"></div>
+
 <section class="section container blue lighten-5" id="main">
     <div class="row">
         <div class="col">
@@ -22,9 +24,9 @@
                 <b>Incorrect Answers:</b>
                 <ol id="incorrect" value="@Html.DisplayFor(model => model.IncorrectAnswers)"></ol></br>
             </div>
-            <form>
+            <form onSubmit="return userEmailForm(event)">
                 Enter user email:
-                <div class="input-field inline"><input type="email" name="SearchString"></div>
+                <div class="input-field inline"><input type="email" id="email" name="email" required></div>
                 <button type="submit" class="waves-effect waves-light btn orange">Share<i
                         class="material-icons right">share</i></button>
             </form>
@@ -33,14 +35,14 @@
             </a>
         </div>
     </div>
-    <form asp-action="Create" id="aspQuestionForm">
-        <input asp-for="Name" id="aspName" type="hidden" value="@Html.DisplayFor(model => model.Name)"/>
+    <form asp-action="Share" id="aspQuestionForm">
+        <input asp-for="Name" id="aspName" type="hidden" />
         <input asp-for="Type" id="aspType" type="hidden" />
         <input asp-for="Marks" id="aspMarks" type="hidden" />
         <input asp-for="QuestionText" id="aspQuestionText" type="hidden" />
         <input asp-for="CorrectAnswers" id="aspCorrectAnswers" type="hidden" />
         <input asp-for="IncorrectAnswers" id="aspIncorrectAnswers" type="hidden" />
-        <input asp-for="UserEmail" type="hidden" value="" />
-        <input asp-for="ModifiedDate" id="aspModifiedDate" type="hidden"/>
+        <input asp-for="UserEmail" id="aspUserEmail" type="hidden" value="@User.Identity.Name"/>
+        <input asp-for="ModifiedDate" id="aspModifiedDate" type="hidden" />
     </form>
 </section>
