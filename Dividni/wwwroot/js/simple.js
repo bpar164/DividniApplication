@@ -18,6 +18,9 @@ $(document).ready(() => {
   });
   //For certain pages
   let location = window.location.href;
+  if (location.endsWith('Simple')) {
+    let sortable = Sortable.create(questionTable);
+  }
   if (location.includes('/Simple/Details') || location.includes('/Simple/Delete') || location.includes('/Simple/Share')) {
     displayQuestionHTML();
   } else if (location.includes('/Simple/Edit') || location.includes('/Simple/Template')) {

@@ -1,4 +1,4 @@
-let instructionSections = [];
+/* let instructionSections = [];
 let questionList = document.getElementById('questionList');
 let sortable = Sortable.create(questionList);
 
@@ -527,4 +527,4 @@ downloadExistingExam = (id) => {
       document.getElementById('optionsModalRetry').classList.add("disabled");
     }
   });
-}
+} */
