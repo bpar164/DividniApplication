@@ -1434,3 +1434,8 @@ C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Dividni.genruntimecon
 C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Simple\Template.cshtml.g.cs
 C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Simple\Share.cshtml.g.cs
 C:\Users\benpa\DividniApplication\Dividni\bin\Debug\net5.0\app.db
+C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Assessment\Create.cshtml.g.cs
+C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Assessment\Delete.cshtml.g.cs
+C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Assessment\Details.cshtml.g.cs
+C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Assessment\Edit.cshtml.g.cs
+C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Assessment\Index.cshtml.g.cs

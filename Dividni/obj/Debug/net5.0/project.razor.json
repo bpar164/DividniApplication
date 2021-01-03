@@ -15613,6 +15613,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\benpa\\DividniApplication\\Dividni\\Views\\Assessment\\Edit.cshtml",
+      "TargetPath": "Views\\Assessment\\Edit.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\benpa\\DividniApplication\\Dividni\\Views\\Tutorial\\Advanced.cshtml",
       "TargetPath": "Views\\Tutorial\\Advanced.cshtml",
       "FileKind": "mvc"
@@ -15638,6 +15643,16 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\benpa\\DividniApplication\\Dividni\\Views\\Assessment\\Create.cshtml",
+      "TargetPath": "Views\\Assessment\\Create.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\benpa\\DividniApplication\\Dividni\\Views\\Assessment\\Index.cshtml",
+      "TargetPath": "Views\\Assessment\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\benpa\\DividniApplication\\Dividni\\Areas\\Identity\\Pages\\Account\\Login.cshtml",
       "TargetPath": "Areas\\Identity\\Pages\\Account\\Login.cshtml",
       "FileKind": "mvc"
@@ -15645,6 +15660,16 @@
     {
       "FilePath": "c:\\Users\\benpa\\DividniApplication\\Dividni\\Views\\Simple\\Edit.cshtml",
       "TargetPath": "Views\\Simple\\Edit.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\benpa\\DividniApplication\\Dividni\\Views\\Assessment\\Delete.cshtml",
+      "TargetPath": "Views\\Assessment\\Delete.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\benpa\\DividniApplication\\Dividni\\Views\\Assessment\\Details.cshtml",
+      "TargetPath": "Views\\Assessment\\Details.cshtml",
       "FileKind": "mvc"
     },
     {

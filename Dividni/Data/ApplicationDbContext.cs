@@ -17,5 +17,7 @@ namespace Dividni.Data
         public DbSet<Simple> Simple { get; set; }
 
         public DbSet<Dividni.Models.Advanced> Advanced { get; set; }
+
+        public DbSet<Dividni.Models.Assessment> Assessment { get; set; }
     }
 }
