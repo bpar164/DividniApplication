@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Dividni.Data;
 using Dividni.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Dividni.Controllers
 {
+    [Authorize]
     public class AssessmentController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -20,9 +22,46 @@ namespace Dividni.Controllers
         }
 
         // GET: Assessment
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
-            return View(await _context.Assessment.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = sortOrder == "name" ? "name_desc" : "name";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
+            var assessment = from a in _context.Assessment
+                             where a.UserEmail.Equals(User.Identity.Name)
+                             select a;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                assessment = assessment.Where(a => a.Name.ToUpper().Contains(searchString.ToUpper()));
+            }
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    assessment = assessment.OrderByDescending(s => s.Name);
+                    break;
+                case "name":
+                    assessment = assessment.OrderBy(s => s.Name);
+                    break;
+                default:
+                    assessment = assessment.OrderByDescending(s => s.ModifiedDate);
+                    break;
+            }
+
+            int pageSize = 10;
+            return View(await PaginatedList<Assessment>.CreateAsync(assessment.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Assessment/Details/5
@@ -117,6 +156,11 @@ namespace Dividni.Controllers
             return View(assessment);
         }
 
+        private bool AssessmentExists(Guid id)
+        {
+            return _context.Assessment.Any(e => e.Id == id);
+        }
+
         // GET: Assessment/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
@@ -146,9 +190,85 @@ namespace Dividni.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AssessmentExists(Guid id)
+        // GET: Assessment/Template/5
+        public async Task<IActionResult> Template(Guid? id)
         {
-            return _context.Assessment.Any(e => e.Id == id);
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var assessment = await _context.Assessment.FindAsync(id);
+            if (assessment == null)
+            {
+                return NotFound();
+            }
+            return View(assessment);
+        }
+
+        // POST: Assessment/Template
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Template([Bind("Id,Name,CoverPage,QuestionList,Appendix,UserEmail,ModifiedDate")] Assessment assessment)
+        {
+            if (ModelState.IsValid)
+            {
+                assessment.Id = Guid.NewGuid();
+                _context.Add(assessment);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(assessment);
+        }
+
+        // GET: Assessment/Share/5
+        public async Task<IActionResult> Share(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var assessment = await _context.Assessment
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (assessment == null)
+            {
+                return NotFound();
+            }
+
+            return View(assessment);
+        }
+
+        // POST: Simple/Share
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Share([Bind("Id,Name,CoverPage,QuestionList,Appendix,UserEmail,ModifiedDate")] Assessment assessment)
+        {
+            if (!UserExists(assessment.UserEmail))
+            {
+                ViewData["Message"] = "Could not find user with email: " + assessment.UserEmail;
+                return View(assessment);
+            }
+            else
+            {
+                if (ModelState.IsValid)
+                {
+                    assessment.Id = Guid.NewGuid();
+                    _context.Add(assessment);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(assessment);
+            }
+        }
+
+        private bool UserExists(string email)
+        {
+            return _context.Users.Any(u => u.UserName == email);
         }
     }
 }

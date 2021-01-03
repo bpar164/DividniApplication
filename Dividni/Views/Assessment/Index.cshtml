@@ -1,65 +1,88 @@
-@model IEnumerable<Dividni.Models.Assessment>
+@model PaginatedList<Dividni.Models.Assessment>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Assessments: Manage";
+    ViewData["Heading"] = "Assessments";
+    ViewData["Description"] = "Manage your assessments";
 }
 
-<h1>Index</h1>
+<section class="section container blue lighten-5" id="main">
+    <div class="row">
+        <div class="col">
+            <h5 class="teal-text">My Assessments</h5>
+            <p>Below are all of the assessments that you have created, and that have been shared
+                with you.</p>
+            <p>You can create a new assessment on the <a asp-controller="Assessment" asp-action="Create"
+                    target="_blank">create
+                    <i class="tiny material-icons">open_in_new</i></a> page.</p>
+            <p>Review the <a asp-controller="Tutorial" asp-action="Assessment" target="_blank">tutorial <i
+                        class="tiny material-icons">open_in_new</i></a>
+                for help.</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12 m10 l8">
+            <form asp-controller="Assessment" asp-action="Index" align="right">
+                Search by name:
+                <div class="input-field inline"><input type="text" name="SearchString"
+                        value="@ViewData["CurrentFilter"]"></div>
+                <button type="submit" class="waves-effect waves-light btn">Search<i
+                        class="material-icons right">search</i></button>
+                <a asp-controller="Assessment" class="waves-effect waves-light btn">Reset<i
+                        class="material-icons right">undo</i></a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]"
+                    asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                    class="btn-floating waves-effect waves-light red"><i
+                        class="material-icons right">sort_by_alpha</i></a>
+            </form>
+            <table class="table white">
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ModifiedDate)
+                            </td>
+                            <td>
+                                <div align="right">
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="tooltipped"
+                                        data-tooltip="Details" data-position="right"><i
+                                            class="material-icons">pageview</i></a>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="tooltipped" data-tooltip="Edit"
+                                        data-position="right"><i class="material-icons">edit</i></a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="tooltipped" data-tooltip="Delete"
+                                        data-position="right"><i class="material-icons">delete</i></a>
+                                    <a asp-action="Template" asp-route-id="@item.Id" class="tooltipped"
+                                        data-tooltip="Template" data-position="right"><i
+                                            class="material-icons">content_copy</i></a>
+                                    <a asp-action="Share" asp-route-id="@item.Id" class="tooltipped" data-tooltip="Share"
+                                        data-position="right"><i class="material-icons">share</i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @{
+                var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+            }
+            <p></p>
+            <a asp-action="Index" asp-route-sortOrder="@ViewData["CurrentSort"]"
+                asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                class="waves-effect waves-light btn @prevDisabled">
+                Previous
+            </a>
+            <a asp-action="Index" asp-route-sortOrder="@ViewData["CurrentSort"]"
+                asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                class="waves-effect waves-light btn @nextDisabled">
+                Next
+            </a>
+        </div>
+    </div>
+</section>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CoverPage)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.QuestionList)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Appendix)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserEmail)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModifiedDate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CoverPage)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.QuestionList)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Appendix)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserEmail)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModifiedDate)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+

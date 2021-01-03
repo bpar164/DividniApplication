@@ -15613,6 +15613,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\benpa\\DividniApplication\\Dividni\\Views\\Assessment\\Share.cshtml",
+      "TargetPath": "Views\\Assessment\\Share.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\benpa\\DividniApplication\\Dividni\\Views\\Assessment\\Edit.cshtml",
       "TargetPath": "Views\\Assessment\\Edit.cshtml",
       "FileKind": "mvc"
@@ -15690,6 +15695,11 @@
     {
       "FilePath": "c:\\Users\\benpa\\DividniApplication\\Dividni\\Views\\Shared\\Error.cshtml",
       "TargetPath": "Views\\Shared\\Error.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\benpa\\DividniApplication\\Dividni\\Views\\Assessment\\Template.cshtml",
+      "TargetPath": "Views\\Assessment\\Template.cshtml",
       "FileKind": "mvc"
     },
     {

@@ -1,56 +1,129 @@
 @model Dividni.Models.Assessment
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Assessments: Create";
+    ViewData["Heading"] = "Assessments";
+    ViewData["Description"] = "Create an assessment with your questions";
 }
 
-<h1>Create</h1>
-
-<h4>Assessment</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CoverPage" class="control-label"></label>
-                <input asp-for="CoverPage" class="form-control" />
-                <span asp-validation-for="CoverPage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="QuestionList" class="control-label"></label>
-                <input asp-for="QuestionList" class="form-control" />
-                <span asp-validation-for="QuestionList" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Appendix" class="control-label"></label>
-                <input asp-for="Appendix" class="form-control" />
-                <span asp-validation-for="Appendix" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserEmail" class="control-label"></label>
-                <input asp-for="UserEmail" class="form-control" />
-                <span asp-validation-for="UserEmail" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ModifiedDate" class="control-label"></label>
-                <input asp-for="ModifiedDate" class="form-control" />
-                <span asp-validation-for="ModifiedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<section class="section container blue lighten-5" id="main">
+  <div class="row">
+    <div class="col">
+      <h5 class="teal-text">Assessment Details</h5>
+      <p>Complete the details for the assessment below, and click on <b>GENERATE</b> once you are done.
+      </p>
+      <p>Review the <a asp-controller="Tutorial" asp-action="Assessment" target="_blank">tutorial <i
+            class="tiny material-icons">open_in_new</i></a> for help.</p>
     </div>
+  </div>
+  <form id="AssessmentForm">
+    <div class="row">
+      <div class="col s12 m8 l5">
+        <div class="input-field">
+          <label for="name">Exam name</label>
+          <input type="text" id="name" name="name" required pattern="^[a-zA-Z0-9][a-zA-Z0-9-]*">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s12 m10 l8">
+        <div id="coverPage">
+          <h6>Exam Cover Page</h6>
+          <label>
+            <input type="checkbox" id="coverPageCheckBox" onChange="checkBoxChanged(this, 'coverPage');" />
+            <span>Include a cover page</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s12 m8 l6">
+        <div id="questions">
+            <h6>Select Questions</h6>
+            <b>Simple Questions</b>
+            <b>Advanced Questions</b>
+            <div id="instructionSections">
+                <h6>Instruction Sections</h6>
+                <a class="btn-floating btn-small waves-effect waves-light red" id="btnInstructions">
+                    <i class="material-icons">add</i>
+                </a>
+            </div>
+            <h6>Question List</h6>
+            <p>(Click and drag to re-order)</p>
+        </div>
+      </div>
+    </div>
+
+
+         
+    
+          @* <ul id='questionList' class="collection with-header">
+            <% mcQuestions.forEach(q => { %>
+            <li class="collection-item" id='<%= q.id %>' name='<%= q.question.name %>'>
+              <div><%= q.question.name %><a href="#!" class="secondary-content">
+                  <label>
+                    <input type="checkbox" onChange="liCheckBoxChanged('<%= q.id %>');" /><span></span>
+                  </label>
+                </a><a href="#previewModal" class="secondary-content modal-trigger tooltipped" data-position="right"
+                  data-tooltip="Display Contents" onClick="previewQuestion('<%= q.id %>');"><i
+                    class="material-icons">zoom_in</i></a></div>
+            </li>
+          </ul> *@
+        
+    <div class="row">
+      <div class="col s12 m10 l8">
+        <div id="appendix">
+          <h6>Appendix</h6>
+          <label>
+            <input type="checkbox" id="appendixCheckBox" onChange="checkBoxChanged(this, 'appendix');" />
+            <span>Include an appendix</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <a class="waves-effect waves-light btn right modal-trigger" id="preview" href="#previewModal"
+        onClick="previewExam();">
+        Preview<i class="material-icons right">assignment_turned_in</i>
+      </a>
+    </div>
+    <div class="row">
+      <button class="btn waves-effect waves-light right disabled" id="generate" type="submit">
+        Generate<i class="material-icons right">send</i>
+      </button>
+    </div>
+  </form>
+  <form asp-action="Create" id="aspAssessmentForm">                         
+    <input asp-for="Name" id="aspName" type="hidden"/> 
+    <input asp-for="CoverPage" id="aspCoverPage" type="hidden"/>
+    <input asp-for="QuestionList" id="aspQuestionList" type="hidden"/>
+    <input asp-for="Appendix" id="aspAppendix" type="hidden"/>
+    <input asp-for="UserEmail" value="@User.Identity.Name" type="hidden"/>
+    <input asp-for="ModifiedDate" id="aspModifiedDate" type="hidden"/>
+</form>
+</section>
+
+<!-- Preview Modal -->
+<div id="previewModal" class="modal modal-fixed-footer">
+  <div class="modal-content">
+    <h4>Assessment Preview</h4>
+    <p>Review these details before clicking <b>GENERATE</b>:</p>
+    <div id="previewModalContent"></div>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-close waves-effect waves-green btn-flat">CLOSE</a>
+  </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<!-- Status Modal -->
+<div id="statusModal" class="modal modal-fixed-footer dialog-modal">
+  <div class="modal-content">
+    <h4>Status</h4>
+    <div id="statusModalContent"></div>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-close waves-effect waves-green btn-flat" id="statusModalClose">CLOSE</a>
+  </div>
 </div>
 
 @section Scripts {

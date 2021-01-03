@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Dividni.Data;
 using Dividni.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Dividni.Controllers
 {
+    [Authorize]
     public class AdvancedController : Controller
     {
         private readonly ApplicationDbContext _context;
