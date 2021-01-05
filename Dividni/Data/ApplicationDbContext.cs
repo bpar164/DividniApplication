@@ -19,5 +19,7 @@ namespace Dividni.Data
         public DbSet<Dividni.Models.Advanced> Advanced { get; set; }
 
         public DbSet<Dividni.Models.Assessment> Assessment { get; set; }
+
+        public DbSet<Dividni.Models.QuestionBank> QuestionBank { get; set; }
     }
 }
