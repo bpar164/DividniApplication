@@ -1,15 +1,9 @@
-/* let instructionSections = [];
-let questionList = document.getElementById('questionList');
+let instructionSections = [];
 let sortable = Sortable.create(questionList);
+/* let questionList = document.getElementById('questionList');*/
 
 $(document).ready(() => {
-  //Check if there is data for an exam that needs to be populated
-  let examMode = document.getElementById('examMode');
-  if ((examMode) && (examMode.getAttribute('data-exam-action') === 'DOWNLOAD')) {
-    downloadExistingExam(examMode.getAttribute('data-exam-id'));
-  } else if (examMode) {
-    populateExamForm(examMode.getAttribute('data-exam-id'));
-  }
+
 });
 
 checkBoxChanged = (checkbox, divName) => {
@@ -51,55 +45,6 @@ removeTextArea = (divName) => {
   document.getElementById(divName).removeChild(document.getElementById(divID));
 }
 
-//Fetch question and display in modal
-previewQuestion = (id) => {
-  document.getElementById('previewModalContent').innerHTML = '<p>Fetching question...</p>';
-  $.ajax({
-    url: 'multiple-choice-my/' + id,
-    method: 'GET',
-    dataType: 'json',
-    success: (res) => {
-      if (res.question) {
-        //Call a function to generate the HTML content
-        content = generatePreviewContent(res.question);
-        //Add the content to the display
-        document.getElementById('previewModalContent').innerHTML = content;
-      } else {
-        document.getElementById('previewModalContent').innerHTML = '<p>Could not find question.</p>';
-      }
-    },
-    error: () => {
-      document.getElementById('previewModalContent').innerHTML = '<p>Error fetching question.</p>';
-    }
-  });
-}
-
-//Creates the HTML content for the preview modal
-generatePreviewContent = (question) => {
-  //Clear the content
-  content = '';
-  //Build the content using the values with formatting 
-  content += '<b>Name: </b>' + question.name + '</br>';
-  content += '</br><b>Type: </b>' + question.type + '</br>';
-  content += '</br><b>Marks: </b>' + question.marks + '</br>';
-  content += '</br><b>Question Text:</b></br>' + question.questionText + '</br>';
-  content += '</br><b>Correct Answers:</b><ol>';
-  question.correctAnswers.forEach(ans => {
-    content += '<li>' + ans + '</li>';
-  });
-  content += '</ol>';
-  content += '<b>Incorrect Answers:</b><ol>';
-  question.incorrectAnswers.forEach(ans => {
-    content += '<li>' + ans + '</li>';
-  });
-  content += '</ol>';
-  return content;
-}
-
-liCheckBoxChanged = (id) => {
-  $("#" + id).toggleClass('teal lighten-4');
-}
-
 //Event listener for btnInstructions to create textArea and additional buttons - used when instruction section is created for first time
 document.getElementById("btnInstructions").addEventListener("click", () => {
   createInstructionTextAreaAndButtons();
@@ -108,7 +53,7 @@ document.getElementById("btnInstructions").addEventListener("click", () => {
     //Save instruction section (if there is content)
     if (!(tinyMCE.get('instructionSectionsTextArea').getContent() === '')) {
       let sectionId = (instructionSections.push(tinyMCE.get('instructionSectionsTextArea').getContent()) - 1);
-      //Create li item to append to display list
+      //Create row to append to question table
       let instructionItem = createHTMLElement('li', 'is' + sectionId, ['collection-item', 'teal', 'lighten-4']);
       instructionItem.setAttribute("name", "Instruction Section #" + (sectionId + 1));
       instructionItem.innerHTML = createInstructionItemHTML(sectionId);
@@ -121,24 +66,6 @@ document.getElementById("btnInstructions").addEventListener("click", () => {
     removeInstructionSection();
   });
 });
-
-createInstructionItemHTML = (id) => {
-  return `<div>Instruction Section #` + (id + 1) + `<a href="#!" class="secondary-content">
-          <label><input type="checkbox" onChange="liCheckBoxChanged('is` + id + `');" checked/><span></span></label></a>  
-        <a href="#previewModal" class="secondary-content modal-trigger tooltipped" data-position="right"
-          data-tooltip="Display Contents" onClick="previewInstructionSection(` + id + `);"><i class="material-icons">zoom_in</i></a> 
-        <a href="#" class="secondary-content tooltipped" data-position="right" data-tooltip="Edit" 
-          onClick="editInstructionSection(` + id + `);"><i class="material-icons">edit</i></a> 
-      </div>`;
-}
-
-createQuestionItemHTML = (id, name) => {
-  return `<div>` + name + `<a href="#!" class="secondary-content">
-            <label><input type="checkbox" onChange="liCheckBoxChanged('` + id + `');" checked/><span></span></label></a>
-            <a href="#previewModal" class="secondary-content modal-trigger tooltipped" data-position="right"
-              data-tooltip="Display Contents" onClick="previewQuestion('` + id + `');"><i class="material-icons">zoom_in</i></a>
-        </div>`;
-}
 
 createInstructionTextAreaAndButtons = () => {
   //If the textArea already exists, remove it 
@@ -165,9 +92,23 @@ removeInstructionSection = () => {
   document.getElementById("btnInstructions").classList.remove('disabled');
 }
 
+createInstructionItemHTML = (id) => {
+  return `<div>Instruction Section #` + (id + 1) + `<a href="#!" class="secondary-content">
+            <label><input type="checkbox" onChange="liCheckBoxChanged('is` + id + `');" checked /><span></span></label></a>
+            <a href="#" class="secondary-content tooltipped" data-position="right" data-tooltip="Edit"
+              onClick="editInstructionSection(` + id + `);"><i class="material-icons">edit</i></a>
+            <a href="#previewModal" class="secondary-content modal-trigger tooltipped" data-position="right"
+              data-tooltip="Details" onClick="previewInstructionSection(` + id + `);"><i class="material-icons">pageview</i></a>
+          </div>`;
+}
+
+liCheckBoxChanged = (id) => {
+  $("#" + id).toggleClass('teal lighten-4');
+}
+
 //Fetch instruction section and display in modal
 previewInstructionSection = (id) => {
-  document.getElementById('previewModalContent').innerHTML = instructionSections[id];
+  document.getElementById('previewModalContent').innerHTML = `<p>Details for instruction section ` + (id + 1) + `:</p>` + instructionSections[id];
 }
 
 //Make changes to existing instruction section element
@@ -196,25 +137,25 @@ previewExam = () => {
 
 //Creates the HTML content for the preview modal
 generateExamPreviewContent = () => {
-  //Clear the content
-  content = '';
-  //Build the content using the values with formatting 
+  //Build the content using the values with formatting
+  content = '<p>Review these details before clicking <b>GENERATE</b>:</p>';
   content += '<b>Name: </b>' + document.getElementById('name').value + '</br>';
-  content += '</br><b>Paper Count: </b>' + document.getElementById('paperCount').value + '</br>';
   document.getElementById('coverPageCheckBox').checked ?
     content += '</br><b>Cover Page:</b></br>' + tinyMCE.get('coverPageTextArea').getContent() + '</br>' : null;
-  let selectedQuestionIds = fetchAllSelectedQuestionIds();
+
+  /* let selectedQuestionIds = fetchAllSelectedQuestionIds();
   let selectedQuestionNames = fetchAllSelectedQuestionNames(selectedQuestionIds);
   content += '</br><b>Questions:</b><ol>';
   selectedQuestionNames.forEach(qName => {
     content += '<li>' + qName + '</li>';
   });
-  content += '</ol>';
+  content += '</ol>'; */
   document.getElementById('appendixCheckBox').checked ?
     content += '</br><b>Appendix:</b></br>' + tinyMCE.get('appendixTextArea').getContent() + '</br>' : null;
   return content;
 }
 
+/*
 fetchAllSelectedQuestionIds = () => {
   let selectedQuestions = document.querySelectorAll('#questions>ul>li.teal');
   let selectedQuestionIds = [];
@@ -255,7 +196,7 @@ $("#examForm").submit((event) => {
   let selectedQuestionIds = fetchAllSelectedQuestionIds();
   let questionFound = false;
   selectedQuestionIds.forEach(qId => {
-    if (qId.length === 24) { //All questions have ids of length 24 
+    if (qId.length === 24) { //All questions have ids of length 24
       questionFound = true;
     }
   });
@@ -293,7 +234,7 @@ createExamTypeForm = () => {
           <span>Inspera</span>
       </label></p>
     </div>
-    <button class="btn waves-effect waves-light" onClick="generateExam('');"> 
+    <button class="btn waves-effect waves-light" onClick="generateExam('');">
         Select<i class="material-icons right">send</i>
     </button>`
 }
@@ -399,7 +340,7 @@ createExamQuestionList = () => {
     let tempQuestion = {};
     tempQuestion.id = selectedQuestionIds[i];
     tempQuestion.name = selectedQuestionNames[i];
-    if (selectedQuestionIds[i].length === 24) { //All questions have ids of length 24 
+    if (selectedQuestionIds[i].length === 24) { //All questions have ids of length 24
       tempQuestion.type = 'mc';
       tempQuestion.contents = null;
     } else {
@@ -528,3 +469,4 @@ downloadExistingExam = (id) => {
     }
   });
 } */
+

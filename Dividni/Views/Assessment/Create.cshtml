@@ -10,7 +10,7 @@
   <div class="row">
     <div class="col">
       <h5 class="teal-text">Assessment Details</h5>
-      <p>Complete the details for the assessment below, and click on <b>GENERATE</b> once you are done.
+      <p>Fill-out the details of the assessment below, and click on <b>PREVIEW</b> to see what the assessment will look like.
       </p>
       <p>Review the <a asp-controller="Tutorial" asp-action="Assessment" target="_blank">tutorial <i
             class="tiny material-icons">open_in_new</i></a> for help.</p>
@@ -38,25 +38,25 @@
     </div>
     <div class="row">
       <div class="col s12 m8 l6">
+        <div id="instructionSections">
+          <h6>Instruction Sections</h6>
+          <a class="btn-floating btn-small waves-effect waves-light red" id="btnInstructions">
+            <i class="material-icons">add</i>
+          </a>
+        </div>
         <div id="questions">
-            <h6>Select Questions</h6>
-            <b>Simple Questions</b>
-            <b>Advanced Questions</b>
-            <div id="instructionSections">
-                <h6>Instruction Sections</h6>
-                <a class="btn-floating btn-small waves-effect waves-light red" id="btnInstructions">
-                    <i class="material-icons">add</i>
-                </a>
-            </div>
-            <h6>Question List</h6>
-            <p>(Click and drag to re-order)</p>
+          <h6>Question List</h6>
+          <p>(Click and drag to re-order)</p>
+          <ul class="collection" id="questionList">
+            <li class="collection-item"><div>Alvin<a href="#!" class="secondary-content"><i class="material-icons">send</i></a></div></li>
+            <li class="collection-item"><div>Alvin2<a href="#!" class="secondary-content"><i class="material-icons">send</i></a></div></li>
+            <li class="collection-item"><div>Alvin3<a href="#!" class="secondary-content"><i class="material-icons">send</i></a></div></li>
+            <li class="collection-item"><div>Alvin4<a href="#!" class="secondary-content"><i class="material-icons">send</i></a></div></li>
+          </ul>
         </div>
       </div>
     </div>
-
-
-         
-    
+  
           @* <ul id='questionList' class="collection with-header">
             <% mcQuestions.forEach(q => { %>
             <li class="collection-item" id='<%= q.id %>' name='<%= q.question.name %>'>
@@ -100,14 +100,13 @@
     <input asp-for="Appendix" id="aspAppendix" type="hidden"/>
     <input asp-for="UserEmail" value="@User.Identity.Name" type="hidden"/>
     <input asp-for="ModifiedDate" id="aspModifiedDate" type="hidden"/>
-</form>
+  </form> 
 </section>
 
 <!-- Preview Modal -->
 <div id="previewModal" class="modal modal-fixed-footer">
   <div class="modal-content">
     <h4>Assessment Preview</h4>
-    <p>Review these details before clicking <b>GENERATE</b>:</p>
     <div id="previewModalContent"></div>
   </div>
   <div class="modal-footer">
