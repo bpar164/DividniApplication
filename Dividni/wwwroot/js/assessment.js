@@ -1,10 +1,38 @@
 let instructionSections = [];
-let sortable = Sortable.create(questionList);
-/* let questionList = document.getElementById('questionList');*/
 
 $(document).ready(() => {
-
+  //For certain pages
+  let location = window.location.href;
+  if (location.includes('/Assessment/Create')) {
+    addInstructionButtonListener();
+    let sortable = Sortable.create(questionList);
+    createQuestionList(document.getElementById("questionBank").getAttribute("value"));
+  }
 });
+
+createQuestionList = (questionBank) => {
+  let questionDetails = JSON.parse(questionBank);
+  for (let i = 0; i < questionDetails.length; i++) {
+    let question = questionDetails[i];
+    let li = document.createElement('li');
+    li.classList.add("collection-item");
+    li.id = question.id;
+    li.setAttribute('name', question.name);
+    li.setAttribute('type', question.type);
+    li.innerHTML = createQuestionItemHTML(question);
+    document.getElementById("questionList").appendChild(li);
+  }
+}
+
+createQuestionItemHTML = (question) => {
+  return `<div>` + question.name + `<a href="#!" class="secondary-content">
+          <label>
+            <input type="checkbox" onChange="liCheckBoxChanged('` + question.id + `');" /><span></span>
+          </label>
+        </a><a href="#previewModal" class="secondary-content modal-trigger tooltipped" data-position="right"
+          data-tooltip="Display Contents" onClick="previewQuestion('');"><i
+            class="material-icons">pageview</i></a></div>`
+}
 
 checkBoxChanged = (checkbox, divName) => {
   checkbox.checked ? createTextArea(divName) : removeTextArea(divName);
@@ -46,26 +74,28 @@ removeTextArea = (divName) => {
 }
 
 //Event listener for btnInstructions to create textArea and additional buttons - used when instruction section is created for first time
-document.getElementById("btnInstructions").addEventListener("click", () => {
-  createInstructionTextAreaAndButtons();
-  //Add corresponding onClick listeners to buttons
-  document.getElementById("btnSave").addEventListener("click", () => {
-    //Save instruction section (if there is content)
-    if (!(tinyMCE.get('instructionSectionsTextArea').getContent() === '')) {
-      let sectionId = (instructionSections.push(tinyMCE.get('instructionSectionsTextArea').getContent()) - 1);
-      //Create row to append to question table
-      let instructionItem = createHTMLElement('li', 'is' + sectionId, ['collection-item', 'teal', 'lighten-4']);
-      instructionItem.setAttribute("name", "Instruction Section #" + (sectionId + 1));
-      instructionItem.innerHTML = createInstructionItemHTML(sectionId);
-      document.getElementById('questionList').appendChild(instructionItem);
-      $('.tooltipped').tooltip({ enterDelay: 500 });
-    }
-    removeInstructionSection();
+addInstructionButtonListener = () => {
+  document.getElementById("btnInstructions").addEventListener("click", () => {
+    createInstructionTextAreaAndButtons();
+    //Add corresponding onClick listeners to buttons
+    document.getElementById("btnSave").addEventListener("click", () => {
+      //Save instruction section (if there is content)
+      if (!(tinyMCE.get('instructionSectionsTextArea').getContent() === '')) {
+        let sectionId = (instructionSections.push(tinyMCE.get('instructionSectionsTextArea').getContent()) - 1);
+        //Create row to append to question table
+        let instructionItem = createHTMLElement('li', 'is' + sectionId, ['collection-item', 'teal', 'lighten-4']);
+        instructionItem.setAttribute("name", "Instruction Section #" + (sectionId + 1));
+        instructionItem.innerHTML = createInstructionItemHTML(sectionId);
+        document.getElementById('questionList').appendChild(instructionItem);
+        $('.tooltipped').tooltip({ enterDelay: 500 });
+      }
+      removeInstructionSection();
+    });
+    document.getElementById("btnCancel").addEventListener("click", () => {
+      removeInstructionSection();
+    });
   });
-  document.getElementById("btnCancel").addEventListener("click", () => {
-    removeInstructionSection();
-  });
-});
+}
 
 createInstructionTextAreaAndButtons = () => {
   //If the textArea already exists, remove it 

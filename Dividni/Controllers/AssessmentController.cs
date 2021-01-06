@@ -83,8 +83,22 @@ namespace Dividni.Controllers
         }
 
         // GET: Assessment/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(Guid? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var questionBank = await _context.QuestionBank
+                .FirstOrDefaultAsync(q => q.Id == id);
+            if (questionBank == null)
+            {
+                return NotFound();
+            } else {
+                ViewData["QuestionBank"] = questionBank.QuestionList;
+            }
+
             return View();
         }
 

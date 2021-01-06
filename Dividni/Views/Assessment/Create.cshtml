@@ -1,10 +1,12 @@
-@model Dividni.Models.Assessment
+@model Dividni.Models.Assessment;
 
 @{
     ViewData["Title"] = "Assessments: Create";
     ViewData["Heading"] = "Assessments";
     ViewData["Description"] = "Create an assessment with your questions";
 }
+
+<div id="questionBank" value="@ViewData["QuestionBank"]"></div>
 
 <section class="section container blue lighten-5" id="main">
   <div class="row">
@@ -48,28 +50,10 @@
           <h6>Question List</h6>
           <p>(Click and drag to re-order)</p>
           <ul class="collection" id="questionList">
-            <li class="collection-item"><div>Alvin<a href="#!" class="secondary-content"><i class="material-icons">send</i></a></div></li>
-            <li class="collection-item"><div>Alvin2<a href="#!" class="secondary-content"><i class="material-icons">send</i></a></div></li>
-            <li class="collection-item"><div>Alvin3<a href="#!" class="secondary-content"><i class="material-icons">send</i></a></div></li>
-            <li class="collection-item"><div>Alvin4<a href="#!" class="secondary-content"><i class="material-icons">send</i></a></div></li>
           </ul>
         </div>
       </div>
-    </div>
-  
-          @* <ul id='questionList' class="collection with-header">
-            <% mcQuestions.forEach(q => { %>
-            <li class="collection-item" id='<%= q.id %>' name='<%= q.question.name %>'>
-              <div><%= q.question.name %><a href="#!" class="secondary-content">
-                  <label>
-                    <input type="checkbox" onChange="liCheckBoxChanged('<%= q.id %>');" /><span></span>
-                  </label>
-                </a><a href="#previewModal" class="secondary-content modal-trigger tooltipped" data-position="right"
-                  data-tooltip="Display Contents" onClick="previewQuestion('<%= q.id %>');"><i
-                    class="material-icons">zoom_in</i></a></div>
-            </li>
-          </ul> *@
-        
+    </div> 
     <div class="row">
       <div class="col s12 m10 l8">
         <div id="appendix">
