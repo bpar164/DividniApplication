@@ -18,7 +18,7 @@
             class="tiny material-icons">open_in_new</i></a> for help.</p>
     </div>
   </div>
-  <form id="AssessmentForm">
+  <form id="assessmentForm">
     <div class="row">
       <div class="col s12 m8 l5">
         <div class="input-field">
@@ -67,7 +67,7 @@
     </div>
     <div class="row">
       <a class="waves-effect waves-light btn right modal-trigger" id="preview" href="#previewModal"
-        onClick="previewExam();">
+        onClick="previewAssessment();">
         Preview<i class="material-icons right">assignment_turned_in</i>
       </a>
     </div>
@@ -78,12 +78,19 @@
     </div>
   </form>
   <form asp-action="Create" id="aspAssessmentForm">                         
-    <input asp-for="Name" id="aspName" type="hidden"/> 
+    <input asp-for="Name" id="aspName" /> 
+    <input asp-for="CoverPage" id="aspCoverPage" />
+    <input asp-for="QuestionList" id="aspQuestionList"/>
+    <input asp-for="Appendix" id="aspAppendix" />
+    <input asp-for="UserEmail" value="@User.Identity.Name" />
+    <input asp-for="ModifiedDate" id="aspModifiedDate" />
+
+    @* <input asp-for="Name" id="aspName" type="hidden"/> 
     <input asp-for="CoverPage" id="aspCoverPage" type="hidden"/>
     <input asp-for="QuestionList" id="aspQuestionList" type="hidden"/>
     <input asp-for="Appendix" id="aspAppendix" type="hidden"/>
     <input asp-for="UserEmail" value="@User.Identity.Name" type="hidden"/>
-    <input asp-for="ModifiedDate" id="aspModifiedDate" type="hidden"/>
+    <input asp-for="ModifiedDate" id="aspModifiedDate" type="hidden"/> *@
   </form> 
 </section>
 

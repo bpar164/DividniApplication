@@ -6,7 +6,7 @@ $(document).ready(() => {
   if (location.includes('/Assessment/Create')) {
     addInstructionButtonListener();
     let sortable = Sortable.create(questionList);
-    createQuestionList(document.getElementById("questionBank").getAttribute("value"));
+    createQuestionList(document.getElementById('questionBank').getAttribute('value'));
   }
 });
 
@@ -14,24 +14,28 @@ createQuestionList = (questionBank) => {
   let questionDetails = JSON.parse(questionBank);
   for (let i = 0; i < questionDetails.length; i++) {
     let question = questionDetails[i];
-    let li = document.createElement('li');
-    li.classList.add("collection-item");
-    li.id = question.id;
+    let li = createHTMLElement('li', question.id, ['collection-item', 'teal', 'lighten-4']);
     li.setAttribute('name', question.name);
     li.setAttribute('type', question.type);
+    li.addEventListener("click", () => {
+      questionClicked(question.id);
+    });
     li.innerHTML = createQuestionItemHTML(question);
     document.getElementById("questionList").appendChild(li);
+    $('.tooltipped').tooltip({ enterDelay: 500 });
   }
 }
 
 createQuestionItemHTML = (question) => {
-  return `<div>` + question.name + `<a href="#!" class="secondary-content">
-          <label>
-            <input type="checkbox" onChange="liCheckBoxChanged('` + question.id + `');" /><span></span>
-          </label>
-        </a><a href="#previewModal" class="secondary-content modal-trigger tooltipped" data-position="right"
-          data-tooltip="Display Contents" onClick="previewQuestion('');"><i
-            class="material-icons">pageview</i></a></div>`
+  return `<div>` + question.name + `
+            <a href='/`+ question.type + `/Details/` + question.id + `' class='secondary-content tooltipped' data-tooltip='Details' data-position='right' target='_blank'>
+              <i class='material-icons'>pageview</i>
+            </a>
+          </div>`;
+}
+
+questionClicked = (id) => {
+  $("#" + id).toggleClass('teal lighten-4');
 }
 
 checkBoxChanged = (checkbox, divName) => {
@@ -85,6 +89,10 @@ addInstructionButtonListener = () => {
         //Create row to append to question table
         let instructionItem = createHTMLElement('li', 'is' + sectionId, ['collection-item', 'teal', 'lighten-4']);
         instructionItem.setAttribute("name", "Instruction Section #" + (sectionId + 1));
+        instructionItem.setAttribute('type', "Instruction");
+        instructionItem.addEventListener("click", () => {
+          questionClicked('is' + sectionId);
+        });
         instructionItem.innerHTML = createInstructionItemHTML(sectionId);
         document.getElementById('questionList').appendChild(instructionItem);
         $('.tooltipped').tooltip({ enterDelay: 500 });
@@ -123,17 +131,12 @@ removeInstructionSection = () => {
 }
 
 createInstructionItemHTML = (id) => {
-  return `<div>Instruction Section #` + (id + 1) + `<a href="#!" class="secondary-content">
-            <label><input type="checkbox" onChange="liCheckBoxChanged('is` + id + `');" checked /><span></span></label></a>
+  return `<div>Instruction Section #` + (id + 1) + `
+            <a href="#previewModal" class="secondary-content modal-trigger tooltipped" data-position="right" data-tooltip="Details" 
+              onClick="previewInstructionSection(` + id + `);"><i class="material-icons">pageview</i></a>
             <a href="#" class="secondary-content tooltipped" data-position="right" data-tooltip="Edit"
               onClick="editInstructionSection(` + id + `);"><i class="material-icons">edit</i></a>
-            <a href="#previewModal" class="secondary-content modal-trigger tooltipped" data-position="right"
-              data-tooltip="Details" onClick="previewInstructionSection(` + id + `);"><i class="material-icons">pageview</i></a>
           </div>`;
-}
-
-liCheckBoxChanged = (id) => {
-  $("#" + id).toggleClass('teal lighten-4');
 }
 
 //Fetch instruction section and display in modal
@@ -160,32 +163,31 @@ editInstructionSection = (id) => {
 }
 
 //Preview exam and display in modal
-previewExam = () => {
+previewAssessment = () => {
   document.getElementById('generate').classList.remove('disabled');
-  document.getElementById('previewModalContent').innerHTML = generateExamPreviewContent();
+  document.getElementById('previewModalContent').innerHTML = generatePreviewContent();
 }
 
 //Creates the HTML content for the preview modal
-generateExamPreviewContent = () => {
+generatePreviewContent = () => {
   //Build the content using the values with formatting
   content = '<p>Review these details before clicking <b>GENERATE</b>:</p>';
   content += '<b>Name: </b>' + document.getElementById('name').value + '</br>';
   document.getElementById('coverPageCheckBox').checked ?
     content += '</br><b>Cover Page:</b></br>' + tinyMCE.get('coverPageTextArea').getContent() + '</br>' : null;
 
-  /* let selectedQuestionIds = fetchAllSelectedQuestionIds();
+  let selectedQuestionIds = fetchAllSelectedQuestionIds();
   let selectedQuestionNames = fetchAllSelectedQuestionNames(selectedQuestionIds);
   content += '</br><b>Questions:</b><ol>';
   selectedQuestionNames.forEach(qName => {
     content += '<li>' + qName + '</li>';
   });
-  content += '</ol>'; */
+  content += '</ol>'; 
   document.getElementById('appendixCheckBox').checked ?
     content += '</br><b>Appendix:</b></br>' + tinyMCE.get('appendixTextArea').getContent() + '</br>' : null;
   return content;
 }
 
-/*
 fetchAllSelectedQuestionIds = () => {
   let selectedQuestions = document.querySelectorAll('#questions>ul>li.teal');
   let selectedQuestionIds = [];
@@ -203,16 +205,25 @@ fetchAllSelectedQuestionNames = (selectedQuestionIds) => {
   return selectedQuestionNames;
 }
 
-$("#examForm").submit((event) => {
+fetchAllSelectedQuestionTypes = (selectedQuestionIds) => {
+  let selectedQuestionTypes = [];
+  for (let i = 0; i < selectedQuestionIds.length; i++) {
+    selectedQuestionTypes.push(document.getElementById(selectedQuestionIds[i]).getAttribute('type'));
+  }
+  return selectedQuestionTypes;
+}
+
+$("#assessmentForm").submit((event) => {
   event.preventDefault();
-  //Display options modal
-  $('#optionsModal').modal('open');
+  //Display status modal
+  $('#statusModal').modal('open');
   let missingRequired = false;
   //If cover page or appendix is checked, there must be some content
   let content = '<p>Please fix the following issues:<ul>';
   if (document.getElementById('coverPageCheckBox').checked) {
     if (tinyMCE.get('coverPageTextArea').getContent() === '') {
       missingRequired = true;
+      console.log('cp')
       content += '<li>Complete cover page, or uncheck the corresponding box.</li>';
     }
   }
@@ -222,28 +233,57 @@ $("#examForm").submit((event) => {
       content += '<li>Complete appendix, or uncheck the corresponding box.</li>';
     }
   }
-  //At least one question must be checked
+  //At least one simple or advanced question must be included
   let selectedQuestionIds = fetchAllSelectedQuestionIds();
-  let questionFound = false;
-  selectedQuestionIds.forEach(qId => {
-    if (qId.length === 24) { //All questions have ids of length 24
-      questionFound = true;
-    }
-  });
-  if (!(questionFound)) {
+  let selectedQuestionTypes = fetchAllSelectedQuestionTypes(selectedQuestionIds);
+  if (!(selectedQuestionTypes.includes("Simple") || selectedQuestionTypes.includes("Advanced"))) {
     missingRequired = true;
-    content += '<li>Select at least one question.</li>';
+    content += '<li>Include at least one question.</li>';
   }
   content += '</ul></p>';
-  //Show exam type form if all requirements are met, otherwise display message
+  //Generate assessment if all requirements are met, otherwise display message
   if (!(missingRequired)) {
-    content = createExamTypeForm();
-  } else {
-    document.getElementById('optionsModalRetry').classList.remove("disabled");
-  }
-  document.getElementById('optionsModalContent').innerHTML = content;
+    generateAssessment();
+    content = '<p>Saving assessment...</p>';
+  } 
+  document.getElementById('statusModalContent').innerHTML = content;
 });
 
+generateAssessment = () => {
+  let assessment = fetchFormValues();
+  //Set the values in the hidden form
+  document.getElementById('aspName').value = assessment.name;
+  document.getElementById('aspCoverPage').value = assessment.coverPage;
+  document.getElementById('aspQuestionList').value = JSON.stringify(assessment.questionList);
+  document.getElementById('aspAppendix').value = assessment.appendix;
+  document.getElementById('aspModifiedDate').value = new Date().toISOString().slice(0, 10);
+  //Submit the hidden form
+  document.getElementById("aspAssessmentForm").submit();
+}
+
+fetchFormValues = () => {
+  assessment = {};
+  assessment.name = document.getElementById('name').value;
+  //Question List
+  let questionList = [];
+  let selectedQuestionIds = fetchAllSelectedQuestionIds();
+  let selectedQuestionNames = fetchAllSelectedQuestionNames(selectedQuestionIds);
+  let selectedQuestionTypes = fetchAllSelectedQuestionTypes(selectedQuestionIds);
+  for (let i = 0; i < selectedQuestionIds.length; i++) {
+    let question = {};
+    question.id = selectedQuestionIds[i];
+    question.name = selectedQuestionNames[i];
+    question.type = selectedQuestionTypes[i];
+    questionList.push(question);
+  }
+  assessment.questionList = questionList;
+  //The following values can be empty:
+  document.getElementById('coverPageCheckBox').checked ? assessment.coverPage = tinyMCE.get('coverPageTextArea').getContent() : assessment.coverPage = null;
+  document.getElementById('appendixCheckBox').checked ? assessment.appendix = tinyMCE.get('appendixTextArea').getContent() : assessment.appendix = null;
+  return assessment;
+}
+
+/*
 createExamTypeForm = () => {
   return `<div class="input-field">
       <p>Exam type:</p>
@@ -347,18 +387,6 @@ enableAllOptionsButtons = () => {
   document.getElementById('optionsModalRetry').classList.remove("disabled");
   document.getElementById('optionsModalCreate').classList.remove("disabled");
   document.getElementById('optionsModalView').classList.remove("disabled");
-}
-
-fetchFormValues = () => {
-  exam = {};
-  exam.name = document.getElementById('name').value;
-  exam.paperCount = document.getElementById('paperCount').value;
-  exam.examType = examType;
-  exam.questionList = createExamQuestionList();
-  //The following values can be empty:
-  document.getElementById('coverPageCheckBox').checked ? exam.coverPage = tinyMCE.get('coverPageTextArea').getContent() : exam.coverPage = null;
-  document.getElementById('appendixCheckBox').checked ? exam.appendix = tinyMCE.get('appendixTextArea').getContent() : exam.appendix = null;
-  return exam;
 }
 
 createExamQuestionList = () => {
