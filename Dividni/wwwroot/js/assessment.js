@@ -3,12 +3,47 @@ let instructionSections = [];
 $(document).ready(() => {
   //For certain pages
   let location = window.location.href;
+  if (location.includes('/Assessment/Details') || location.includes('/Assessment/Delete') || location.includes('/Assessment/Share')) {
+    displayAssessmentHTML();
+  }
   if (location.includes('/Assessment/Create')) {
     addInstructionButtonListener();
     let sortable = Sortable.create(questionList);
     createQuestionList(document.getElementById('questionBank').getAttribute('value'));
   }
 });
+
+//Set the inner html values for cover page/question list/appendix
+displayAssessmentHTML = () => {
+  let coverPage = document.getElementById('coverPage').getAttribute('value');
+  coverPage == "" ? coverPage = 'n/a' : null;
+  document.getElementById('coverPage').innerHTML = coverPage;
+  displayQuestionList(document.getElementById('questionList'));
+  let appendix = document.getElementById('appendix').getAttribute('value');
+  appendix == "" ? appendix = 'n/a' : null;
+  document.getElementById('appendix').innerHTML = appendix;
+}
+
+//Fetches JSON from value attribute of questionList and appends each question as a new li
+displayQuestionList = (parentElement) => {
+  jsonArray = JSON.parse(parentElement.getAttribute('value'));
+  for (let i = 0; i < jsonArray.length; i++) {
+    let li = document.createElement('li');
+    if (jsonArray[i].type == 'Instruction') {
+      li.innerHTML = `<a href='#previewModal' class='modal-trigger' 
+                        onClick="displayInstructionSection('` + jsonArray[i].id.substring(2) + `', '` + jsonArray[i].value + `');">` + 
+                          jsonArray[i].name + `</a>`;
+    } else {
+      li.innerHTML = `<a href='/` + jsonArray[i].type + `/Details/` + jsonArray[i].id + `' target='_blank'>` + jsonArray[i].name + `</a>`;
+    }
+    parentElement.appendChild(li);
+  }
+}
+
+//OVERRIDE
+displayInstructionSection = (id, value) => {
+  document.getElementById('previewModalContent').innerHTML = `<p>Details for instruction section ` + (parseInt(id) + 1) + `:</p>` + value;
+}
 
 createQuestionList = (questionBank) => {
   let questionDetails = JSON.parse(questionBank);
@@ -274,6 +309,7 @@ fetchFormValues = () => {
     question.id = selectedQuestionIds[i];
     question.name = selectedQuestionNames[i];
     question.type = selectedQuestionTypes[i];
+    question.type == 'Instruction' ? question.value = instructionSections[question.id.substring(2)] : question.value = null; 
     questionList.push(question);
   }
   assessment.questionList = questionList;

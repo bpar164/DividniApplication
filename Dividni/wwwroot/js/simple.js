@@ -32,12 +32,12 @@ $(document).ready(() => {
 displayQuestionHTML = () => {
   let questionText = document.getElementById('questionText').getAttribute('value');
   document.getElementById('questionText').innerHTML = questionText;
-  appendChildElement(document.getElementById('correct'));
-  appendChildElement(document.getElementById('incorrect'));
+  appendJSONElement(document.getElementById('correct'));
+  appendJSONElement(document.getElementById('incorrect'));
 }
 
 //Fetches JSON from value attribute of parent and appends each element as a new li
-appendChildElement = (parentElement) => {
+appendJSONElement = (parentElement) => {
   jsonObject = JSON.parse(parentElement.getAttribute('value'));
   for (let item in jsonObject) {
     let li = document.createElement('li');

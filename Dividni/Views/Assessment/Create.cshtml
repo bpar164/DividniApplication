@@ -78,19 +78,12 @@
     </div>
   </form>
   <form asp-action="Create" id="aspAssessmentForm">                         
-    <input asp-for="Name" id="aspName" /> 
-    <input asp-for="CoverPage" id="aspCoverPage" />
-    <input asp-for="QuestionList" id="aspQuestionList"/>
-    <input asp-for="Appendix" id="aspAppendix" />
-    <input asp-for="UserEmail" value="@User.Identity.Name" />
-    <input asp-for="ModifiedDate" id="aspModifiedDate" />
-
-    @* <input asp-for="Name" id="aspName" type="hidden"/> 
+    <input asp-for="Name" id="aspName" type="hidden"/> 
     <input asp-for="CoverPage" id="aspCoverPage" type="hidden"/>
     <input asp-for="QuestionList" id="aspQuestionList" type="hidden"/>
     <input asp-for="Appendix" id="aspAppendix" type="hidden"/>
     <input asp-for="UserEmail" value="@User.Identity.Name" type="hidden"/>
-    <input asp-for="ModifiedDate" id="aspModifiedDate" type="hidden"/> *@
+    <input asp-for="ModifiedDate" id="aspModifiedDate" type="hidden"/> 
   </form> 
 </section>
 

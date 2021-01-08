@@ -1,54 +1,54 @@
 @model Dividni.Models.Assessment
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Assessments: Share";
+    ViewData["Heading"] = "Assessments";
+    ViewData["Description"] = "Share an assessment with another user";
 }
 
-<h1>Details</h1>
+<div id="message" value="@ViewData["Message"]"></div>
 
-<div>
-    <h4>Assessment</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CoverPage)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CoverPage)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.QuestionList)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.QuestionList)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Appendix)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Appendix)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UserEmail)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UserEmail)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ModifiedDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ModifiedDate)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<section class="section container blue lighten-5" id="main">
+    <div class="row">
+        <div class="col">
+            <h5 class="teal-text">Assessment Details</h5>
+            <div>
+                <b>Name: </b>@Html.DisplayFor(model => model.Name)</br>
+                </br><b>Cover Page:</b></br>
+                <div id="coverPage" value="@Html.DisplayFor(model => model.CoverPage)"></div></br>
+                <b>Question List:</b>
+                <ol id="questionList" value="@Html.DisplayFor(model => model.QuestionList)"></ol>
+                <b>Appendix:</b></br>
+                <div id="appendix" value="@Html.DisplayFor(model => model.Appendix)"></div></br>
+            </div>
+            <form onSubmit="return userEmailForm(event)">
+                Enter user email:
+                <div class="input-field inline"><input type="email" id="email" name="email" required></div>
+                <button type="submit" class="waves-effect waves-light btn orange">Share<i
+                        class="material-icons right">share</i></button>
+            </form>
+            <a class="waves-effect waves-light btn" asp-action="Index">
+                Return to list<i class="material-icons right">list</i>
+            </a>
+        </div>
+    </div>
+    <form asp-action="Share" id="aspAssessmentForm">
+        <input asp-for="Name" id="aspName" type="hidden" />
+        <input asp-for="CoverPage" id="aspCoverPage" type="hidden" />
+        <input asp-for="QuestionList" id="aspQuestionList" type="hidden" />
+        <input asp-for="Appendix" id="aspAppendix" type="hidden" />     
+        <input asp-for="UserEmail" id="aspUserEmail" type="hidden" value="@User.Identity.Name" />
+        <input asp-for="ModifiedDate" id="aspModifiedDate" type="hidden" />
+    </form>
+</section>
+
+<!-- Preview Modal -->
+<div id="previewModal" class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <h4>Assessment Preview</h4>
+        <div id="previewModalContent"></div>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">CLOSE</a>
+    </div>
 </div>
