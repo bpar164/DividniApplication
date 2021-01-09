@@ -357,32 +357,15 @@ shareAssessmentForm = (event) => {
   }
 }
 
-/*
-createExamTypeForm = () => {
-  return `<div class="input-field">
-      <p>Exam type:</p>
-      <p><label>
-          <input class="with-gap" type="radio" name="type" value="standard" required" onClick="setExamType('standard');" checked>
-          <span>Standard</span>
-      </label></p>
-      <p><label>
-          <input class="with-gap" type="radio" name="type" value="canvas" required" onClick="setExamType('canvas');">
-          <span>Canvas</span>
-      </label></p>
-      <p><label>
-          <input class="with-gap" type="radio" name="type" value="moodle" required" onClick="setExamType('moodle');">
-          <span>Moodle</span>
-      </label></p>
-      <p><label>
-          <input class="with-gap" type="radio" name="type" value="inspera" required" onClick="setExamType('inspera');">
-          <span>Inspera</span>
-      </label></p>
-    </div>
-    <button class="btn waves-effect waves-light" onClick="generateExam('');">
-        Select<i class="material-icons right">send</i>
-    </button>`
+downloadAssessment = (event) => { 
+  event.preventDefault();
+  let assessmentID = event.target.elements.assessmentID.value;
+  let assessmentVersions = event.target.elements.assessmentVersions.value;
+  let assessmentType = event.target.elements.assessmentType.value;
+  console.log(assessmentID, assessmentVersions, assessmentType)
 }
 
+/*
 generateNewExam = () => {
   //Get the values from the form
   let exam = fetchFormValues();

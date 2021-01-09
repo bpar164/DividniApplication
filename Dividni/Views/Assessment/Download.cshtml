@@ -20,12 +20,36 @@
                 <b>Appendix:</b></br>
                 <div id="appendix" value="@Html.DisplayFor(model => model.Appendix)"></div></br>
             </div>
-            <form onSubmit="return shareAssessmentForm(event)">
-                Enter user email:
-                <div class="input-field inline"><input type="email" id="email" name="email" required></div>
-                <button type="submit" class="waves-effect waves-light btn orange">Share<i
-                        class="material-icons right">share</i></button>
-            </form>
+            <h6 class="teal-text">Download Details</h6>
+            <form onSubmit="return downloadAssessment(event)">
+                <div class="input-field"><input id="assessmentID" name="assessmentID" value="@Html.DisplayFor(model => model.Id)" type="hidden")></div>
+                <div class="input-field">
+                    <label for="assessmentVersions">Versions</label>
+                    <input type="number" min="1" max="100" step="1" value="1" id="assessmentVersions" name="assessmentVersions" required>
+                </div>
+                <div>
+                    <p>Exam type:</p>
+                        <p><label>
+                            <input class="with-gap" type="radio" name="assessmentType" value="standard" required checked>
+                            <span>Standard</span>
+                        </label></p>
+                        <p><label>
+                            <input class="with-gap" type="radio" name="assessmentType" value="canvas" required>
+                            <span>Canvas</span>
+                        </label></p>
+                        <p><label>
+                            <input class="with-gap" type="radio" name="assessmentType" value="moodle" required>
+                            <span>Moodle</span>
+                        </label></p>
+                        <p><label>
+                            <input class="with-gap" type="radio" name="assessmentType" value="inspera" required>
+                            <span>Inspera</span>
+                        </label></p>
+                </div>
+                <button type="submit" class="waves-effect waves-light btn orange">Download<i
+                        class="material-icons right">download</i></button>
+            </form>                 
+            <p></p>
             <a class="waves-effect waves-light btn" asp-action="Index">
                 Return to list<i class="material-icons right">list</i>
             </a>
