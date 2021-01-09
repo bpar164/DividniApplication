@@ -24,7 +24,7 @@
                 <b>Incorrect Answers:</b>
                 <ol id="incorrect" value="@Html.DisplayFor(model => model.IncorrectAnswers)"></ol></br>
             </div>
-            <form onSubmit="return userEmailForm(event)">
+            <form onSubmit="return shareQuestionForm(event)">
                 Enter user email:
                 <div class="input-field inline"><input type="email" id="email" name="email" required></div>
                 <button type="submit" class="waves-effect waves-light btn orange">Share<i

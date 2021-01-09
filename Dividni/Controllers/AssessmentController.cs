@@ -284,5 +284,23 @@ namespace Dividni.Controllers
         {
             return _context.Users.Any(u => u.UserName == email);
         }
+
+        // GET: Assessment/Download/5
+        public async Task<IActionResult> Download(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var assessment = await _context.Assessment
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (assessment == null)
+            {
+                return NotFound();
+            }
+
+            return View(assessment);
+        }
     }
 }

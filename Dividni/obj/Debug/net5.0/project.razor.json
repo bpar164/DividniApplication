@@ -15678,6 +15678,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\benpa\\DividniApplication\\Dividni\\Views\\Assessment\\Download.cshtml",
+      "TargetPath": "Views\\Assessment\\Download.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\benpa\\DividniApplication\\Dividni\\Areas\\Identity\\Pages\\Account\\ExternalLogin.cshtml",
       "TargetPath": "Areas\\Identity\\Pages\\Account\\ExternalLogin.cshtml",
       "FileKind": "mvc"

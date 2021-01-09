@@ -3,7 +3,7 @@ let instructionSections = [];
 $(document).ready(() => {
   //For certain pages
   let location = window.location.href;
-  if (location.includes('/Assessment/Details') || location.includes('/Assessment/Delete') || location.includes('/Assessment/Share')) {
+  if (location.includes('/Assessment/Details') || location.includes('/Assessment/Delete') || location.includes('/Assessment/Share') || location.includes('/Assessment/Download')) {
     displayAssessmentHTML();
   }
   if (location.includes('/Assessment/Create')) {
@@ -31,18 +31,13 @@ displayQuestionList = (parentElement) => {
     let li = document.createElement('li');
     if (jsonArray[i].type == 'Instruction') {
       li.innerHTML = `<a href='#previewModal' class='modal-trigger' 
-                        onClick="displayInstructionSection('` + jsonArray[i].id.substring(2) + `', '` + jsonArray[i].value + `');">` + 
+                        onClick="previewInstructionSection(` + parseInt(jsonArray[i].id.substring(2)) + `, '` + jsonArray[i].value + `');">` + 
                           jsonArray[i].name + `</a>`;
     } else {
       li.innerHTML = `<a href='/` + jsonArray[i].type + `/Details/` + jsonArray[i].id + `' target='_blank'>` + jsonArray[i].name + `</a>`;
     }
     parentElement.appendChild(li);
   }
-}
-
-//OVERRIDE
-displayInstructionSection = (id, value) => {
-  document.getElementById('previewModalContent').innerHTML = `<p>Details for instruction section ` + (parseInt(id) + 1) + `:</p>` + value;
 }
 
 createQuestionList = (questionBank) => {
@@ -168,15 +163,15 @@ removeInstructionSection = () => {
 createInstructionItemHTML = (id) => {
   return `<div>Instruction Section #` + (id + 1) + `
             <a href="#previewModal" class="secondary-content modal-trigger tooltipped" data-position="right" data-tooltip="Details" 
-              onClick="previewInstructionSection(` + id + `);"><i class="material-icons">pageview</i></a>
+              onClick="previewInstructionSection(` + id + `,'` + instructionSections[id] + `');"><i class="material-icons">pageview</i></a>
             <a href="#" class="secondary-content tooltipped" data-position="right" data-tooltip="Edit"
               onClick="editInstructionSection(` + id + `);"><i class="material-icons">edit</i></a>
           </div>`;
 }
 
 //Fetch instruction section and display in modal
-previewInstructionSection = (id) => {
-  document.getElementById('previewModalContent').innerHTML = `<p>Details for instruction section ` + (id + 1) + `:</p>` + instructionSections[id];
+previewInstructionSection = (id, contents) => {
+  document.getElementById('previewModalContent').innerHTML = `<p>Details for instruction section ` + (id + 1) + `:</p>` + contents;
 }
 
 //Make changes to existing instruction section element
@@ -317,6 +312,23 @@ fetchFormValues = () => {
   document.getElementById('coverPageCheckBox').checked ? assessment.coverPage = tinyMCE.get('coverPageTextArea').getContent() : assessment.coverPage = null;
   document.getElementById('appendixCheckBox').checked ? assessment.appendix = tinyMCE.get('appendixTextArea').getContent() : assessment.appendix = null;
   return assessment;
+}
+
+//Submit hidden form, but first check the user email
+shareAssessmentForm = (event) => {
+  event.preventDefault();
+  let email = event.target.elements.email.value;
+  let currentUserEmail = document.getElementById("aspUserEmail").value;
+  //Prevent user from sharing question with himself/herself
+  if (email === currentUserEmail) {
+    document.getElementById("email").value = "";
+    M.toast({ html: 'You cannot share a question with yourself.' })
+  } else {
+    //Update the necessary fields and submit the form
+    document.getElementById("aspUserEmail").value = email;
+    document.getElementById('aspModifiedDate').value = new Date().toISOString().slice(0, 10);
+    document.getElementById("aspAssessmentForm").submit();
+  }
 }
 
 /*

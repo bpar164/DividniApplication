@@ -283,7 +283,7 @@ generateQuestion = () => {
 }
 
 //Submit hidden form, but first check the user email
-userEmailForm = (event) => {
+shareQuestionForm = (event) => {
   event.preventDefault();
   let email = event.target.elements.email.value;
   let currentUserEmail = document.getElementById("aspUserEmail").value;
