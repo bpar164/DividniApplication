@@ -175,15 +175,15 @@ previewAnswer = () => {
   //Enable the generate button
   document.getElementById('generate').classList.remove("disabled");
   //Call a function to create the question object
-  question = fetchFormValues();
+  question = fetchQuestionFormValues();
   //Call a function to generate the content
-  content = generatePreviewContent(question);
+  content = generateQuestionPreviewContent(question);
   //Add the values to the display content
   document.getElementById('previewModalContent').innerHTML = content;
 }
 
 //Fetches all values from the form
-fetchFormValues = () => {
+fetchQuestionFormValues = () => {
   question = {};
   question.name = document.getElementById('name').value;
   question.type = currentType;
@@ -201,7 +201,7 @@ fetchFormValues = () => {
 }
 
 //Creates the HTML content for the preview window
-generatePreviewContent = (question) => {
+generateQuestionPreviewContent = (question) => {
   //Clear the content
   content = '';
   //Build the content using the values with formatting 
@@ -246,7 +246,7 @@ $("#questionForm").submit((event) => {
     });
     content += '</ul></p>';
   } else { //Check that answers are not duplicated
-    let question = fetchFormValues();
+    let question = fetchQuestionFormValues();
     let duplicates = checkForDuplicateAnswers(question.correctAnswers.concat(question.incorrectAnswers));
     if (duplicates) {
       content = '<p>Please ensure that all answers are unique.</p>'
@@ -269,7 +269,7 @@ checkForDuplicateAnswers = (array) => {
 
 //Add the question details to asp form and submit the form
 generateQuestion = () => {
-  let question = fetchFormValues();
+  let question = fetchQuestionFormValues();
   //Set the values in the hidden form
   document.getElementById('aspName').value = question.name;
   document.getElementById('aspType').value = question.type;

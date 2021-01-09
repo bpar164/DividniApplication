@@ -5,11 +5,16 @@ $(document).ready(() => {
   let location = window.location.href;
   if (location.includes('/Assessment/Details') || location.includes('/Assessment/Delete') || location.includes('/Assessment/Share') || location.includes('/Assessment/Download')) {
     displayAssessmentHTML();
+  } else if (location.includes('/Assessment/Edit') || location.includes('/Assessment/Template')) {
+    populateAssessmentForm(); 
   }
   if (location.includes('/Assessment/Create')) {
     addInstructionButtonListener();
     let sortable = Sortable.create(questionList);
     createQuestionList(document.getElementById('questionBank').getAttribute('value'));
+  }
+  if (location.includes('/Assessment/Share')) {
+    M.toast({ html: document.getElementById("message").getAttribute("Value") });
   }
 });
 
@@ -25,8 +30,8 @@ displayAssessmentHTML = () => {
 }
 
 //Fetches JSON from value attribute of questionList and appends each question as a new li
-displayQuestionList = (parentElement) => {
-  jsonArray = JSON.parse(parentElement.getAttribute('value'));
+displayQuestionList = (questionListElement) => {
+  jsonArray = JSON.parse(questionListElement.getAttribute('value'));
   for (let i = 0; i < jsonArray.length; i++) {
     let li = document.createElement('li');
     if (jsonArray[i].type == 'Instruction') {
@@ -36,8 +41,24 @@ displayQuestionList = (parentElement) => {
     } else {
       li.innerHTML = `<a href='/` + jsonArray[i].type + `/Details/` + jsonArray[i].id + `' target='_blank'>` + jsonArray[i].name + `</a>`;
     }
-    parentElement.appendChild(li);
+    questionListElement.appendChild(li);
   }
+}
+
+populateAssessmentForm = () => {
+  populateTextArea('coverPage');
+  createQuestionList(document.getElementById('questionList').getAttribute('value'));
+  populateTextArea('appendix');
+} 
+
+//Fetch value from div and create a text editor if the value is not empty
+populateTextArea = (divname) => {
+  let contents = document.getElementById(divname).getAttribute('value');
+  if (contents != "") {
+    document.getElementById(divname + 'CheckBox').checked = true;
+    createTextArea(divname);
+    setTimeout(() => { tinyMCE.get(divname + 'TextArea').setContent(contents); }, 500); //Give tinyMCE time to load
+  } 
 }
 
 createQuestionList = (questionBank) => {
@@ -50,7 +71,13 @@ createQuestionList = (questionBank) => {
     li.addEventListener("click", () => {
       questionClicked(question.id);
     });
-    li.innerHTML = createQuestionItemHTML(question);
+    //Add the appropriate li, based on type
+    if (question.type != 'Instruction') {
+      li.innerHTML = createQuestionItemHTML(question);
+    } else {
+      instructionSections.push(question.value);
+      li.innerHTML = createInstructionItemHTML(parseInt(question.id.substring(2)));
+    }
     document.getElementById("questionList").appendChild(li);
     $('.tooltipped').tooltip({ enterDelay: 500 });
   }
@@ -193,15 +220,15 @@ editInstructionSection = (id) => {
 }
 
 //Preview exam and display in modal
-previewAssessment = () => {
+previewAssessment = (message) => {
   document.getElementById('generate').classList.remove('disabled');
-  document.getElementById('previewModalContent').innerHTML = generatePreviewContent();
+  document.getElementById('previewModalContent').innerHTML = generateAssessmentPreviewContent(message);
 }
 
 //Creates the HTML content for the preview modal
-generatePreviewContent = () => {
+generateAssessmentPreviewContent = (message) => {
   //Build the content using the values with formatting
-  content = '<p>Review these details before clicking <b>GENERATE</b>:</p>';
+  content = `<p>Review these details before clicking <b>` + message + `</b>:</p>`;
   content += '<b>Name: </b>' + document.getElementById('name').value + '</br>';
   document.getElementById('coverPageCheckBox').checked ?
     content += '</br><b>Cover Page:</b></br>' + tinyMCE.get('coverPageTextArea').getContent() + '</br>' : null;
@@ -253,7 +280,6 @@ $("#assessmentForm").submit((event) => {
   if (document.getElementById('coverPageCheckBox').checked) {
     if (tinyMCE.get('coverPageTextArea').getContent() === '') {
       missingRequired = true;
-      console.log('cp')
       content += '<li>Complete cover page, or uncheck the corresponding box.</li>';
     }
   }
@@ -322,7 +348,7 @@ shareAssessmentForm = (event) => {
   //Prevent user from sharing question with himself/herself
   if (email === currentUserEmail) {
     document.getElementById("email").value = "";
-    M.toast({ html: 'You cannot share a question with yourself.' })
+    M.toast({ html: 'You cannot share an assessment with yourself.' })
   } else {
     //Update the necessary fields and submit the form
     document.getElementById("aspUserEmail").value = email;
@@ -357,22 +383,6 @@ createExamTypeForm = () => {
     </button>`
 }
 
-setExamType = (type) => {
-  examType = type;
-}
-
-generateExam = () => {
-  document.getElementById('optionsModalRetry').classList.add("disabled");
-  document.getElementById('optionsModalContent').innerHTML = '<p>Generating exam...</p>';
-  //Check what action is being performed on the exam
-  let examMode = document.getElementById('examMode');
-  if ((examMode) && (examMode.getAttribute('data-exam-action') === 'EDIT')) {
-    updateExam(examMode.getAttribute('data-exam-id')); //Edit exam
-  } else {
-    generateNewExam(); //Create new exam (from scratch or from template)
-  }
-}
-
 generateNewExam = () => {
   //Get the values from the form
   let exam = fetchFormValues();
@@ -403,62 +413,6 @@ generateNewExam = () => {
   });
 }
 
-//Make the actual request to update the exam in the database
-updateExam = (id) => {
-  document.getElementById('optionsModalContent').innerHTML = '<p>Editing exam...</p>';
-  //Get the values from the form
-  let exam = fetchFormValues();
-  $.ajax({
-    url: 'exam/' + id,
-    method: 'PUT',
-    data: exam,
-    success: (res) => {
-      if (res === 'true') {
-        //Exam updated
-        document.getElementById('optionsModalContent').innerHTML = '<p>Exam edited.</p>';
-        enableAllOptionsButtons();
-        document.getElementById('optionsModalRetry').classList.add("disabled");
-      } else if (res === 'false') {
-        //Exam not generated
-        document.getElementById('optionsModalContent').innerHTML = '<p>Error generating exam.</p>';
-        enableAllOptionsButtons();
-      }
-    },
-    error: () => {
-      document.getElementById('optionsModalContent').innerHTML = '<p>Error generating exam.</p>';
-      enableAllOptionsButtons();
-    }
-  });
-}
-
-enableAllOptionsButtons = () => {
-  document.getElementById('optionsModalRetry').classList.remove("disabled");
-  document.getElementById('optionsModalCreate').classList.remove("disabled");
-  document.getElementById('optionsModalView').classList.remove("disabled");
-}
-
-createExamQuestionList = () => {
-  let selectedQuestionIds = fetchAllSelectedQuestionIds();
-  let selectedQuestionNames = fetchAllSelectedQuestionNames(selectedQuestionIds);
-  let questionList = [];
-  let instructionSectionsIndex = 0;
-  for (let i = 0; i < selectedQuestionIds.length; i++) {
-    let tempQuestion = {};
-    tempQuestion.id = selectedQuestionIds[i];
-    tempQuestion.name = selectedQuestionNames[i];
-    if (selectedQuestionIds[i].length === 24) { //All questions have ids of length 24
-      tempQuestion.type = 'mc';
-      tempQuestion.contents = null;
-    } else {
-      tempQuestion.type = 'is';
-      tempQuestion.contents = instructionSections[instructionSectionsIndex];
-      instructionSectionsIndex++;
-    }
-    questionList.push(tempQuestion);
-  }
-  return questionList;
-}
-
 mergePDFs = (examName) => {
   $.ajax({
     url: 'exams/merge/' + examName,
@@ -472,76 +426,6 @@ downloadExam = () => {
   document.getElementById('optionsModalContent').innerHTML = '<p>Exam download will begin shortly.</p>';
   document.getElementById('optionsModalCreate').classList.remove("disabled");
   document.getElementById('optionsModalView').classList.remove("disabled");
-}
-
-populateExamForm = (id) => {
-  //Fetch exam
-  $.ajax({
-    url: 'exams-my/' + id,
-    method: 'GET',
-    dataType: 'json',
-    success: (res) => {
-      if (!(res.exam)) {
-        //Display message if no exam found
-        $('#previewModal').modal();
-        document.getElementById('previewModalContent').innerHTML = '<p>Error loading exam.</p>';
-      } else {
-        //Populate form
-        document.getElementById('name').value = res.exam.name;
-        document.getElementById('paperCount').value = res.exam.paperCount;
-        if (res.exam.coverPage !== "") {
-          document.getElementById("coverPageCheckBox").setAttribute("checked", true);
-          createTextArea('coverPage');
-          setTimeout(() => { tinyMCE.get('coverPageTextArea').setContent(res.exam.coverPage); }, 500); //Give tinyMCE time to load
-        }
-        if (res.exam.appendix !== "") {
-          document.getElementById("appendixCheckBox").setAttribute("checked", true);
-          createTextArea('appendix');
-          setTimeout(() => { tinyMCE.get('appendixTextArea').setContent(res.exam.appendix); }, 500); //Give tinyMCE time to load
-        }
-        populateExamQuestionList(res.exam.questionList);
-      }
-    },
-    error: () => {
-      $('#previewModal').modal();
-      document.getElementById('previewModalContent').innerHTML = '<p>Error loading exam.</p>';
-    }
-  });
-}
-
-populateExamQuestionList = (questionList) => {
-  //First check that question ul exists and create it if necessary
-  if (document.getElementById('questionList') === null) {
-    //Create ul
-    let ul = createHTMLElement('ul', 'questionList', ['collection', 'with-header']);
-    document.getElementById('questions').appendChild(ul);
-  }
-  //Add questions to existing list
-  let examQuestionIDs = [];
-  for (let i = 0; i < questionList.length; i++) {
-    //Create instruction li items to append to display list
-    let item = createHTMLElement('li', questionList[i].id, ['collection-item', 'teal', 'lighten-4']);
-    item.setAttribute("name", questionList[i].name);
-    if (questionList[i].type === 'is') {
-      instructionSections.push(questionList[i].contents)
-      item.innerHTML = createInstructionItemHTML(i);
-    } else {
-      item.innerHTML = createQuestionItemHTML(questionList[i].id, questionList[i].name);
-      examQuestionIDs.push(questionList[i].id);
-    }
-    document.getElementById('questionList').appendChild(item);
-    $('.tooltipped').tooltip({ enterDelay: 500 });
-  }
-  //Remove duplicate lis
-  let questions = document.querySelectorAll('#questions>ul>li');
-  for (let i = 0; i < questions.length; i++) {
-    if (questions[i].classList.length === 1) { //Unselected questions have only one class
-      if (examQuestionIDs.includes(questions[i].id)) {
-        let li = document.getElementById(questions[i].id);
-        document.getElementById('questionList').removeChild(li);
-      }
-    }
-  }
 }
 
 downloadExistingExam = (id) => {

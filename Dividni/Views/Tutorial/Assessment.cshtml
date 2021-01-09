@@ -133,54 +133,39 @@
                 This second folder can be uploaded to Moodle to create an exam.
                 The other files can be ignored or deleted.
             </p>
-            <h5 class="teal-text">Viewing your Exams</h5>
-            <p>The <a asp-controller="Assessment" asp-action="Manage" target="_blank">my created exams <i
-                        class="tiny material-icons">open_in_new</i></a> page
-                displays all of the exams that you have created/have been shared with you.
+
+            <h5 class="teal-text">Managing your Assessments</h5>
+            <p>The <a asp-controller="Assessment" asp-action="Index" target="_blank">assessment management <i
+                        class="tiny material-icons">open_in_new</i></a> page displays all of the assessments that
+                you have
+                created/that have been shared with you.
             </p>
-            <p>You can click on the <i class="tiny material-icons">more_vert</i> next to the exam name to see the list
-                of
-                actions that you can perform.</p>
-            <p>Select <b>PREVIEW</b> to see the details of the exam.</p>
-            <h5 class="teal-text">Downloading an Existing Exam</h5>
-            <p>Select <b>DOWNLOAD</b> from the actions list. A window will be displayed asking you to confirm your
-                choice.</p>
-            <p>You will be redirected to the create exam page and the options window will display automatically to show
-                the
-                status of the exam generation process.
-                You can then download the exam.
+            <p>The assessments are sorted newest to oldest by default (you can also sort by name), and you can search
+                for
+                an assessment by name.</p>
+            <p>You can click on the icons next to each assessment to perform a number of actions (which will open
+                a new page):</p>
+            <h6 class="teal-text">Viewing an Assessment <i class="material-icons">pageview</i></h6>
+            <p>Displays all of the assessment details.</p>
+            <h6 class="teal-text">Editing an Assessment <i class="material-icons">edit</i></h6>
+            <p>Loads the assessment details into a form that can be edited. Any changes need to be saved before
+                exiting.</p>
+            <h6 class="teal-text">Deleting an Assessment <i class="material-icons">delete</i></h6>
+            <p>The assessment details are displayed before you confirm the deletion.</p>
+            <h6 class="teal-text">Using an Assessment as a Template <i class="material-icons">content_copy</i>
+            </h6>
+            <p>Loads the assessment details into a form that can be edited. The assessment must be generated
+                before exiting.</p>
+            <p>Note that using an assessment as a template generates a new assessment and leaves the original unchanged.
             </p>
-            <h5 class="teal-text">Editing an Exam</h5>
-            <p>Select <b>EDIT</b> from the actions list. A window will be displayed asking you to confirm your choice.
+            <h6 class="teal-text">Sharing an Assessment <i class="material-icons">share</i></h6>
+            <p>An input for the user's email is displayed underneath the assessment details.</p>
+            <p>The user must have an account before you are able to share assessments with him/her.</p>
+            <p>Note that sharing an assessment does not automatically share share the questions in that assessment.
+                The other user will be able to view the details of the questions and include them in the assessment, but
+                cannot edit them. You will need to share individual questions with the other user if he/she will need to
+                make any changes to them.
             </p>
-            <p>You will be redirected to the create exam page and the details of the exam will be
-                pre-loaded into the form.</p>
-            <p>To save any changes, you will need to preview and generate the exam.</p>
-            <h5 class="teal-text">Deleting an Exam</h5>
-            <p>Select <b>DELETE</b> from the actions list. A window will be displayed asking you to confirm your choice.
-            </p>
-            <h5 class="teal-text">Using an Exam as a Template</h5>
-            <p>Select <b>TEMPLATE</b> from the actions list. A window will be displayed asking you to confirm your
-                choice.</p>
-            <p>You will be redirected to the create exam page and the details of the exam will be
-                pre-loaded into the form.</p>
-            <p>To save the new exam, you will need to preview and generate it. Note that using an exam as a template
-                leaves
-                the original exam unchanged.</p>
-            <h5 class="teal-text">Sharing an Exam</h5>
-            <p>Select <b>SHARE</b> from the actions list. A window will be displayed asking you to confirm your choice.
-            </p>
-            <p>A small form will be displayed where you can enter the email of the user with whom you wish to share the
-                exam. Click <b>SHARE </b><i class="tiny material-icons">send</i> to complete the process.</p>
-            <p>Note that the other user will receive a copy of the exam, and any changes he or she makes to it will not
-                be reflected on your version of the exam. Sharing an exam does not automatically share the questions in
-                that
-                exam.
-                The other user will be able to view the details of the questions and include them in the exam, but
-                cannot edit
-                them.
-                You will need to share individual questions with the other user if he/she will need to make any changes
-                to them.
-            </p>
+            <h6 class="teal-text">Downloading an Assessment <i class="material-icons">download</i></h6>
         </div>
 </section>
