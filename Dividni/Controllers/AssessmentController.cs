@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Dividni.Data;
 using Dividni.Models;
+using Dividni.Services;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Dividni.Controllers
@@ -15,10 +16,12 @@ namespace Dividni.Controllers
     public class AssessmentController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly AssessmentService _service;
 
         public AssessmentController(ApplicationDbContext context)
         {
             _context = context;
+            _service = new AssessmentService();
         }
 
         // GET: Assessment
@@ -295,12 +298,31 @@ namespace Dividni.Controllers
 
             var assessment = await _context.Assessment
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (assessment == null)
+            if ( assessment == null)
             {
                 return NotFound();
             }
 
             return View(assessment);
+        }
+
+        // POST: Assessment/Download
+        [HttpPost]
+        public async Task<IActionResult> Download(DownloadRequest downloadRequest)
+        {
+            if (downloadRequest.Id == null)
+            {
+                return NotFound();
+            }
+
+            var assessment = await _context.Assessment
+                .FirstOrDefaultAsync(m => m.Id == downloadRequest.Id);
+            if (assessment == null)
+            {
+                return NotFound();
+            } 
+
+            return View(assessment);      
         }
     }
 }

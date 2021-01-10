@@ -362,8 +362,20 @@ downloadAssessment = (event) => {
   let assessmentID = event.target.elements.assessmentID.value;
   let assessmentVersions = event.target.elements.assessmentVersions.value;
   let assessmentType = event.target.elements.assessmentType.value;
-  console.log(assessmentID, assessmentVersions, assessmentType)
+  console.log({ 'Id': assessmentID, 'Versions': assessmentVersions, 'Type': assessmentType})
+  $.ajax({
+    url: '/Assessment/Download',
+    method: 'POST',
+    data: { 'Id': assessmentID, 'Versions': assessmentVersions, 'Type': assessmentType},
+    success: (res) => {
+    },
+    error: (err) => {
+      console.log(err);
+    }
+  });
 }
+
+
 
 /*
 generateNewExam = () => {
