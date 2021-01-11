@@ -188,14 +188,14 @@ fetchQuestionFormValues = () => {
   question.name = document.getElementById('name').value;
   question.type = currentType;
   question.marks = document.getElementById('marks').value;
-  question.questionText = tinyMCE.get('questionText').getContent();
+  question.questionText = tinyMCE.get('questionText').getContent().replaceAll(`"`, `'`);
   question.correctAnswers = [];
   for (i = 1; i <= correctCount; i++) {
-    question.correctAnswers.push(tinyMCE.get('correctAnswers[' + i + ']').getContent());
+    question.correctAnswers.push(tinyMCE.get('correctAnswers[' + i + ']').getContent().replaceAll(`"`, `'`));
   }
   question.incorrectAnswers = [];
   for (i = 1; i <= incorrectCount; i++) {
-    question.incorrectAnswers.push(tinyMCE.get('incorrectAnswers[' + i + ']').getContent());
+    question.incorrectAnswers.push(tinyMCE.get('incorrectAnswers[' + i + ']').getContent().replaceAll(`"`, `'`));
   }
   return question;
 }

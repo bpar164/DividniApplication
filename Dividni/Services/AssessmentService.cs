@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Dividni.Data;
 using Dividni.Models;
 using System.Text.Json;
-using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 
 namespace Dividni.Services
 {
@@ -85,10 +85,10 @@ namespace Dividni.Services
             var questionString = "using System;namespace Utilities.Courses {public partial class QHelper : IQHelper";
             questionString += "{public static string Q" + questionNumber + "(Random random, Action<string, ushort> registerAnswer, bool isProof)"; 
             questionString += "{var q = Quest_Q" + questionNumber + "(random, isProof);string rval = q.GetQuestion(registerAnswer);return rval;}";
-            questionString += "public static QuestionBase Quest_Q" + questionNumber + "(Random random, bool isProof) var q = new " + simple.Type + "Question(random, isProof);";
+            questionString += "public static QuestionBase Quest_Q" + questionNumber + "(Random random, bool isProof) { var q = new " + simple.Type + "Question(random, isProof);";
             questionString += "q.Id = \"Q" + questionNumber + "\";";
             questionString += "q.Marks = " + simple.Marks + "; q.ShowMarks = false;";
-            questionString += "q.Stem = @\"" + simple.QuestionText + "\";";
+            questionString += "q.Stem = @\"" + Regex.Replace(simple.QuestionText, "\"", "\\\"") + "\";";
             //Correct answers
             questionString += "q.AddCorrects(";
             var correctAnswers = JsonSerializer.Deserialize<string[]>(simple.CorrectAnswers);
@@ -100,7 +100,6 @@ namespace Dividni.Services
                         questionString += "@\"" + correctAnswers[i] + "\",";
                     }  
                 }
-            questionString += ");";
             //Incorrect answers
             questionString += "q.AddIncorrects(";
             var incorrectAnswers = JsonSerializer.Deserialize<string[]>(simple.IncorrectAnswers);
