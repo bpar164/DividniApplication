@@ -362,7 +362,6 @@ downloadAssessment = (event) => {
   let assessmentID = event.target.elements.assessmentID.value;
   let assessmentVersions = event.target.elements.assessmentVersions.value;
   let assessmentType = event.target.elements.assessmentType.value;
-  console.log({ 'Id': assessmentID, 'Versions': assessmentVersions, 'Type': assessmentType})
   $.ajax({
     url: '/Assessment/Download',
     method: 'POST',

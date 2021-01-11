@@ -21,7 +21,7 @@ namespace Dividni.Controllers
         public AssessmentController(ApplicationDbContext context)
         {
             _context = context;
-            _service = new AssessmentService();
+            _service = new AssessmentService(context);
         }
 
         // GET: Assessment
@@ -310,17 +310,14 @@ namespace Dividni.Controllers
         [HttpPost]
         public async Task<IActionResult> Download(DownloadRequest downloadRequest)
         {
-            if (downloadRequest.Id == null)
-            {
-                return NotFound();
-            }
-
             var assessment = await _context.Assessment
                 .FirstOrDefaultAsync(m => m.Id == downloadRequest.Id);
             if (assessment == null)
             {
                 return NotFound();
-            } 
+            } else {
+                _service.createAssessment(assessment);
+            }
 
             return View(assessment);      
         }
