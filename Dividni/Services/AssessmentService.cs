@@ -25,16 +25,13 @@ namespace Dividni.Services
             //Create a subfolder called Assessments (may exist already)
             var folderPath = Directory.GetCurrentDirectory().Substring(0, Directory.GetCurrentDirectory().Length-7) + "Assessments"; //Replace 'Dividni' with 'Assessments'
             System.IO.Directory.CreateDirectory(folderPath);
-            var assessmentFolderName = assessment.Name;
-            var assessmentPath = folderPath + "\\" + assessmentFolderName;
+            var assessmentPath = folderPath + "\\" + assessment.Name;
             //Create a folder specifically for this assessment
             System.IO.Directory.CreateDirectory(assessmentPath);
-            //Create a folder specifically for papers
-            System.IO.Directory.CreateDirectory(assessmentPath + "\\papers");
             //String listing question ids for command line 
             var questionIds = "";
             //String for document contents
-            var HTML = "<div id=\"Questions\"><ol class=\"qlist\">";
+            var questionHTML = "<div id=\"Questions\"><ol class=\"qlist\">";
             //Get list of question ids from assessment model
             var questionList = JsonSerializer.Deserialize<Question[]>(assessment.QuestionList);
             //For counting questions (excludes instruction sections)
@@ -50,11 +47,12 @@ namespace Dividni.Services
                         //Save id to list for the commands
                         questionIds += "Q" + questionNumber + ".cs ";
                         //Save id to list for the document
-                        HTML += "<li class=\"q\"><p class=\"cws_code_q\">Q" + questionNumber + "</p></li>";
+                        questionHTML += "<li class=\"q\"><p class=\"cws_code_q\">Q" + questionNumber + "</p></li>";
                         //Convert question to C# string
                         var questionString = simpleToString(simple, questionNumber);
                         //Save C# string to a file
-                        System.IO.File.WriteAllText(assessmentPath + "\\papers\\Q" + questionNumber + ".cs", questionString);
+                        System.IO.File.WriteAllText(assessmentPath + "\\Q" + questionNumber + ".cs", questionString);
+                        Console.WriteLine("Writing question");
                         questionNumber++;
                     }
 
@@ -67,23 +65,52 @@ namespace Dividni.Services
                         //Save id to list for the commands
                         questionIds += "Q" + questionNumber + ".cs ";
                         //Save id to list for the document
-                        HTML += "<li class=\"q\"><p class=\"cws_code_q\">Q" + questionNumber + "</p></li>";
+                        questionHTML += "<li class=\"q\"><p class=\"cws_code_q\">Q" + questionNumber + "</p></li>";
                         //Save C# string to a file
                         System.IO.File.WriteAllText(assessmentPath + "\\Q" + questionNumber + ".cs", advanced.Question);
+                        Console.WriteLine("Writing question");
                         questionNumber++;
                     }
                 }
                 else
                 {
-                    HTML += questionList[i].value; //Add instruction section contents to document 
+                    questionHTML += questionList[i].value; //Add instruction section contents to document 
                 }
             }
             //Close the HTML string
-            HTML += "</ol></div>";
+            questionHTML += "</ol></div>";
             //Run the Dividni commands, based on the assessment type
             if (downloadRequest.Type == "standard") {
                 //Compile all of the questions
-                executeCommand("/c cd .. & cd Assessments\\" + assessmentFolderName + "\\papers & csc -t:library -lib:\"C:\\Program Files\\Dividni.com\\Dividni\" -r:Utilities.Courses.dll -out:QHelper.dll " + questionIds);
+                executeCommand("/c cd .. & cd Assessments\\" + assessment.Name + " & csc -t:library -lib:\"C:\\Program Files\\Dividni.com\\Dividni\" -r:Utilities.Courses.dll -out:QHelper.dll " + questionIds);
+                //CSS string
+                var CSS = "body {font-family: \"Palatino Linotype\", \"Book Antiqua\", Palatino, serif;} ol.qlist > li.q {margin: 2em 0;} li > ol.a {list-style: upper-alpha;} .xyz {padding-top: 1em; padding-bottom: 1em;}";
+                //Create HTML template
+                //Header with name
+                var HTML = "<html><head><meta charset=\"utf-8\"/><title>" + assessment.Name + "</title><style>" + CSS + "</style></head><body>";
+                //Cover page
+                if (assessment.CoverPage != "") {
+                    HTML += "<div id=\"coverPage\">" + assessment.CoverPage + "</div><p style=\"page-break-after: always;\" />";
+                } 
+                //Questions
+                HTML += "<div id=\"questions\">" + questionHTML + "</div>";
+                //Appendix
+                if (assessment.Appendix != "") {
+                    HTML += "<p style=\"page-break-before: always;\"/><div id=\"appendix\">" + assessment.Appendix + "</div></body></html>";
+                } else {
+                    HTML += "</body></html>";
+                }
+                //Create a file for the HTML
+                using (StreamWriter sw = File.CreateText(assessmentPath + "\\Exam.Template.html"))
+                {
+                    sw.WriteLine(HTML);
+                }
+                //Generate assessment
+                Console.WriteLine("/c cd .. & cd Assessments\\" + assessment.Name + " & TestGen -lib QHelper.dll -htmlFolder papers -answerFolder answers -paperCount " + downloadRequest.Versions + " Exam.Template.html");
+                executeCommand("/c cd .. & cd Assessments\\" + assessment.Name + " & TestGen -lib QHelper.dll -htmlFolder papers -answerFolder answers -paperCount " + downloadRequest.Versions + " Exam.Template.html");
+                
+                //Convert all html question files in the papers folder to pdf
+                //continueLoop = await this.convertFilesToPDF(`../` + exam.name + `/papers`, exam.name, fileList, path);
             }
 
             //Delete the Assessments folder and any subdirectories
@@ -138,8 +165,6 @@ namespace Dividni.Services
         }
 
         public void executeCommand(string command) {
-            Console.WriteLine(command);
-
             System.Diagnostics.Process process = new System.Diagnostics.Process();
             System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
             startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
