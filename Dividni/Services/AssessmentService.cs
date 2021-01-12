@@ -25,7 +25,7 @@ namespace Dividni.Services
             //Create a subfolder called Assessments (may exist already)
             var folderPath = Directory.GetCurrentDirectory().Substring(0, Directory.GetCurrentDirectory().Length-7) + "Assessments"; //Replace 'Dividni' with 'Assessments'
             System.IO.Directory.CreateDirectory(folderPath);
-            var assessmentFolderName = assessment.Name + "[" + assessment.UserEmail + "]";
+            var assessmentFolderName = assessment.Name;
             var assessmentPath = folderPath + "\\" + assessmentFolderName;
             //Create a folder specifically for this assessment
             System.IO.Directory.CreateDirectory(assessmentPath);
@@ -83,8 +83,7 @@ namespace Dividni.Services
             //Run the Dividni commands, based on the assessment type
             if (downloadRequest.Type == "standard") {
                 //Compile all of the questions
-                //executeCommand("cd .. && cd Assessments\\" + assessmentFolderName + "\\papers && csc -t:library -lib:\"C:\\Program Files\\Dividni.com\\Dividni\" -r:Utilities.Courses.dll -out:QHelper.dll " + questionIds);
-                executeCommand("cd .. && cd Assessments\\" + assessmentFolderName + "\\papers && dir");
+                executeCommand("/c cd .. & cd Assessments\\" + assessmentFolderName + "\\papers & csc -t:library -lib:\"C:\\Program Files\\Dividni.com\\Dividni\" -r:Utilities.Courses.dll -out:QHelper.dll " + questionIds);
             }
 
             //Delete the Assessments folder and any subdirectories
@@ -139,13 +138,15 @@ namespace Dividni.Services
         }
 
         public void executeCommand(string command) {
+            Console.WriteLine(command);
+
             System.Diagnostics.Process process = new System.Diagnostics.Process();
             System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
             startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
             startInfo.FileName = "cmd.exe";
             startInfo.Arguments = command;
             process.StartInfo = startInfo;
-            process.Start();
+            process.Start(); 
         }
     }
 }
