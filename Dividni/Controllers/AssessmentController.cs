@@ -316,7 +316,7 @@ namespace Dividni.Controllers
             {
                 return NotFound();
             } else {
-                _service.createAssessment(assessment);
+                _service.createAssessment(assessment, downloadRequest);
             }
 
             return View(assessment);      

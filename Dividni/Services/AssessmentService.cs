@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Dividni.Data;
 using Dividni.Models;
 using System.Text.Json;
-using System.Text.RegularExpressions;
+using System.IO;
 
 namespace Dividni.Services
 {
@@ -20,8 +20,19 @@ namespace Dividni.Services
             _context = context;
         }
 
-        public Boolean createAssessment(Assessment assessment)
+        public Boolean createAssessment(Assessment assessment, DownloadRequest downloadRequest)
         {
+            //Create a subfolder called Assessments (may exist already)
+            var folderPath = Directory.GetCurrentDirectory().Substring(0, Directory.GetCurrentDirectory().Length-7) + "Assessments"; //Replace 'Dividni' with 'Assessments'
+            System.IO.Directory.CreateDirectory(folderPath);
+            var assessmentFolderName = assessment.Name + "[" + assessment.UserEmail + "]";
+            var assessmentPath = folderPath + "\\" + assessmentFolderName;
+            //Create a folder specifically for this assessment
+            System.IO.Directory.CreateDirectory(assessmentPath);
+            //Create a folder specifically for papers
+            System.IO.Directory.CreateDirectory(assessmentPath + "\\papers");
+            //String listing question ids for command line 
+            var questionIds = "";
             //String for document contents
             var HTML = "<div id=\"Questions\"><ol class=\"qlist\">";
             //Get list of question ids from assessment model
@@ -36,12 +47,14 @@ namespace Dividni.Services
                     var simple = fetchSimpleQuestion(new Guid(questionList[i].id));
                     if (simple != null)
                     {
+                        //Save id to list for the commands
+                        questionIds += "Q" + questionNumber + ".cs ";
                         //Save id to list for the document
                         HTML += "<li class=\"q\"><p class=\"cws_code_q\">Q" + questionNumber + "</p></li>";
-                        
                         //Convert question to C# string
-                        simpleToString(simple, questionNumber);
+                        var questionString = simpleToString(simple, questionNumber);
                         //Save C# string to a file
+                        System.IO.File.WriteAllText(assessmentPath + "\\papers\\Q" + questionNumber + ".cs", questionString);
                         questionNumber++;
                     }
 
@@ -51,21 +64,31 @@ namespace Dividni.Services
                     var advanced = fetchAdvancedQuestion(new Guid(questionList[i].id));
                     if (advanced != null)
                     {
+                        //Save id to list for the commands
+                        questionIds += "Q" + questionNumber + ".cs ";
                         //Save id to list for the document
                         HTML += "<li class=\"q\"><p class=\"cws_code_q\">Q" + questionNumber + "</p></li>";
-
                         //Save C# string to a file
+                        System.IO.File.WriteAllText(assessmentPath + "\\Q" + questionNumber + ".cs", advanced.Question);
                         questionNumber++;
                     }
                 }
                 else
                 {
-                    HTML += questionList[i].value; //Add instruction section contents to document
+                    HTML += questionList[i].value; //Add instruction section contents to document 
                 }
             }
             //Close the HTML string
             HTML += "</ol></div>";
-            Console.WriteLine(HTML);
+            //Run the Dividni commands, based on the assessment type
+            if (downloadRequest.Type == "standard") {
+                //Compile all of the questions
+                //executeCommand("cd .. && cd Assessments\\" + assessmentFolderName + "\\papers && csc -t:library -lib:\"C:\\Program Files\\Dividni.com\\Dividni\" -r:Utilities.Courses.dll -out:QHelper.dll " + questionIds);
+                executeCommand("cd .. && cd Assessments\\" + assessmentFolderName + "\\papers && dir");
+            }
+
+            //Delete the Assessments folder and any subdirectories
+            //System.IO.Directory.Delete(folderPath, true);
             return true;
         }
 
@@ -88,7 +111,7 @@ namespace Dividni.Services
             questionString += "public static QuestionBase Quest_Q" + questionNumber + "(Random random, bool isProof) { var q = new " + simple.Type + "Question(random, isProof);";
             questionString += "q.Id = \"Q" + questionNumber + "\";";
             questionString += "q.Marks = " + simple.Marks + "; q.ShowMarks = false;";
-            questionString += "q.Stem = @\"" + Regex.Replace(simple.QuestionText, "\"", "\\\"") + "\";";
+            questionString += "q.Stem = @\"" + simple.QuestionText + "\";";
             //Correct answers
             questionString += "q.AddCorrects(";
             var correctAnswers = JsonSerializer.Deserialize<string[]>(simple.CorrectAnswers);
@@ -112,10 +135,17 @@ namespace Dividni.Services
                     }     
                 }
             questionString += "return q; }}}";
+            return questionString;
+        }
 
-            Console.WriteLine(questionString);
-
-            return "";
+        public void executeCommand(string command) {
+            System.Diagnostics.Process process = new System.Diagnostics.Process();
+            System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
+            startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+            startInfo.FileName = "cmd.exe";
+            startInfo.Arguments = command;
+            process.StartInfo = startInfo;
+            process.Start();
         }
     }
 }
