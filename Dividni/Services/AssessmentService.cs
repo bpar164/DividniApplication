@@ -125,6 +125,8 @@ namespace Dividni.Services
                     executeCommand("/c cd .. & cd Assessments\\" + assessment.Name + " & QtiGen -qtiVersion " + qtiVers + " -variants " + downloadRequest.Versions + " -id " + assessment.Name + " " + questionIds);
                 }
             }
+            //Compress the folder contents into a .zip archive
+            executeCommand("/c cd .. & cd Assessments & tar cf " + assessment.Name + ".zip " + assessment.Name);
             //Delete the Assessments folder and any subdirectories
             //System.IO.Directory.Delete(folderPath, true);
             return true;
