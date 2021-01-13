@@ -9,6 +9,7 @@ using Dividni.Data;
 using Dividni.Models;
 using System.Text.Json;
 using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace Dividni.Services
 {
@@ -20,115 +21,121 @@ namespace Dividni.Services
             _context = context;
         }
 
-        public Boolean createAssessment(Assessment assessment, DownloadRequest downloadRequest)
+        public Boolean generateAssessment(Assessment assessment, DownloadRequest downloadRequest)
         {
-            //Create a subfolder called Assessments (may exist already)
-            var folderPath = Directory.GetCurrentDirectory().Substring(0, Directory.GetCurrentDirectory().Length - 7) + "Assessments"; //Replace 'Dividni' with 'Assessments'
-            System.IO.Directory.CreateDirectory(folderPath);
-            var assessmentPath = folderPath + "\\" + assessment.Name;
-            //Create a folder specifically for this assessment
-            System.IO.Directory.CreateDirectory(assessmentPath);
-            //String listing question ids for command line 
-            var questionIds = "";
-            //String for document contents
-            var questionHTML = "<div id=\"Questions\"><ol class=\"qlist\">";
-            //Get list of question ids from assessment model
-            var questionList = JsonSerializer.Deserialize<Question[]>(assessment.QuestionList);
-            //For counting questions (excludes instruction sections)
-            var questionNumber = 1;
-            //Process questions based on type, and add them to the HTML document
-            for (int i = 0; i < questionList.Length; i++)
+            try
             {
-                if (questionList[i].type == "Simple")
+                //Create a subfolder called Assessments (may exist already)
+                var folderPath = Directory.GetCurrentDirectory().Substring(0, Directory.GetCurrentDirectory().Length - 7) + "Assessments"; //Replace 'Dividni' with 'Assessments'
+                System.IO.Directory.CreateDirectory(folderPath);
+                var assessmentPath = folderPath + "\\" + assessment.Name;
+                //Create a folder specifically for this assessment
+                System.IO.Directory.CreateDirectory(assessmentPath);
+                //String listing question ids for command line 
+                var questionIds = "";
+                //String for document contents
+                var questionHTML = "<div id=\"Questions\"><ol class=\"qlist\">";
+                //Get list of question ids from assessment model
+                var questionList = JsonSerializer.Deserialize<Question[]>(assessment.QuestionList);
+                //For counting questions (excludes instruction sections)
+                var questionNumber = 1;
+                //Process questions based on type, and add them to the HTML document
+                for (int i = 0; i < questionList.Length; i++)
                 {
-                    var simple = fetchSimpleQuestion(new Guid(questionList[i].id));
-                    if (simple != null)
+                    if (questionList[i].type == "Simple")
                     {
-                        //Save id to list for the commands
-                        questionIds += "Q" + questionNumber + ".cs ";
-                        //Save id to list for the document
-                        questionHTML += "<li class=\"q\"><p class=\"cws_code_q\">Q" + questionNumber + "</p></li>";
-                        //Convert question to C# string
-                        var questionString = simpleToString(simple, questionNumber);
-                        //Save C# string to a file
-                        System.IO.File.WriteAllText(assessmentPath + "\\Q" + questionNumber + ".cs", questionString);
-                        questionNumber++;
-                    }
+                        var simple = fetchSimpleQuestion(new Guid(questionList[i].id));
+                        if (simple != null)
+                        {
+                            //Save id to list for the commands
+                            questionIds += "Q" + questionNumber + ".cs ";
+                            //Save id to list for the document
+                            questionHTML += "<li class=\"q\"><p class=\"cws_code_q\">Q" + questionNumber + "</p></li>";
+                            //Convert question to C# string
+                            var questionString = simpleToString(simple, questionNumber);
+                            //Save C# string to a file
+                            System.IO.File.WriteAllText(assessmentPath + "\\Q" + questionNumber + ".cs", questionString);
+                            questionNumber++;
+                        }
 
-                }
-                else if (questionList[i].type == "Advanced")
-                {
-                    var advanced = fetchAdvancedQuestion(new Guid(questionList[i].id));
-                    if (advanced != null)
+                    }
+                    else if (questionList[i].type == "Advanced")
                     {
-                        //Save id to list for the commands
-                        questionIds += "Q" + questionNumber + ".cs ";
-                        //Save id to list for the document
-                        questionHTML += "<li class=\"q\"><p class=\"cws_code_q\">Q" + questionNumber + "</p></li>";
-                        //Save C# string to a file
-                        System.IO.File.WriteAllText(assessmentPath + "\\Q" + questionNumber + ".cs", advanced.Question);
-                        questionNumber++;
+                        var advanced = fetchAdvancedQuestion(new Guid(questionList[i].id));
+                        if (advanced != null)
+                        {
+                            //Save id to list for the commands
+                            questionIds += "Q" + questionNumber + ".cs ";
+                            //Save id to list for the document
+                            questionHTML += "<li class=\"q\"><p class=\"cws_code_q\">Q" + questionNumber + "</p></li>";
+                            //Save C# string to a file
+                            System.IO.File.WriteAllText(assessmentPath + "\\Q" + questionNumber + ".cs", advanced.Question);
+                            questionNumber++;
+                        }
+                    }
+                    else
+                    {
+                        questionHTML += questionList[i].value; //Add instruction section contents to document 
                     }
                 }
-                else
+                //Close the HTML string
+                questionHTML += "</ol></div>";
+                //Run the Dividni commands, based on the assessment type
+                if (downloadRequest.Type == "standard")
                 {
-                    questionHTML += questionList[i].value; //Add instruction section contents to document 
-                }
-            }
-            //Close the HTML string
-            questionHTML += "</ol></div>";
-            //Run the Dividni commands, based on the assessment type
-            if (downloadRequest.Type == "standard")
-            {
-                //Compile all of the questions
-                executeCommand("/c cd .. & cd Assessments\\" + assessment.Name + " & csc -t:library -lib:\"C:\\Program Files\\Dividni.com\\Dividni\" -r:Utilities.Courses.dll -out:QHelper.dll " + questionIds);
-                //Create HTML template
-                var templateHTML = "";
-                //Cover page
-                if (assessment.CoverPage != "") templateHTML += "<div id=\"coverPage\">" + assessment.CoverPage + "</div><p style=\"page-break-after: always;\" />";
-                //Questions
-                templateHTML += "<div id=\"questions\">" + questionHTML + "</div>";
-                //Appendix
-                if (assessment.Appendix != "") templateHTML += "<p style=\"page-break-before: always;\"/><div id=\"appendix\">" + assessment.Appendix + "</div>";
-                //Create the file
-                createHTMLDocument(assessmentPath + "\\Assessment.Template.html", assessment.Name, templateHTML);
-                //Generate assessment
-                executeCommand("/c cd .. & cd Assessments\\" + assessment.Name + " & TestGen -lib QHelper.dll -htmlFolder papers -answerFolder answers -paperCount " + downloadRequest.Versions + " Assessment.Template.html");
-            }
-            else
-            { //LMS Assessment
-                //Cover Page and Appendix
-                if (assessment.CoverPage != "")
-                {
-                    createHTMLDocument(assessmentPath + "\\Assessment.CoverPage.html", assessment.Name + " Cover Page", assessment.CoverPage);
-                    questionIds = "Assessment.CoverPage.html " + questionIds;
-                }
-                if (assessment.Appendix != "")
-                {
-                    createHTMLDocument(assessmentPath + "\\Assessment.Appendix.html", assessment.Name + " Appendix", assessment.Appendix);
-                    questionIds += "Assessment.Appendix.html";
-                }
-                if (downloadRequest.Type == "moodle")
-                {
-                    executeCommand("/c cd .. & cd Assessments\\" + assessment.Name + " & MoodleGen -variants " + downloadRequest.Versions + " -xmlFolder questions -bank " + assessment.Name + " " + questionIds);
+                    //Compile all of the questions
+                    executeCommand("/c cd .. & cd Assessments\\" + assessment.Name + " & csc -t:library -lib:\"C:\\Program Files\\Dividni.com\\Dividni\" -r:Utilities.Courses.dll -out:QHelper.dll " + questionIds);
+                    //Create HTML template
+                    var templateHTML = "";
+                    //Cover page
+                    if (assessment.CoverPage != "") templateHTML += "<div id=\"coverPage\">" + assessment.CoverPage + "</div><p style=\"page-break-after: always;\" />";
+                    //Questions
+                    templateHTML += "<div id=\"questions\">" + questionHTML + "</div>";
+                    //Appendix
+                    if (assessment.Appendix != "") templateHTML += "<p style=\"page-break-before: always;\"/><div id=\"appendix\">" + assessment.Appendix + "</div>";
+                    //Create the file
+                    createHTMLDocument(assessmentPath + "\\Assessment.Template.html", assessment.Name, templateHTML);
+                    //Generate assessment
+                    executeCommand("/c cd .. & cd Assessments\\" + assessment.Name + " & TestGen -lib QHelper.dll -htmlFolder papers -answerFolder answers -paperCount " + downloadRequest.Versions + " Assessment.Template.html");
                 }
                 else
-                {
-                    //Determine qtiVers
-                    var qtiVers = "";
-                    if (downloadRequest.Type == "canvas") {
-                        qtiVers = "1.2";
-                    } else {
-                        qtiVers = "2.1";
+                { //LMS Assessment
+                    //Cover Page and Appendix
+                    if (assessment.CoverPage != "")
+                    {
+                        createHTMLDocument(assessmentPath + "\\Assessment.CoverPage.html", assessment.Name + " Cover Page", assessment.CoverPage);
+                        questionIds = "Assessment.CoverPage.html " + questionIds;
                     }
-                    //Create LMS compatible zip 
-                    executeCommand("/c cd .. & cd Assessments\\" + assessment.Name + " & QtiGen -qtiVersion " + qtiVers + " -variants " + downloadRequest.Versions + " -id " + assessment.Name + " " + questionIds);
+                    if (assessment.Appendix != "")
+                    {
+                        createHTMLDocument(assessmentPath + "\\Assessment.Appendix.html", assessment.Name + " Appendix", assessment.Appendix);
+                        questionIds += "Assessment.Appendix.html";
+                    }
+                    if (downloadRequest.Type == "moodle")
+                    {
+                        executeCommand("/c cd .. & cd Assessments\\" + assessment.Name + " & MoodleGen -variants " + downloadRequest.Versions + " -xmlFolder questions -bank " + assessment.Name + " " + questionIds);
+                    }
+                    else
+                    {
+                        //Determine qtiVers
+                        var qtiVers = "";
+                        if (downloadRequest.Type == "canvas")
+                        {
+                            qtiVers = "1.2";
+                        }
+                        else
+                        {
+                            qtiVers = "2.1";
+                        }
+                        //Create LMS compatible zip 
+                        executeCommand("/c cd .. & cd Assessments\\" + assessment.Name + " & QtiGen -qtiVersion " + qtiVers + " -variants " + downloadRequest.Versions + " -id " + assessment.Name + " " + questionIds);
+                    }
                 }
+                //Compress the folder contents into a .zip archive
+                executeCommand("/c cd .. & cd Assessments & tar cf " + assessment.Name + ".zip " + assessment.Name);
+            } catch (Exception) {
+                return false;
             }
-            //Compress the folder contents into a .zip archive
-            executeCommand("/c cd .. & cd Assessments & tar cf " + assessment.Name + ".zip " + assessment.Name);
-            //Delete the Assessments folder and any subdirectories
-            //System.IO.Directory.Delete(folderPath, true);
             return true;
         }
 
@@ -209,6 +216,24 @@ namespace Dividni.Services
             {
                 sw.WriteLine(HTML);
             }
+        }
+
+        /* public void downloadFile(string path, string name)
+        {
+            //Download the .zip archive
+                downloadFile(folderPath, assessment.Name);
+                
+
+            string filePath = "your file path";
+            string fileName = ""your file name;
+            byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+            return File(fileBytes, "application/force-download", fileName);
+        } */
+
+        public void deleteAssessmentFolder()
+        {
+            //Delete the Assessments folder and any subdirectories
+            System.IO.Directory.Delete(Directory.GetCurrentDirectory().Substring(0, Directory.GetCurrentDirectory().Length - 7) + "Assessments", true);
         }
     }
 }

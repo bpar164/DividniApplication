@@ -359,98 +359,25 @@ shareAssessmentForm = (event) => {
 
 downloadAssessment = (event) => { 
   event.preventDefault();
+  document.getElementById("generate").classList.add("disabled");
   let assessmentID = event.target.elements.assessmentID.value;
   let assessmentVersions = event.target.elements.assessmentVersions.value;
   let assessmentType = event.target.elements.assessmentType.value;
   $.ajax({
-    url: '/Assessment/Download',
+    url: '/Assessment/Generate',
     method: 'POST',
     data: { 'Id': assessmentID, 'Versions': assessmentVersions, 'Type': assessmentType},
     success: (res) => {
+      if (res === true) {
+        document.getElementById("download").classList.remove("disabled");
+      } else {
+        M.toast({ html: 'Error generating assessment. Please try again.' });
+      }
     },
     error: (err) => {
-      console.log(err);
+      M.toast({ html: 'Error generating assessment. Please try again.' });
     }
   });
 }
 
-
-
-/*
-generateNewExam = () => {
-  //Get the values from the form
-  let exam = fetchFormValues();
-  $.ajax({
-    url: 'exams/currentUserID',
-    method: 'POST',
-    data: exam,
-    success: (res) => {
-      if (res === 'true') {
-        //Exam generated
-        document.getElementById('optionsModalContent').innerHTML = '<p>Exam generated.</p>';
-        if ((exam.paperCount > 1) && (examType === 'standard')) {
-          document.getElementById('optionsModalContent').innerHTML +=
-            `<div class=row><button class="btn waves-effect waves-light" id="mergePDFs" onClick="mergePDFs('` + exam.name + `');">Merge PDFs?</button></div>`;
-        }
-        document.getElementById('optionsModalContent').innerHTML +=
-          `<div class=row><a class="waves-effect waves-light btn" href="exams/download/` + exam.name + `" onClick="downloadExam();">Download Exam</a></div>`
-      } else if (res === 'false') {
-        //Exam not generated
-        document.getElementById('optionsModalContent').innerHTML = '<p>Error generating exam.</p>';
-        enableAllOptionsButtons();
-      }
-    },
-    error: () => {
-      document.getElementById('optionsModalContent').innerHTML = '<p>Error generating exam.</p>';
-      enableAllOptionsButtons();
-    }
-  });
-}
-
-mergePDFs = (examName) => {
-  $.ajax({
-    url: 'exams/merge/' + examName,
-    method: 'GET',
-    dataType: 'json'
-  });
-  document.getElementById('mergePDFs').classList.add('disabled');
-}
-
-downloadExam = () => {
-  document.getElementById('optionsModalContent').innerHTML = '<p>Exam download will begin shortly.</p>';
-  document.getElementById('optionsModalCreate').classList.remove("disabled");
-  document.getElementById('optionsModalView').classList.remove("disabled");
-}
-
-downloadExistingExam = (id) => {
-  //Bring up the display window
-  $('#optionsModal').modal('open');
-  document.getElementById('optionsModalContent').innerHTML = '<p>Generating exam files...</p>';
-  $.ajax({
-    url: 'exams-my/download/' + id,
-    method: 'GET',
-    success: (res) => {
-      if (res.exam) {
-        //Exam fetched and generated
-        document.getElementById('optionsModalContent').innerHTML = '<p>Exam files generated.</p>';
-        if ((res.exam.paperCount > 1) && (res.exam.examType === 'standard')) {
-          document.getElementById('optionsModalContent').innerHTML +=
-            `<div class=row><button class="btn waves-effect waves-light" id="mergePDFs" onClick="mergePDFs('` + res.exam.name + `');">Merge PDFs?</button></div>`;
-        }
-        document.getElementById('optionsModalContent').innerHTML +=
-          `<div class=row><a class="waves-effect waves-light btn" href="exams/download/` + res.exam.name + `" onClick="downloadExam();">Download Exam</a></div>`
-      } else {
-        //Exam not generated
-        document.getElementById('optionsModalContent').innerHTML = '<p>Error generating exam.</p>';
-        enableAllOptionsButtons();
-        document.getElementById('optionsModalRetry').classList.add("disabled");
-      }
-    },
-    error: () => {
-      document.getElementById('optionsModalContent').innerHTML = '<p>Error generating exam.</p>';
-      enableAllOptionsButtons();
-      document.getElementById('optionsModalRetry').classList.add("disabled");
-    }
-  });
-} */
 

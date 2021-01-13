@@ -306,20 +306,27 @@ namespace Dividni.Controllers
             return View(assessment);
         }
 
-        // POST: Assessment/Download
+        // POST: Assessment/Generate
         [HttpPost]
-        public async Task<IActionResult> Download(DownloadRequest downloadRequest)
+        public async Task<Boolean> Generate(DownloadRequest downloadRequest)
         {
             var assessment = await _context.Assessment
                 .FirstOrDefaultAsync(m => m.Id == downloadRequest.Id);
             if (assessment == null)
             {
-                return NotFound();
+                return false;
             } else {
-                _service.createAssessment(assessment, downloadRequest);
-            }
+                return _service.generateAssessment(assessment, downloadRequest);
+            }    
+        }
 
-            return View(assessment);      
+        // GET: Assessment/DownloadAssessment/name
+        public IActionResult DownloadAssessment(string fileName)
+        {
+            string filePath = "C:\\Users\\benpa\\DividniApplication\\Assessments";
+            byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+            return File(fileBytes, "application/force-download", fileName);
+            //_service.deleteAssessmentFolder();
         }
     }
 }
