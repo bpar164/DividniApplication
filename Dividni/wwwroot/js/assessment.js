@@ -380,16 +380,10 @@ generateAssessment = (event) => {
   });
 }
 
-downloadAssessment = () => {
+downloadClicked = () => {
+  //Enable the correct buttons/links
   document.getElementById("generate").classList.remove("disabled");
   document.getElementById("download").classList.add("disabled");
-  $.ajax({
-    url: '/Assessment/DowloadAssessment/' + document.getElementById("name").getAttribute('value'),
-    method: 'GET',
-    error: () => {
-      M.toast({ html: 'Error downloading assessment. Please try again.' });
-    }
-  });
 }
 
 

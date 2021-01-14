@@ -22,7 +22,7 @@ namespace Dividni.Services
         }
 
         public string getDirectory() {
-            //Return the current directory, but remove Dividni from the path
+            //Return the current directory, but remove Dividni (the code folder) from the path
             return Directory.GetCurrentDirectory().Substring(0, Directory.GetCurrentDirectory().Length - 7);
         }
 
@@ -229,9 +229,9 @@ namespace Dividni.Services
             return data;
         }
 
+        //Delete the Assessments folder and any subdirectories
         public void deleteAssessmentFolder()
         {
-            //Delete the Assessments folder and any subdirectories
             System.IO.Directory.Delete(getDirectory() + "Assessments", true);
         }
     }

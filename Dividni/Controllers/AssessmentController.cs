@@ -327,9 +327,6 @@ namespace Dividni.Controllers
         // GET: Assessment/DownloadAssessment/name
         public FileResult DownloadAssessment(string name)
         {
-            Console.WriteLine("AAA");
-            Console.WriteLine(name);
-            name = "AllQuestionTypes";
             return File(_service.getAssessmentFile(name), "application/zip", name + ".zip");
         }
     }
