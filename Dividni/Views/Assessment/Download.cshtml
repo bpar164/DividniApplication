@@ -12,7 +12,7 @@
             <h5 class="teal-text">Assessment Details</h5>
             <p>Download the following assessment?</p>
             <div>
-                <b>Name: </b>@Html.DisplayFor(model => model.Name)</br>
+                <b id="name" value="@Html.DisplayFor(model => model.Name)">Name: </b>@Html.DisplayFor(model => model.Name)</br>
                 </br><b>Cover Page:</b></br>
                 <div id="coverPage" value="@Html.DisplayFor(model => model.CoverPage)"></div></br>
                 <b>Question List:</b>
@@ -21,7 +21,7 @@
                 <div id="appendix" value="@Html.DisplayFor(model => model.Appendix)"></div></br>
             </div>
             <h6 class="teal-text">Download Details</h6>
-             <form onSubmit="return downloadAssessment(event)">
+             <form onSubmit="return generateAssessment(event)">
                 <div class="input-field"><input id="assessmentID" name="assessmentID" value="@Html.DisplayFor(model => model.Id)" type="hidden")></div>
                 <div class="input-field">
                     <label for="assessmentVersions">Versions</label>
@@ -50,7 +50,7 @@
                     <i class="material-icons right">send</i></button>
             </form>                 
             <p></p>
-            <a id="download" class="waves-effect waves-light btn orange disabled" href="/Assessment/DownloadAssessment/@Html.DisplayFor(model => model.Name)">Download<i class="material-icons right">download</i></a>
+            <a id="download" class="waves-effect waves-light btn orange disabled" onClick="downloadAssessment();">Download<i class="material-icons right">download</i></a>
             <p></p>
             <a class="waves-effect waves-light btn" asp-action="Index">
                 Return to list<i class="material-icons right">list</i>

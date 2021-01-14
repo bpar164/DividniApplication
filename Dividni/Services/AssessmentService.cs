@@ -21,12 +21,17 @@ namespace Dividni.Services
             _context = context;
         }
 
+        public string getDirectory() {
+            //Return the current directory, but remove Dividni from the path
+            return Directory.GetCurrentDirectory().Substring(0, Directory.GetCurrentDirectory().Length - 7);
+        }
+
         public Boolean generateAssessment(Assessment assessment, DownloadRequest downloadRequest)
         {
             try
             {
                 //Create a subfolder called Assessments (may exist already)
-                var folderPath = Directory.GetCurrentDirectory().Substring(0, Directory.GetCurrentDirectory().Length - 7) + "Assessments"; //Replace 'Dividni' with 'Assessments'
+                var folderPath = getDirectory() + "Assessments"; //Replace 'Dividni' with 'Assessments'
                 System.IO.Directory.CreateDirectory(folderPath);
                 var assessmentPath = folderPath + "\\" + assessment.Name;
                 //Create a folder specifically for this assessment
@@ -218,22 +223,16 @@ namespace Dividni.Services
             }
         }
 
-        /* public void downloadFile(string path, string name)
-        {
-            //Download the .zip archive
-                downloadFile(folderPath, assessment.Name);
-                
-
-            string filePath = "your file path";
-            string fileName = ""your file name;
-            byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
-            return File(fileBytes, "application/force-download", fileName);
-        } */
+        public byte[] getAssessmentFile(string name) {
+            byte[] data = System.IO.File.ReadAllBytes(getDirectory() + "\\Assessments\\" + name + ".zip");
+            deleteAssessmentFolder();
+            return data;
+        }
 
         public void deleteAssessmentFolder()
         {
             //Delete the Assessments folder and any subdirectories
-            System.IO.Directory.Delete(Directory.GetCurrentDirectory().Substring(0, Directory.GetCurrentDirectory().Length - 7) + "Assessments", true);
+            System.IO.Directory.Delete(getDirectory() + "Assessments", true);
         }
     }
 }

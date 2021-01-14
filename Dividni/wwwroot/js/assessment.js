@@ -357,7 +357,7 @@ shareAssessmentForm = (event) => {
   }
 }
 
-downloadAssessment = (event) => { 
+generateAssessment = (event) => { 
   event.preventDefault();
   document.getElementById("generate").classList.add("disabled");
   let assessmentID = event.target.elements.assessmentID.value;
@@ -374,8 +374,20 @@ downloadAssessment = (event) => {
         M.toast({ html: 'Error generating assessment. Please try again.' });
       }
     },
-    error: (err) => {
+    error: () => {
       M.toast({ html: 'Error generating assessment. Please try again.' });
+    }
+  });
+}
+
+downloadAssessment = () => {
+  document.getElementById("generate").classList.remove("disabled");
+  document.getElementById("download").classList.add("disabled");
+  $.ajax({
+    url: '/Assessment/DowloadAssessment/' + document.getElementById("name").getAttribute('value'),
+    method: 'GET',
+    error: () => {
+      M.toast({ html: 'Error downloading assessment. Please try again.' });
     }
   });
 }

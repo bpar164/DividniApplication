@@ -98,7 +98,9 @@ namespace Dividni.Controllers
             if (questionBank == null)
             {
                 return NotFound();
-            } else {
+            }
+            else
+            {
                 ViewData["QuestionBank"] = questionBank.QuestionList;
             }
 
@@ -298,7 +300,7 @@ namespace Dividni.Controllers
 
             var assessment = await _context.Assessment
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if ( assessment == null)
+            if (assessment == null)
             {
                 return NotFound();
             }
@@ -315,18 +317,20 @@ namespace Dividni.Controllers
             if (assessment == null)
             {
                 return false;
-            } else {
+            }
+            else
+            {
                 return _service.generateAssessment(assessment, downloadRequest);
-            }    
+            }
         }
 
         // GET: Assessment/DownloadAssessment/name
-        public IActionResult DownloadAssessment(string fileName)
+        public FileResult DownloadAssessment(string name)
         {
-            string filePath = "C:\\Users\\benpa\\DividniApplication\\Assessments";
-            byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
-            return File(fileBytes, "application/force-download", fileName);
-            //_service.deleteAssessmentFolder();
+            Console.WriteLine("AAA");
+            Console.WriteLine(name);
+            name = "AllQuestionTypes";
+            return File(_service.getAssessmentFile(name), "application/zip", name + ".zip");
         }
     }
 }
