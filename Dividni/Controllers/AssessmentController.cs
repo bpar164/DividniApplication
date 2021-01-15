@@ -124,6 +124,62 @@ namespace Dividni.Controllers
             return View(assessment);
         }
 
+        // GET: Assessment/Simple/5
+        public async Task<Simple> Simple(string questionId)
+        {
+            if (questionId == "")
+            {
+                return null;
+            }
+
+            try
+            {
+                var id = new Guid(questionId);
+                var question = await _context.Simple
+                    .FirstOrDefaultAsync(q => q.Id == id);
+                if (question == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    return question;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        // GET: Assessment/Advanced/5
+        public async Task<Advanced> Advanced(string questionId)
+        {
+            if (questionId == "")
+            {
+                return null;
+            }
+
+            try
+            {
+                var id = new Guid(questionId);
+                var question = await _context.Advanced
+                    .FirstOrDefaultAsync(q => q.Id == id);
+                if (question == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    return question;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
         // GET: Assessment/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {

@@ -52,6 +52,19 @@
           <ul class="collection" id="questionList">
           </ul>
         </div>
+        <div id="addQuestionSection">
+          <h6>Add a Question</h6>
+          Paste question id:
+          <div class="input-field inline"><input id="questionId"></div>
+          <div class="input-field inline">
+            <select id="questionType">
+              <option value="Simple">Simple</option>
+              <option value="Advanced">Advanced</option>
+            </select>
+            <label>Question type</label>
+          </div>
+          <a class="waves-effect waves-light btn orange" id="addQuestion" onClick="addQuestion();">Add<i class="material-icons right">playlist_add</i></a>
+        </div>
       </div>
     </div> 
     <div class="row">

@@ -219,6 +219,21 @@ editInstructionSection = (id) => {
   });
 }
 
+//Check for a valid id, and then make a GET request for the question
+addQuestion = () => {
+  document.getElementById('addQuestion').classList.add('disabled');
+  let id = document.getElementById('questionId').value;
+  let type = document.getElementById('questionType').value;
+  console.log(type);
+  if ((id === '') || (id.indexOf(' ') >= 0)){
+    M.toast({ html: 'Invalid id. Check for spaces.' });
+    document.getElementById('addQuestion').classList.remove('disabled');
+  } else {
+    
+    document.getElementById('addQuestion').classList.remove('disabled');
+  }
+}
+
 //Preview exam and display in modal
 previewAssessment = (message) => {
   document.getElementById('generate').classList.remove('disabled');
