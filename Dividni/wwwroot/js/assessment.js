@@ -357,7 +357,7 @@ shareAssessmentForm = (event) => {
   }
 }
 
-generateAssessment = (event) => { 
+generateAssessmentFiles = (event) => { 
   event.preventDefault();
   document.getElementById("generate").classList.add("disabled");
   let assessmentID = event.target.elements.assessmentID.value;
