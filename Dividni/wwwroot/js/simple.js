@@ -282,6 +282,12 @@ generateQuestion = () => {
   document.getElementById("aspQuestionForm").submit();
 }
 
+//Copy the question id to the clipboard
+idCopied = (id) => {
+  navigator.clipboard.writeText(id);
+  M.toast({ html: 'Id copied to clipboard.' })
+}
+
 //Submit hidden form, but first check the user email
 shareQuestionForm = (event) => {
   event.preventDefault();

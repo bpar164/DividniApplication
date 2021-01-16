@@ -41,6 +41,8 @@
                         <tr>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Name)
+                                <a href="#" class="tooltipped" onClick="idCopied('@item.Id');" data-tooltip="Copy Id"
+                                        data-position="right"><i class="material-icons">link</i></a> 
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.ModifiedDate)
@@ -85,7 +87,6 @@
         </div>
     </div>
 </section>
-
 
 <!-- Preview Modal -->
 <div id="previewModal" class="modal modal-fixed-footer">

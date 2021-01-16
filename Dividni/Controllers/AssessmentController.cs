@@ -124,54 +124,29 @@ namespace Dividni.Controllers
             return View(assessment);
         }
 
-        // GET: Assessment/Simple/5
-        public async Task<Simple> Simple(string questionId)
+        // Post: Assessment/Question
+        [HttpPost]
+        public async Task<IActionResult> Question(Question questionDetails)
         {
-            if (questionId == "")
+            if (questionDetails.id == "")
             {
                 return null;
             }
 
             try
             {
-                var id = new Guid(questionId);
-                var question = await _context.Simple
-                    .FirstOrDefaultAsync(q => q.Id == id);
-                if (question == null)
+                var id = new Guid(questionDetails.id);
+                if (questionDetails.type == "Simple")
                 {
-                    return null;
+                    var question = await _context.Simple
+                        .FirstOrDefaultAsync(q => q.Id == id);
+                        return Ok(question);
                 }
                 else
                 {
-                    return question;
-                }
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
-
-        // GET: Assessment/Advanced/5
-        public async Task<Advanced> Advanced(string questionId)
-        {
-            if (questionId == "")
-            {
-                return null;
-            }
-
-            try
-            {
-                var id = new Guid(questionId);
-                var question = await _context.Advanced
-                    .FirstOrDefaultAsync(q => q.Id == id);
-                if (question == null)
-                {
-                    return null;
-                }
-                else
-                {
-                    return question;
+                    var question = await _context.Advanced
+                        .FirstOrDefaultAsync(q => q.Id == id); 
+                        return Ok(question);
                 }
             }
             catch (Exception)

@@ -6,7 +6,7 @@ $(document).ready(() => {
   if (location.includes('/Assessment/Details') || location.includes('/Assessment/Delete') || location.includes('/Assessment/Share') || location.includes('/Assessment/Download')) {
     displayAssessmentHTML();
   } else if (location.includes('/Assessment/Edit') || location.includes('/Assessment/Template')) {
-    populateAssessmentForm(); 
+    populateAssessmentForm();
   }
   if (location.includes('/Assessment/Create')) {
     addInstructionButtonListener();
@@ -36,8 +36,8 @@ displayQuestionList = (questionListElement) => {
     let li = document.createElement('li');
     if (jsonArray[i].type == 'Instruction') {
       li.innerHTML = `<a href='#previewModal' class='modal-trigger' 
-                        onClick="previewInstructionSection(` + parseInt(jsonArray[i].id.substring(2)) + `, '` + jsonArray[i].value + `');">` + 
-                          jsonArray[i].name + `</a>`;
+                        onClick="previewInstructionSection(` + parseInt(jsonArray[i].id.substring(2)) + `, '` + jsonArray[i].value + `');">` +
+        jsonArray[i].name + `</a>`;
     } else {
       li.innerHTML = `<a href='/` + jsonArray[i].type + `/Details/` + jsonArray[i].id + `' target='_blank'>` + jsonArray[i].name + `</a>`;
     }
@@ -49,7 +49,7 @@ populateAssessmentForm = () => {
   populateTextArea('coverPage');
   createQuestionList(document.getElementById('questionList').getAttribute('value'));
   populateTextArea('appendix');
-} 
+}
 
 //Fetch value from div and create a text editor if the value is not empty
 populateTextArea = (divname) => {
@@ -58,7 +58,7 @@ populateTextArea = (divname) => {
     document.getElementById(divname + 'CheckBox').checked = true;
     createTextArea(divname);
     setTimeout(() => { tinyMCE.get(divname + 'TextArea').setContent(contents); }, 500); //Give tinyMCE time to load
-  } 
+  }
 }
 
 createQuestionList = (questionBank) => {
@@ -219,19 +219,47 @@ editInstructionSection = (id) => {
   });
 }
 
-//Check for a valid id, and then make a GET request for the question
+//Check the id, and then make a GET request for the question
 addQuestion = () => {
   document.getElementById('addQuestion').classList.add('disabled');
   let id = document.getElementById('questionId').value;
   let type = document.getElementById('questionType').value;
-  console.log(type);
-  if ((id === '') || (id.indexOf(' ') >= 0)){
+  //Check that id is valid
+  if ((id === '') || (id.indexOf(' ') >= 0) || (id.length !== 36)) {
     M.toast({ html: 'Invalid id. Check for spaces.' });
-    document.getElementById('addQuestion').classList.remove('disabled');
+  //Check the question not already on list
+  } else if (document.getElementById(id) !== null) {
+    document.getElementById('questionId').value = '';
+    M.toast({ html: 'Question already on list.' });
   } else {
-    
-    document.getElementById('addQuestion').classList.remove('disabled');
+    $.ajax({
+      url: '/Assessment/Question',
+      method: 'POST',
+      data: { 'id': id, 'type': type },
+      success: (res) => {
+        if (typeof (res) === 'object') {
+          document.getElementById('questionId').value = '';
+          //Add the question to the list
+          let question = res;
+          let li = createHTMLElement('li', question.id, ['collection-item', 'teal', 'lighten-4']);
+          li.setAttribute('name', question.name);
+          li.setAttribute('type', question.type);
+          li.addEventListener("click", () => {
+            questionClicked(question.id);
+          });
+          li.innerHTML = createQuestionItemHTML(question);
+          document.getElementById("questionList").appendChild(li);
+          $('.tooltipped').tooltip({ enterDelay: 500 });
+        } else {
+          M.toast({ html: 'Error fetching question. Please check the id/type and try again.' });
+        }
+      },
+      error: () => {
+        M.toast({ html: 'Error fetching question. Please try again.' });
+      }
+    });
   }
+  document.getElementById('addQuestion').classList.remove('disabled');
 }
 
 //Preview exam and display in modal
@@ -254,7 +282,7 @@ generateAssessmentPreviewContent = (message) => {
   selectedQuestionNames.forEach(qName => {
     content += '<li>' + qName + '</li>';
   });
-  content += '</ol>'; 
+  content += '</ol>';
   document.getElementById('appendixCheckBox').checked ?
     content += '</br><b>Appendix:</b></br>' + tinyMCE.get('appendixTextArea').getContent() + '</br>' : null;
   return content;
@@ -316,7 +344,7 @@ $("#assessmentForm").submit((event) => {
   if (!(missingRequired)) {
     generateAssessment();
     content = '<p>Saving assessment...</p>';
-  } 
+  }
   document.getElementById('statusModalContent').innerHTML = content;
 });
 
@@ -345,7 +373,7 @@ fetchFormValues = () => {
     question.id = selectedQuestionIds[i];
     question.name = selectedQuestionNames[i];
     question.type = selectedQuestionTypes[i];
-    question.type == 'Instruction' ? question.value = instructionSections[question.id.substring(2)] : question.value = null; 
+    question.type == 'Instruction' ? question.value = instructionSections[question.id.substring(2)] : question.value = null;
     questionList.push(question);
   }
   assessment.questionList = questionList;
@@ -372,7 +400,7 @@ shareAssessmentForm = (event) => {
   }
 }
 
-generateAssessmentFiles = (event) => { 
+generateAssessmentFiles = (event) => {
   event.preventDefault();
   document.getElementById("generate").classList.add("disabled");
   let assessmentID = event.target.elements.assessmentID.value;
@@ -381,7 +409,7 @@ generateAssessmentFiles = (event) => {
   $.ajax({
     url: '/Assessment/Generate',
     method: 'POST',
-    data: { 'Id': assessmentID, 'Versions': assessmentVersions, 'Type': assessmentType},
+    data: { 'Id': assessmentID, 'Versions': assessmentVersions, 'Type': assessmentType },
     success: (res) => {
       if (res === true) {
         document.getElementById("download").classList.remove("disabled");
