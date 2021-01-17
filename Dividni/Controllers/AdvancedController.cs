@@ -22,9 +22,46 @@ namespace Dividni.Controllers
         }
 
         // GET: Advanced
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
-            return View(await _context.Advanced.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = sortOrder == "name" ? "name_desc" : "name";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
+            var advanced = from a in _context.Advanced
+                         where a.UserEmail.Equals(User.Identity.Name)
+                         select a;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                advanced = advanced.Where(a => a.Name.ToUpper().Contains(searchString.ToUpper()));
+            }
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    advanced = advanced.OrderByDescending(a => a.Name);
+                    break;
+                case "name":
+                    advanced = advanced.OrderBy(a => a.Name);
+                    break;
+                default:
+                    advanced = advanced.OrderByDescending(a => a.ModifiedDate);
+                    break;
+            }
+
+            int pageSize = 10;
+            return View(await PaginatedList<Advanced>.CreateAsync(advanced.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Advanced/Details/5

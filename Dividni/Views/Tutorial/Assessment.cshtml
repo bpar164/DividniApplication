@@ -8,132 +8,95 @@
     <div class="row">
         <div class="col s12">
             <h5 class="teal-text">Instructions</h5>
-            <p>Follow these instructions to create an <a asp-controller="Assessment" asp-action="Create"
-                    target="_blank">exam <i class="tiny material-icons">open_in_new</i></a> using your existing
+            <p>Follow these instructions to create an <a asp-controller="QuestionBank" asp-action="Index"
+                    target="_blank">assessment <i class="tiny material-icons">open_in_new</i></a> using your existing
                 questions.</p>
-            <div id="instructions">
-                <ol>
-                    <p>
-                        <li>Fill-in the exam name (text, numbers, and dashes only. Please use dashes instead of spaces).
-                            This is to
-                            help you identify the exam later.
-                        </li>
-                    </p>
-                    <p>
-                        <li>Next, enter the number of versions of the exam (paper count) that you want to generate. This
-                            value can
-                            be between 1 and 100.</li>
-                    </p>
-                    <p>
-                        <li>Check the cover page box to create an editor window for the exam cover page. This section
-                            can contain
-                            formatting, and is optional.</li>
-                    </p>
-                    <p>
-                        <li>The questions section will list all of your created questions. Check the box next to a
-                            question to
-                            include it in the exam.
-                            Clicking on the <i class="tiny material-icons">zoom_in </i> icon will display the question
-                            contents.
-                            (Questions can be edited on the <a asp-controller="Assessment" asp-action="Manage"
-                                target="_blank">my
-                                multiple-choice questions
-                                <i class="tiny material-icons">open_in_new</i></a> page.)
-                        </li>
-                    </p>
-                    <p>
-                        <li>Instruction sections are essentially questions without answers. As the name suggests, they
-                            can be used
-                            for writing instructions for a subset of the questions.
-                            Click on the <i class="tiny material-icons">add_circle</i> icon to create an editor window
-                            for a new
-                            instruction section.
-                            You can write the section (formatting is allowed) and click on the save button to add the
-                            section to your
-                            questions. It will be included in the exam automatically.
-                            Unchecking the section will prevent it from being included in the exam. Previewing works the
-                            same as with
-                            regular questions.
-                            You can also click on the <i class="tiny material-icons">edit</i> icon to make changes to
-                            the section.
-                        </li>
-                    </p>
-                    <li>
-                        </p>Re-order the questions and instruction sections by clicking and dragging them into the order
-                        you would
-                        like them to appear in on the exam.</li>
-                    </p>
-                    <p>
-                        <li>Check the appendix box to create an editor window for the appendix. This section can contain
-                            formatting,
-                            and is optional.</li>
-                    </p>
-                    <p>
-                        <li>Click the <b>PREVIEW</b> button to see a preview of the exam.
-                            If you are happy with the exam, you can click on <b>GENERATE</b> to create the exam.
-                            Otherwise, you can still make changes and click on <b>PREVIEW</b> to view the modified exam.
-                        </li>
-                    </p>
-                    <p>
-                        <li>Clicking the <b>GENERATE</b> button will bring up a window with a list of the available exam
-                            types.
-                            See the next section for an explanation of these types.
-                            Make a selection and click on <b>SELECT</b> to generate the exam. This may take a minute or
-                            so.
-                            The window will display the outcome of the action. If there was a problem, you will be able
-                            to modify the
-                            exam details and try again.
-                            If the exam generated multiple versions of the paper (e.g. the paper count was greater than
-                            one and the
-                            exam type was standard),
-                            you can click on the <b>Merge PDFs?</b> button. This will create a combined pdf of all of
-                            the different
-                            versions of the exam, for ease of printing.
-                            The final step is to click on <b>Download Exam</b>. The exam will download as a .zip file.
-                            See the <i>Exam .zip File Contents</i> section for an explanation of this file.
-                            You will then have the options to create another exam, or view all of the exams that you
-                            have created.
-                        </li>
-                    </p>
-                </ol>
-            </div>
-            <h5 class="teal-text">Exam Types</h5>
-            <p>When generating an exam, the final step is to choose the exam type:</p>
-            <p>Selecting <i>standard</i> will create the desired number of papers in pdf format.
-                The generated exams will incorporate any of the following if present: the cover page, appendix, and
-                instruction
-                sections.
-            </p>
-            <p>Selecting any of the learning management system options will generate a zip file (using the exam name),
-                that
-                can be imported into the corresponding system.
-                At present these options DO NOT allow instruction sections to be included in the exam, so these will be
-                ignored.
-            </p>
-            <h5 class="teal-text">Exam .zip File Contents</h5>
-            <p>Every type of exam downloads as a single .zip folder, which will have the name given to the exam when it
-                was
-                created. Extract the contents to start.</p>
-            <p>For <i>standard</i> exams, the folder will consist of two subfolders and some files.
-                The <i>answers</i> folder contains text files with the solutions to each version of the exam.
-                The <i>papers</i> folder will contain pdfs of each version of the exam, and a combined version (it will
-                have the
-                same name as the exam), if it was generated.
-                Most users will not need any of the other files in the main folder or any of the non-pdf files in the
-                <i>papers</i> folder. These can be deleted.
-            </p>
-            <p>For learning management system exams (except Moodle), the folder will contain some files and another .zip
-                folder with the same
-                name as the exam.
-                This second .zip folder can be uploaded to the learning management system to create an exam.
-                The other files can be ignored or deleted.
-            </p>
-            <p>For Moodle exams, the folder will contain files and another regular folder with the same
-                name as the exam.
-                This second folder can be uploaded to Moodle to create an exam.
-                The other files can be ignored or deleted.
-            </p>
+            <div id="questionBanks">
+                <h6 class="teal-text">Question Banks</h5>
+                    <ol>
 
+                    </ol>
+            </div>
+            <div id="instructions">
+                <h6 class="teal-text">Creating the Assessment</h5>
+                    <ol>
+                        <p>
+                            <li>Fill-in the assessment name (text, numbers, and dashes only. Please use dashes instead
+                                of spaces).
+                                This is to help you identify the assessment later.
+                            </li>
+                        </p>
+                        <p>
+                            <li>Check the cover page box to create an editor window for the assessment cover page. This
+                                section
+                                can contain formatting, and is optional.</li>
+                        </p>
+                        <p>
+                            <li>Initially, the question list section will list all of the questions from the question
+                                bank.
+                                It will also list instruction sections and individual questions as they are added.
+                                Clicking on a question item will toggle whether it is included in the assessment (a
+                                white background means that the item is NOT included).
+                                Clicking on the <i class="tiny material-icons">pageview </i> icon will display the
+                                question
+                                details in a new window. Questions can be edited on their corresponding management page.
+                            </li>
+                        </p>
+                        <p>
+                            <li>Instruction sections are essentially questions without answers. As the name suggests,
+                                they
+                                can be used
+                                for writing instructions for a subset of the questions.
+                                Click on the <i class="tiny material-icons">add_circle</i> icon to create an editor
+                                window
+                                for a new
+                                instruction section.
+                                You can write the section (formatting is allowed) and click on the save button to add
+                                the
+                                section to the question list.
+                                Clicking on the <i class="tiny material-icons">pageview </i> icon will display the
+                                section details in a pop-up window.
+                                You can also click on the <i class="tiny material-icons">edit</i> icon to make changes
+                                to the section.
+                            </li>
+                        </p>
+                        <p>
+                            <li>You can add an individual question (not from the question bank) by visiting that
+                                question's management page, and clicking on the
+                                <i class="tiny material-icons">link</i> icon next to the question's name to copy that
+                                question's id to the clipboard.
+                                (The clipboard is where the items that you copy when you press 'control c' or
+                                'right-click copy' are stored.)
+                                Paste the id into the input provided, select the correct question type, and click on the
+                                <b>ADD</b> button to add the question to the list.
+                            </li>
+                        </p>
+                        <li>
+                            </p>Re-order the questions and instruction sections by clicking and dragging them into the
+                            order
+                            you would like them to appear in on the assessment.</li>
+                        </p>
+                        <p>
+                            <li>Check the appendix box to create an editor window for the appendix. This section can
+                                contain
+                                formatting, and is optional.</li>
+                        </p>
+                        <p>
+                            <li>Click the <b>PREVIEW</b> button to see a preview of the assessment.
+                                If you are happy with the assessment, you can click on <b>GENERATE</b> to create the
+                                assessment.
+                                Otherwise, you can still make changes and click on <b>PREVIEW</b> to view the modified
+                                assessment.
+                            </li>
+                        </p>
+                        <p>
+                            <li>Clicking the <b>GENERATE</b> button will create the assessment.
+                                If there are any problems, these will be listed in a dialog.
+                                Once the assessment is generated, you will be redirected to the management page.
+                            </li>
+                        </p>
+                    </ol>
+            </div>
             <h5 class="teal-text">Managing your Assessments</h5>
             <p>The <a asp-controller="Assessment" asp-action="Index" target="_blank">assessment management <i
                         class="tiny material-icons">open_in_new</i></a> page displays all of the assessments that
@@ -167,5 +130,52 @@
                 make any changes to them.
             </p>
             <h6 class="teal-text">Downloading an Assessment <i class="material-icons">download</i></h6>
+            <p>
+                <li>Next, enter the number of versions of the assessment (paper count) that you want to generate. This
+                    value can
+                    be between 1 and 100.</li>
+            </p>
+            <h5 class="teal-text">assessment Types</h5>
+            <p>When generating an assessment, the final step is to choose the assessment type:</p>
+            <p>Selecting <i>standard</i> will create the desired number of papers in pdf format.
+                The generated assessments will incorporate any of the following if present: the cover page, appendix,
+                and
+                instruction
+                sections.
+            </p>
+            <p>Selecting any of the learning management system options will generate a zip file (using the assessment
+                name),
+                that
+                can be imported into the corresponding system.
+                At present these options DO NOT allow instruction sections to be included in the assessment, so these
+                will be
+                ignored.
+            </p>
+            <h5 class="teal-text">assessment .zip File Contents</h5>
+            <p>Every type of assessment downloads as a single .zip folder, which will have the name given to the
+                assessment when it
+                was
+                created. Extract the contents to start.</p>
+            <p>For <i>standard</i> assessments, the folder will consist of two subfolders and some files.
+                The <i>answers</i> folder contains text files with the solutions to each version of the assessment.
+                The <i>papers</i> folder will contain pdfs of each version of the assessment, and a combined version (it
+                will
+                have the
+                same name as the assessment), if it was generated.
+                Most users will not need any of the other files in the main folder or any of the non-pdf files in the
+                <i>papers</i> folder. These can be deleted.
+            </p>
+            <p>For learning management system assessments (except Moodle), the folder will contain some files and
+                another .zip
+                folder with the same
+                name as the assessment.
+                This second .zip folder can be uploaded to the learning management system to create an assessment.
+                The other files can be ignored or deleted.
+            </p>
+            <p>For Moodle assessments, the folder will contain files and another regular folder with the same
+                name as the assessment.
+                This second folder can be uploaded to Moodle to create an assessment.
+                The other files can be ignored or deleted.
+            </p>
         </div>
 </section>

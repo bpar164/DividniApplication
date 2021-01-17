@@ -1,59 +1,112 @@
-@model IEnumerable<Dividni.Models.Advanced>
+@model PaginatedList<Dividni.Models.Advanced>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Advanced: Manage";
+    ViewData["Heading"] = "Advanced Multiple-Choice Questions";
+    ViewData["Description"] = "Manage your advanced multiple-choice questions";
 }
 
-<h1>Index</h1>
+<section class="section container blue lighten-5" id="main">
+    <div class="row">
+        <div class="col">
+            <h5 class="teal-text">My Questions</h5>
+            <p>Below are all of the advanced multiple-choice questions that you have created, and that have been shared
+                with you.</p>
+            <p>You can write a new question on the <a asp-controller="Advanced" asp-action="Create" target="_blank">create
+                    <i class="tiny material-icons">open_in_new</i></a> page.</p>
+            <p>Review the <a asp-controller="Tutorial" asp-action="Advanced" target="_blank">tutorial <i
+                        class="tiny material-icons">open_in_new</i></a>
+                for help.</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12 m10 l8">
+            <form asp-controller="Advanced" asp-action="Index" align="right">
+                Search by name:
+                <div class="input-field inline"><input type="text" name="SearchString"
+                        value="@ViewData["CurrentFilter"]"></div>
+                <button type="submit" class="waves-effect waves-light btn">Search<i
+                        class="material-icons right">search</i></button>
+                <a asp-controller="Advanced" class="waves-effect waves-light btn">Reset<i
+                        class="material-icons right">undo</i></a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]"
+                    asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                    class="btn-floating waves-effect waves-light red"><i
+                        class="material-icons right">sort_by_alpha</i></a>
+            </form>
+            <table class="table white">
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                                <a href="#" class="tooltipped" onClick="idCopied('@item.Id');" data-tooltip="Copy Id"
+                                        data-position="right"><i class="material-icons">link</i></a> 
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ModifiedDate)
+                            </td>
+                            <td>
+                                <div align="right">
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="tooltipped"
+                                        data-tooltip="Details" data-position="right"><i
+                                            class="material-icons">pageview</i></a>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="tooltipped" data-tooltip="Edit"
+                                        data-position="right"><i class="material-icons">edit</i></a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="tooltipped" data-tooltip="Delete"
+                                        data-position="right"><i class="material-icons">delete</i></a>
+                                    <a asp-action="Template" asp-route-id="@item.Id" class="tooltipped"
+                                        data-tooltip="Template" data-position="right"><i
+                                            class="material-icons">content_copy</i></a>
+                                    <a asp-action="Share" asp-route-id="@item.Id" class="tooltipped" data-tooltip="Share"
+                                        data-position="right"><i class="material-icons">share</i></a>
+                                    <a asp-action="" asp-route-id="@item.Id" class="tooltipped" data-tooltip="Add to Question Bank"
+                                        data-position="right"><i class="material-icons">playlist_add</i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @{
+                var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+            }
+            <p></p>
+            <a asp-action="Index" asp-route-sortOrder="@ViewData["CurrentSort"]"
+                asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                class="waves-effect waves-light btn @prevDisabled">
+                Previous
+            </a>
+            <a asp-action="Index" asp-route-sortOrder="@ViewData["CurrentSort"]"
+                asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                class="waves-effect waves-light btn @nextDisabled">
+                Next
+            </a>
+        </div>
+    </div>
+</section>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Type)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Marks)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Question)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserEmail)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Marks)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Question)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserEmail)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<!-- Preview Modal -->
+<div id="previewModal" class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <h4>Question Preview</h4>
+        <div id="previewModalContent"></div>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">CLOSE</a>
+    </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div id="confirmModal" class="modal modal-fixed-footer dialog-modal">
+    <div class="modal-content">
+        <h4>Confirm Action</h4>
+        <div id="confirmModalContent"></div>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat" id="confirmModalNo">NO</a>
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat" id="confirmModalYes">YES</a>
+    </div>
+</div>
