@@ -274,7 +274,7 @@ namespace Dividni.Controllers
         }
 
         // GET: Assessment/Share/5
-        public async Task<IActionResult> Share(Guid? id)
+        public async Task<IActionResult> Share(Guid? id, string message)
         {
             if (id == null)
             {
@@ -288,6 +288,9 @@ namespace Dividni.Controllers
                 return NotFound();
             }
 
+            if (message != null) {
+                ViewData["Message"] = message;
+            }
             return View(assessment);
         }
 
@@ -313,6 +316,32 @@ namespace Dividni.Controllers
                     return RedirectToAction(nameof(Index));
                 }
                 return View(assessment);
+            }
+        }
+
+        // POST: Assessment/ShareAll
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ShareAll([Bind("Id,Name,CoverPage,QuestionList,Appendix,UserEmail,ModifiedDate")] Assessment assessment)
+        {
+            if (!UserExists(assessment.UserEmail))
+            {
+                return RedirectToAction(nameof(Share), new { id = assessment.Id, message = "Could not find user with email: " + assessment.UserEmail});
+            }
+            else
+            {
+                if (ModelState.IsValid)
+                {
+                    var questionList = _service.shareAllQuestions(assessment.QuestionList, assessment.UserEmail, assessment.ModifiedDate);
+                    assessment.Id = Guid.NewGuid();
+                    assessment.QuestionList = questionList;
+                    _context.Add(assessment);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                return RedirectToAction(nameof(Share), new { id = assessment.Id });
             }
         }
 

@@ -383,6 +383,14 @@ fetchFormValues = () => {
   return assessment;
 }
 
+//Change the action attribute of the aspAssessmentForm
+shareAllChanged = (checkbox) => {
+  let action = document.getElementById("aspAssessmentForm").getAttribute("action");
+  let id = (action.slice(action.length - 36)); //Get id part
+  checkbox.checked ? action = '/Assessment/ShareAll/' + id : action = '/Assessment/Share/' + id;
+  document.getElementById("aspAssessmentForm").setAttribute("action", action);
+}
+
 //Submit hidden form, but first check the user email
 shareAssessmentForm = (event) => {
   event.preventDefault();

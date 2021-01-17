@@ -21,7 +21,50 @@ namespace Dividni.Services
             _context = context;
         }
 
-        public string getDirectory() {
+        //Fetch each question and create a copy of it belonging to the new user
+        public string shareAllQuestions(string questionListJSON, string userEmail, DateTime modifiedDate)
+        {
+            var questionList = JsonSerializer.Deserialize<Question[]>(questionListJSON);
+            for (int i = 0; i < questionList.Length; i++)
+            {
+                if (questionList[i].type == "Simple")
+                {
+                    var simple = fetchSimpleQuestion(new Guid(questionList[i].id));
+                    if (simple != null)
+                    {
+                        //Modify details
+                        simple.Id = Guid.NewGuid();
+                        simple.UserEmail = userEmail;
+                        simple.ModifiedDate = modifiedDate;
+                        //Save the modified question as a new object in the database
+                        _context.Add(simple);
+                        _context.SaveChanges();
+                        //Update the questionList so that it refers to the new question
+                        questionList[i].id = simple.Id.ToString();
+                    }
+                }
+                else if (questionList[i].type == "Advanced")
+                {
+                    var advanced = fetchAdvancedQuestion(new Guid(questionList[i].id));
+                    if (advanced != null)
+                    {
+                        //Modify details
+                        advanced.Id = Guid.NewGuid();
+                        advanced.UserEmail = userEmail;
+                        advanced.ModifiedDate = modifiedDate;
+                        //Save the modified question as a new object in the database
+                        _context.Add(advanced);
+                        _context.SaveChanges();
+                        //Update the questionList so that it refers to the new question
+                        questionList[i].id = advanced.Id.ToString();
+                    }
+                }
+            }
+            return JsonSerializer.Serialize<Question[]>(questionList);
+        }
+
+        public string getDirectory()
+        {
             //Return the current directory, but remove Dividni (the code folder) from the path
             return Directory.GetCurrentDirectory().Substring(0, Directory.GetCurrentDirectory().Length - 7);
         }
@@ -138,7 +181,9 @@ namespace Dividni.Services
                 }
                 //Compress the folder contents into a .zip archive
                 executeCommand("/c cd .. & cd Assessments & tar cf " + assessment.Name + ".zip " + assessment.Name);
-            } catch (Exception) {
+            }
+            catch (Exception)
+            {
                 return false;
             }
             return true;
@@ -223,7 +268,8 @@ namespace Dividni.Services
             }
         }
 
-        public byte[] getAssessmentFile(string name) {
+        public byte[] getAssessmentFile(string name)
+        {
             byte[] data = System.IO.File.ReadAllBytes(getDirectory() + "\\Assessments\\" + name + ".zip");
             deleteAssessmentFolder();
             return data;

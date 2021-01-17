@@ -22,6 +22,12 @@
                 <b>Appendix:</b></br>
                 <div id="appendix" value="@Html.DisplayFor(model => model.Appendix)"></div></br>
             </div>
+            <h6 class="teal-text">Share</h6>
+            <p></p>
+            <label>
+                <input type="checkbox" onChange="shareAllChanged(this);" />
+                <span>Share all questions</span>
+            </label>
             <form onSubmit="return shareAssessmentForm(event)">
                 Enter user email:
                 <div class="input-field inline"><input type="email" id="email" name="email" required></div>
