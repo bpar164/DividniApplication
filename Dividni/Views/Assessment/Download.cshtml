@@ -25,10 +25,10 @@
                 <div class="input-field"><input id="assessmentID" name="assessmentID" value="@Html.DisplayFor(model => model.Id)" type="hidden")></div>
                 <div class="input-field">
                     <label for="assessmentVersions">Versions</label>
-                    <input type="number" min="1" max="100" step="1" value="1" id="assessmentVersions" name="assessmentVersions" required>
+                    <input type="number" min="1" max="300" step="1" value="1" id="assessmentVersions" name="assessmentVersions" required>
                 </div>
                 <div>
-                    <p>Exam type:</p>
+                    <p>Assessment type:</p>
                         <p><label>
                             <input class="with-gap" type="radio" name="assessmentType" value="standard" required checked>
                             <span>Standard</span>

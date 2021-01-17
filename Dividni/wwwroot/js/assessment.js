@@ -243,7 +243,7 @@ addQuestion = () => {
           let question = res;
           let li = createHTMLElement('li', question.id, ['collection-item', 'teal', 'lighten-4']);
           li.setAttribute('name', question.name);
-          li.setAttribute('type', question.type);
+          li.setAttribute('type', type);
           li.addEventListener("click", () => {
             questionClicked(question.id);
           });
