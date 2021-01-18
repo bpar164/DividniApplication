@@ -1,54 +1,89 @@
-@model IEnumerable<Dividni.Models.QuestionBank>
+@model PaginatedList<Dividni.Models.QuestionBank>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Question Banks";
+    ViewData["Heading"] = "Question Banks";
+    ViewData["Description"] = "Create and manage your question banks";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.QuestionList)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserEmail)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModifiedDate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.QuestionList)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserEmail)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModifiedDate)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
-                <a asp-controller="Assessment" asp-action="Create" asp-route-id="@item.Id">Create Exam</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<section class="section container blue lighten-5" id="main">
+    <div class="row">
+        <div class="col">
+            <h5 class="teal-text">My Question Banks</h5>
+            <p>Review the <a asp-controller="Tutorial" asp-action="Assessment" target="_blank">tutorial <i
+                        class="tiny material-icons">open_in_new</i></a>
+                for help.</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            <form asp-controller="QuestionBank" asp-action="Index" align="right">
+                Search by name:
+                <div class="input-field inline"><input type="text" name="SearchString"
+                        value="@ViewData["CurrentFilter"]"></div>
+                <button type="submit" class="waves-effect waves-light btn">Search<i
+                        class="material-icons right">search</i></button>
+                <a asp-controller="QuestionBank" class="waves-effect waves-light btn">Reset<i
+                        class="material-icons right">undo</i></a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]"
+                    asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                    class="btn-floating waves-effect waves-light red"><i
+                        class="material-icons right">sort_by_alpha</i></a>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            <div id="questionBankCards">
+                @foreach (var item in Model)
+                {
+                    <div class="col s12 m6 l4">
+                        <div class="card sticky-action">
+                            <div class="card-image waves-effect waves-block waves-light">
+                                <img class="activator" src="~/images/bank.jpg">
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title activator grey-text text-darken-4">@Html.DisplayFor(modelItem =>
+                                item.Name)</span>
+                                <p>@Html.DisplayFor(modelItem => item.ModifiedDate)</p>
+                            </div>
+                            <div class="card-action">
+                                <a class="activator waves-effect waves-light">Details <i
+                                        class="material-icons tiny">pageview</i></a>
+                                <a asp-action="Delete" asp-route-id="@item.Id"
+                                    class="waves-effect waves-light red-text">Delete <i
+                                        class="material-icons tiny">delete</i></a>
+                                <a asp-action="Save" asp-route-id="@item.Id" class="waves-effect waves-light">Save <i
+                                        class="material-icons tiny">save</i></a>
+                            </div>
+                            <div class="card-reveal">
+                                <span class="card-title grey-text text-darken-4">@Html.DisplayFor(modelItem => item.Name)<i
+                                        class="material-icons right">close</i></span>
+                                <p>@Html.DisplayFor(modelItem => item.QuestionList)</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            @{
+                var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+            }
+            <p></p>
+            <a asp-action="Index" asp-route-sortOrder="@ViewData["CurrentSort"]"
+                asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                class="waves-effect waves-light btn @prevDisabled">
+                Previous
+            </a>
+            <a asp-action="Index" asp-route-sortOrder="@ViewData["CurrentSort"]"
+                asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                class="waves-effect waves-light btn @nextDisabled">
+                Next
+            </a>
+        </div>
+    </div>
+</section>

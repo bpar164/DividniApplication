@@ -22,9 +22,46 @@ namespace Dividni.Controllers
         }
 
         // GET: QuestionBank
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
-            return View(await _context.QuestionBank.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = sortOrder == "name" ? "name_desc" : "name";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
+            var banks = from b in _context.QuestionBank
+                         where b.UserEmail.Equals(User.Identity.Name)
+                         select b;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                banks = banks.Where(b => b.Name.ToUpper().Contains(searchString.ToUpper()));
+            }
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    banks = banks.OrderByDescending(s => s.Name);
+                    break;
+                case "name":
+                    banks = banks.OrderBy(s => s.Name);
+                    break;
+                default:
+                    banks = banks.OrderByDescending(s => s.ModifiedDate);
+                    break;
+            }
+
+            int pageSize = 10;
+            return View(await PaginatedList<QuestionBank>.CreateAsync(banks.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: QuestionBank/Details/5
