@@ -1441,9 +1441,7 @@ C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Assessmen
 C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Assessment\Index.cshtml.g.cs
 C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Assessment\Share.cshtml.g.cs
 C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Assessment\Template.cshtml.g.cs
-C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\QuestionBank\Create.cshtml.g.cs
 C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\QuestionBank\Delete.cshtml.g.cs
-C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\QuestionBank\Details.cshtml.g.cs
 C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\QuestionBank\Edit.cshtml.g.cs
 C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\QuestionBank\Index.cshtml.g.cs
 C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Assessment\Download.cshtml.g.cs

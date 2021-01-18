@@ -64,45 +64,18 @@ namespace Dividni.Controllers
             return View(await PaginatedList<QuestionBank>.CreateAsync(banks.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
-        // GET: QuestionBank/Details/5
-        public async Task<IActionResult> Details(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var questionBank = await _context.QuestionBank
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (questionBank == null)
-            {
-                return NotFound();
-            }
-
-            return View(questionBank);
-        }
-
-        // GET: QuestionBank/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
         // POST: QuestionBank/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,QuestionList,UserEmail,ModifiedDate")] QuestionBank questionBank)
+        public async Task<Boolean> Create([Bind("Id,Name,QuestionList,UserEmail,ModifiedDate")] QuestionBank questionBank) 
         {
             if (ModelState.IsValid)
             {
                 questionBank.Id = Guid.NewGuid();
                 _context.Add(questionBank);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return true;
             }
-            return View(questionBank);
+            return false;
         }
 
         // GET: QuestionBank/Edit/5

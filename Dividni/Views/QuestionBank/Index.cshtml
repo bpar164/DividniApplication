@@ -13,11 +13,21 @@
             <p>Review the <a asp-controller="Tutorial" asp-action="Assessment" target="_blank">tutorial <i
                         class="tiny material-icons">open_in_new</i></a>
                 for help.</p>
+            <p></p>
+            <h6 class="teal-text">Create</h6>
+            <form onSubmit="return createQuestionBank(event)">
+                Enter name:
+                <div class="input-field inline"><input type="text" id="name" required
+                        pattern="^[a-zA-Z0-9][a-zA-Z0-9 ]*"></div>
+                <button type="submit" class="waves-effect waves-light btn">Create<i
+                        class="material-icons right">send</i></button>
+            </form>
         </div>
     </div>
     <div class="row">
         <div class="col s12">
-            <form asp-controller="QuestionBank" asp-action="Index" align="right">
+            <h6 class="teal-text">Manage</h6>
+            <form asp-controller="QuestionBank" asp-action="Index">
                 Search by name:
                 <div class="input-field inline"><input type="text" name="SearchString"
                         value="@ViewData["CurrentFilter"]"></div>
@@ -47,19 +57,22 @@
                                 item.Name)</span>
                                 <p>@Html.DisplayFor(modelItem => item.ModifiedDate)</p>
                             </div>
-                            <div class="card-action">
+                            <div class="card-action center">
                                 <a class="activator waves-effect waves-light">Details <i
                                         class="material-icons tiny">pageview</i></a>
                                 <a asp-action="Delete" asp-route-id="@item.Id"
                                     class="waves-effect waves-light red-text">Delete <i
                                         class="material-icons tiny">delete</i></a>
-                                <a asp-action="Save" asp-route-id="@item.Id" class="waves-effect waves-light">Save <i
-                                        class="material-icons tiny">save</i></a>
+                                <a asp-action="Save" asp-route-id="@item.Id" class="waves-effect waves-light teal-text">Save
+                                    <i class="material-icons tiny">save</i></a>
                             </div>
-                            <div class="card-reveal">
-                                <span class="card-title grey-text text-darken-4">@Html.DisplayFor(modelItem => item.Name)<i
-                                        class="material-icons right">close</i></span>
-                                <p>@Html.DisplayFor(modelItem => item.QuestionList)</p>
+                            <div class="card-reveal grey lighten-2">
+                                <span class="card-title">
+                                    <div class="input-field inline"><input type="text"
+                                            value="@Html.DisplayFor(modelItem => item.Name)"></div>
+                                    <i class="material-icons right">close</i>
+                                </span>
+                                <ul class="collection questionList" value="@item.QuestionList"></ul>
                             </div>
                         </div>
                     </div>
@@ -86,4 +99,5 @@
             </a>
         </div>
     </div>
+    <div id="userEmail" value="@User.Identity.Name"></div>
 </section>

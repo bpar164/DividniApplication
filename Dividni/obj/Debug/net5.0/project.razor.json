@@ -15733,11 +15733,6 @@
       "FileKind": "mvc"
     },
     {
-      "FilePath": "c:\\Users\\benpa\\DividniApplication\\Dividni\\Views\\QuestionBank\\Create.cshtml",
-      "TargetPath": "Views\\QuestionBank\\Create.cshtml",
-      "FileKind": "mvc"
-    },
-    {
       "FilePath": "c:\\Users\\benpa\\DividniApplication\\Dividni\\Views\\Shared\\_ValidationScriptsPartial.cshtml",
       "TargetPath": "Views\\Shared\\_ValidationScriptsPartial.cshtml",
       "FileKind": "mvc"
@@ -15785,11 +15780,6 @@
     {
       "FilePath": "c:\\Users\\benpa\\DividniApplication\\Dividni\\Views\\Shared\\_Layout.cshtml",
       "TargetPath": "Views\\Shared\\_Layout.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\benpa\\DividniApplication\\Dividni\\Views\\QuestionBank\\Details.cshtml",
-      "TargetPath": "Views\\QuestionBank\\Details.cshtml",
       "FileKind": "mvc"
     },
     {
