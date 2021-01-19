@@ -15763,16 +15763,6 @@
       "FileKind": "mvc"
     },
     {
-      "FilePath": "c:\\Users\\benpa\\DividniApplication\\Dividni\\Views\\QuestionBank\\Edit.cshtml",
-      "TargetPath": "Views\\QuestionBank\\Edit.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Users\\benpa\\DividniApplication\\Dividni\\Views\\QuestionBank\\Delete.cshtml",
-      "TargetPath": "Views\\QuestionBank\\Delete.cshtml",
-      "FileKind": "mvc"
-    },
-    {
       "FilePath": "c:\\Users\\benpa\\DividniApplication\\Dividni\\Views\\Simple\\Share.cshtml",
       "TargetPath": "Views\\Simple\\Share.cshtml",
       "FileKind": "mvc"

@@ -60,7 +60,7 @@ namespace Dividni.Controllers
                     break;
             }
 
-            int pageSize = 10;
+            int pageSize = 9;
             return View(await PaginatedList<QuestionBank>.CreateAsync(banks.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
@@ -78,34 +78,23 @@ namespace Dividni.Controllers
             return false;
         }
 
-        // GET: QuestionBank/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        // POST: QuestionBank/Delete
+        [HttpPost, ActionName("Delete")]
+        public async Task<Boolean> DeleteConfirmed(Guid id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var questionBank = await _context.QuestionBank.FindAsync(id);
-            if (questionBank == null)
-            {
-                return NotFound();
+            if (questionBank != null) {
+                _context.QuestionBank.Remove(questionBank);
+                await _context.SaveChangesAsync();
+                return true;
             }
-            return View(questionBank);
+            return false;
         }
 
-        // POST: QuestionBank/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: QuestionBank/Edit
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,QuestionList,UserEmail,ModifiedDate")] QuestionBank questionBank)
+        public async Task<Boolean> Edit(QuestionBank questionBank)
         {
-            if (id != questionBank.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
                 try
@@ -117,45 +106,16 @@ namespace Dividni.Controllers
                 {
                     if (!QuestionBankExists(questionBank.Id))
                     {
-                        return NotFound();
+                        return false;
                     }
                     else
                     {
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return true;
             }
-            return View(questionBank);
-        }
-
-        // GET: QuestionBank/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var questionBank = await _context.QuestionBank
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (questionBank == null)
-            {
-                return NotFound();
-            }
-
-            return View(questionBank);
-        }
-
-        // POST: QuestionBank/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
-        {
-            var questionBank = await _context.QuestionBank.FindAsync(id);
-            _context.QuestionBank.Remove(questionBank);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return false;
         }
 
         private bool QuestionBankExists(Guid id)
