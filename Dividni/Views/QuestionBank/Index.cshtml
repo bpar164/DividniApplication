@@ -65,6 +65,8 @@
                                         class="material-icons tiny">delete</i></a>
                                 <a class="waves-effect waves-light teal-text" onClick="saveQuestionBank('@item.Id');">Save
                                     <i class="material-icons tiny">save</i></a>
+                                <a asp-controller="Assessment" asp-action="Create" asp-route-id="@item.Id" class="waves-effect waves-light teal-text">Create Assessment
+                                    <i class="material-icons tiny">send</i></a>
                             </div>
                             <div class="card-reveal grey lighten-2">
                                 <span class="card-title">

@@ -6,6 +6,7 @@ const minIncorrectTruth = 4;
 const minCorrectXYZ = 3;
 const minIncorrectXYZ = 3;
 const limit = 25;
+let currentQuestion = {};
 
 $(document).ready(() => {
   //Create questionText editor
@@ -16,12 +17,15 @@ $(document).ready(() => {
     toolbar: 'undo redo | styleselect | bold italic underline strikethrough superscript subscript removeformat | bullist numlist table | ',
     plugins: ['lists table']
   });
+  currentQuestion = {};
   //For certain pages
   let location = window.location.href;
   if (location.includes('/Simple/Details') || location.includes('/Simple/Delete') || location.includes('/Simple/Share')) {
     displayQuestionHTML();
   } else if (location.includes('/Simple/Edit') || location.includes('/Simple/Template')) {
     setTimeout(() => { populateQuestionForm(); }, 500); //Give tinyMCE time to load
+  } else if (location.includes('/Simple/Index') || (location.slice(location.length-6) === 'Simple')) {
+    populateQuestionBankDropdown(JSON.parse(document.getElementById('questionBanks').getAttribute('value')));
   }
   if (location.includes('/Simple/Share')) {
     M.toast({ html: document.getElementById("message").getAttribute("Value") });
@@ -303,6 +307,45 @@ shareQuestionForm = (event) => {
     document.getElementById('aspModifiedDate').value = new Date().toISOString().slice(0, 10);
     document.getElementById("aspQuestionForm").submit();
   }
+}
+
+//Used for adding to question banks
+setCurrentQuestion = (id, name) => {
+  currentQuestion.id = id;
+  currentQuestion.name = name;
+}
+
+//Add all the user's question banks as options in the dropdown
+populateQuestionBankDropdown = (questionBanks) => {
+  for (let i = 0; i < questionBanks.length; i ++) {
+    let li = document.createElement('li');
+    li.innerHTML = createDropdownItem(questionBanks[i]);
+    document.getElementById('dropdown').appendChild(li);
+  }
+  $('.dropdown-trigger').dropdown();
+}
+
+createDropdownItem = (questionBank) => {
+  return `<a onClick="addToQuestionBank('` + questionBank.Id + `');">` + questionBank.Name + `</a>`;
+}
+
+//Send a POST request with the data
+addToQuestionBank = (id) => {
+  $.ajax({
+    url: '/QuestionBank/AddQuestion',
+    method: 'POST',
+    data: { 'bankId': id, 'id': currentQuestion.id, 'name': currentQuestion.name, 'type': 'Simple', 'value': null },
+    success: (res) => {
+      if (res === true) {
+        M.toast({ html: 'Question added.' });
+      } else {
+          M.toast({ html: 'Error adding question. Please try again.' });
+      }
+    },
+    error: () => {
+      M.toast({ html: 'Error adding question. Please try again.' });
+    }
+  });
 }
 
 

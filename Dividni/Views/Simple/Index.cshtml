@@ -6,6 +6,8 @@
     ViewData["Description"] = "Manage your simple multiple-choice questions";
 }
 
+<div id="questionBanks" value="@ViewData["QuestionBanks"]"></div>
+
 <section class="section container blue lighten-5" id="main">
     <div class="row">
         <div class="col">
@@ -42,7 +44,7 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.Name)
                                 <a href="#" class="tooltipped" onClick="idCopied('@item.Id');" data-tooltip="Copy Id"
-                                        data-position="right"><i class="material-icons">link</i></a> 
+                                    data-position="right"><i class="material-icons">link</i></a>
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.ModifiedDate)
@@ -61,8 +63,10 @@
                                             class="material-icons">content_copy</i></a>
                                     <a asp-action="Share" asp-route-id="@item.Id" class="tooltipped" data-tooltip="Share"
                                         data-position="right"><i class="material-icons">share</i></a>
-                                    <a asp-action="" asp-route-id="@item.Id" class="tooltipped" data-tooltip="Add to Question Bank"
-                                        data-position="right"><i class="material-icons">playlist_add</i></a>
+                                    <a href="#" class="dropdown-trigger tooltipped" data-target='dropdown'
+                                        data-tooltip="Add to Question Bank" data-position="right"
+                                        onClick="setCurrentQuestion('@item.Id', '@item.Name');"><i
+                                            class="material-icons">playlist_add</i></a>
                                 </div>
                             </td>
                         </tr>
@@ -87,6 +91,10 @@
         </div>
     </div>
 </section>
+
+<!-- Dropdown -->
+<ul id='dropdown' class='dropdown-content'>
+</ul>
 
 <!-- Preview Modal -->
 <div id="previewModal" class="modal modal-fixed-footer">

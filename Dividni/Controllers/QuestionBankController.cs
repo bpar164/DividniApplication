@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Dividni.Data;
 using Dividni.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Text.Json;
 
 namespace Dividni.Controllers
 {
@@ -121,6 +122,41 @@ namespace Dividni.Controllers
         private bool QuestionBankExists(Guid id)
         {
             return _context.QuestionBank.Any(e => e.Id == id);
+        }
+
+        // POST: QuestionBank/AddQuestion  
+        [HttpPost]    
+        public async Task<Boolean> AddQuestion(Guid bankId, Question question)
+        {
+            var questionBank = await _context.QuestionBank
+                .FirstOrDefaultAsync(q => q.Id == bankId);
+            if (questionBank == null)
+            {
+                return false;
+            } else {
+                //Add new question to questionList if not already there
+                var questionList = JsonSerializer.Deserialize<Question[]>(questionBank.QuestionList);
+                var found = false;
+                for (var i = 0; i < questionList.Length; i++) {
+                    if (questionList[i].id == question.id) {
+                        found = true;
+                    }
+                }
+                if (found == false) {
+                    questionList.Append(question);
+                    questionBank.QuestionList = JsonSerializer.Serialize<Question[]>(questionList);
+                    try
+                    {
+                        _context.Update(questionBank);
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            } 
         }
     }
 }
