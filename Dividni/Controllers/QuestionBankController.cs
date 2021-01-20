@@ -40,8 +40,8 @@ namespace Dividni.Controllers
             ViewData["CurrentFilter"] = searchString;
 
             var banks = from b in _context.QuestionBank
-                         where b.UserEmail.Equals(User.Identity.Name)
-                         select b;
+                        where b.UserEmail.Equals(User.Identity.Name)
+                        select b;
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -67,7 +67,7 @@ namespace Dividni.Controllers
 
         // POST: QuestionBank/Create
         [HttpPost]
-        public async Task<Boolean> Create([Bind("Id,Name,QuestionList,UserEmail,ModifiedDate")] QuestionBank questionBank) 
+        public async Task<Boolean> Create([Bind("Id,Name,QuestionList,UserEmail,ModifiedDate")] QuestionBank questionBank)
         {
             if (ModelState.IsValid)
             {
@@ -84,7 +84,8 @@ namespace Dividni.Controllers
         public async Task<Boolean> DeleteConfirmed(Guid id)
         {
             var questionBank = await _context.QuestionBank.FindAsync(id);
-            if (questionBank != null) {
+            if (questionBank != null)
+            {
                 _context.QuestionBank.Remove(questionBank);
                 await _context.SaveChangesAsync();
                 return true;
@@ -125,38 +126,66 @@ namespace Dividni.Controllers
         }
 
         // POST: QuestionBank/AddQuestion  
-        [HttpPost]    
-        public async Task<Boolean> AddQuestion(Guid bankId, Question question)
+        [HttpPost]
+        public async Task<Boolean> AddQuestion(string requestBankId, Question question)
         {
-            var questionBank = await _context.QuestionBank
-                .FirstOrDefaultAsync(q => q.Id == bankId);
-            if (questionBank == null)
+            //Have to add values manually to new vars as binding was not working
+            var bankId = Request.Form["bankId"];
+            Question questionDetails = new Question();
+            questionDetails.id = Request.Form["id"];
+            questionDetails.name = Request.Form["name"];
+            questionDetails.type = Request.Form["type"];
+            questionDetails.value = Request.Form["value"];
+
+            if (bankId == "")
             {
                 return false;
-            } else {
-                //Add new question to questionList if not already there
-                var questionList = JsonSerializer.Deserialize<Question[]>(questionBank.QuestionList);
-                var found = false;
-                for (var i = 0; i < questionList.Length; i++) {
-                    if (questionList[i].id == question.id) {
-                        found = true;
-                    }
+            }
+              
+            try
+            {
+                var id = new Guid(bankId);
+                var questionBank = await _context.QuestionBank
+                    .FirstOrDefaultAsync(q => q.Id == id);
+                if (questionBank == null)
+                {
+                    return false;
                 }
-                if (found == false) {
-                    questionList.Append(question);
-                    questionBank.QuestionList = JsonSerializer.Serialize<Question[]>(questionList);
-                    try
+                else
+                {
+                    //Add new question to questionList if not already there
+                    var questionList = JsonSerializer.Deserialize<Question[]>(questionBank.QuestionList);
+                    var found = false;
+                    for (var i = 0; i < questionList.Length; i++)
                     {
-                        _context.Update(questionBank);
-                        await _context.SaveChangesAsync();
+                        if (questionList[i].id == questionDetails.id)
+                        {
+                            found = true;
+                        }
                     }
-                    catch (DbUpdateConcurrencyException)
+                    if (found == false)
                     {
-                        return false;
+                        //Resize and add to array
+                        Array.Resize(ref questionList, questionList.Length + 1);
+                        questionList[questionList.Length - 1] = questionDetails;
+                        questionBank.QuestionList = JsonSerializer.Serialize<Question[]>(questionList);
+                        try
+                        {
+                            _context.Update(questionBank);
+                            await _context.SaveChangesAsync();
+                        }
+                        catch (DbUpdateConcurrencyException)
+                        {
+                            return false;
+                        }
                     }
+                    return true;
                 }
-                return true;
-            } 
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }
