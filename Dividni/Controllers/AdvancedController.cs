@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Dividni.Data;
 using Dividni.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Text.Json;
 
 namespace Dividni.Controllers
 {
@@ -24,6 +25,15 @@ namespace Dividni.Controllers
         // GET: Advanced
         public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
+            //Fetch the user's question banks
+            var banks = from b in _context.QuestionBank
+                         where b.UserEmail.Equals(User.Identity.Name)
+                         select new { b.Id, b.Name };
+
+            var questionBanks = await banks.ToListAsync();
+       
+            ViewData["QuestionBanks"] = JsonSerializer.Serialize<Object>(questionBanks);
+
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = sortOrder == "name" ? "name_desc" : "name";
 

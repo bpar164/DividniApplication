@@ -1,12 +1,20 @@
 let questions = [] //Holds all questions on page, indexed by the same ids as the lis
+let currentQuestion = {};
 
 $(document).ready(() => {
+    currentQuestion = {};
     //For certain pages
     let location = window.location.href;
     if (location.includes('/QuestionBank')) {
         displayAllQuestionLists();
     }
 });
+
+setCurrentQuestion = (id, name, type) => {
+    currentQuestion.id = id;
+    currentQuestion.name = name;
+    currentQuestion.type = type;
+}
 
 //Fetch all question list JSON objects and display them in the correct card
 displayAllQuestionLists = () => {
@@ -94,14 +102,14 @@ saveQuestionBank = (id) => {
             name = element.value;
         } else {
             questionList = element.getElementsByTagName('li');
-        }  
+        }
     });
     //Check name
     if ((name === '') || (!(/^[a-zA-Z0-9][a-zA-Z0-9 ]*/.test(name)))) {
         M.toast({ html: 'Please fix the question bank name.' });
     } else if (questionList.length <= 0) { //Check that there is at least one question
         M.toast({ html: 'Question bank must have at least one question. Refresh the page to reset.' });
-    } else { 
+    } else {
         //Create new question list
         let newQuestionList = [];
         Array.from(questionList).forEach((element) => {
@@ -125,6 +133,39 @@ saveQuestionBank = (id) => {
         });
 
     }
+}
+
+//Add all the user's question banks as options in the dropdown
+populateQuestionBankDropdown = (questionBanks) => {
+    for (let i = 0; i < questionBanks.length; i++) {
+        let li = document.createElement('li');
+        li.innerHTML = createDropdownItem(questionBanks[i]);
+        document.getElementById('dropdown').appendChild(li);
+    }
+    $('.dropdown-trigger').dropdown();
+}
+
+createDropdownItem = (questionBank) => {
+    return `<a onClick="addToQuestionBank('` + questionBank.Id + `');">` + questionBank.Name + `</a>`;
+}
+
+//Send a POST request with the data
+addToQuestionBank = (id) => {
+    $.ajax({
+        url: '/QuestionBank/AddQuestion',
+        method: 'POST',
+        data: { 'bankId': id, 'id': currentQuestion.id, 'name': currentQuestion.name, 'type': currentQuestion.type, 'value': null },
+        success: (res) => {
+            if (res === true) {
+                M.toast({ html: 'Question added.' });
+            } else {
+                M.toast({ html: 'Error adding question. Please try again.' });
+            }
+        },
+        error: () => {
+            M.toast({ html: 'Error adding question. Please try again.' });
+        }
+    });
 }
 
 
