@@ -24,7 +24,7 @@ $(document).ready(() => {
     displayQuestionHTML();
   } else if (location.includes('/Simple/Edit') || location.includes('/Simple/Template')) {
     setTimeout(() => { populateQuestionForm(); }, 500); //Give tinyMCE time to load
-  } else if (location.includes('/Simple/Index') || (location.slice(location.length-6) === 'Simple')) {
+  } else if (location.includes('/Simple/Index') || location.includes('/Simple?') || location.includes('/Simple#') || (location.slice(location.length-6) === 'Simple')) {
     populateQuestionBankDropdown(JSON.parse(document.getElementById('questionBanks').getAttribute('value')));
   }
   if (location.includes('/Simple/Share')) {
