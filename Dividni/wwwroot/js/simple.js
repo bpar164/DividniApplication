@@ -291,7 +291,7 @@ idCopied = (id) => {
 }
 
 //Submit hidden form, but first check the user email
-shareQuestionForm = (event) => {
+shareSimpleQuestionForm = (event) => {
   event.preventDefault();
   let email = event.target.elements.email.value;
   let currentUserEmail = document.getElementById("aspUserEmail").value;

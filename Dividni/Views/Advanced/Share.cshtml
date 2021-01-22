@@ -1,9 +1,9 @@
-@model Dividni.Models.Simple
+@model Dividni.Models.Advanced
 
 @{
-    ViewData["Title"] = "Simple: Share";
-    ViewData["Heading"] = "Simple Multiple-Choice Questions";
-    ViewData["Description"] = "Share a simple multiple-choice question with another user";
+    ViewData["Title"] = "Advanced: Share";
+    ViewData["Heading"] = "Advanced Multiple-Choice Questions";
+    ViewData["Description"] = "Share an advanced multiple-choice question with another user";
 }
 
 <div id="message" value="@ViewData["Message"]"></div>
@@ -15,17 +15,12 @@
             <p>Share the following question?</p>
             <div>
                 <b>Name: </b>@Html.DisplayFor(model => model.Name)</br>
-                </br><b>Type: </b>@Html.DisplayFor(model => model.Type)</br>
                 </br><b>Marks: </b>@Html.DisplayFor(model => model.Marks)</br>
-                </br><b>Question Text:</b></br>
-                <div id="questionText" value="@Html.DisplayFor(model => model.QuestionText)"></div></br>
-                <b>Correct Answers:</b>
-                <ol id="correct" value="@Html.DisplayFor(model => model.CorrectAnswers)"></ol>
-                <b>Incorrect Answers:</b>
-                <ol id="incorrect" value="@Html.DisplayFor(model => model.IncorrectAnswers)"></ol></br>
+                </br><b>Question:</b></br>
+                <div id="question"></div></br>
             </div>
             <h6 class="teal-text">Share</h6>
-            <form onSubmit="return shareSimpleQuestionForm(event)">
+            <form onSubmit="return shareAdvancedQuestionForm(event)">
                 Enter user email:
                 <div class="input-field inline"><input type="email" id="email" name="email" required></div>
                 <button type="submit" class="waves-effect waves-light btn orange">Share<i
@@ -38,12 +33,10 @@
     </div>
     <form asp-action="Share" id="aspQuestionForm">
         <input asp-for="Name" id="aspName" type="hidden" />
-        <input asp-for="Type" id="aspType" type="hidden" />
+        <input asp-for="Type" id="aspType" value="Advanced" type="hidden" />
         <input asp-for="Marks" id="aspMarks" type="hidden" />
-        <input asp-for="QuestionText" id="aspQuestionText" type="hidden" />
-        <input asp-for="CorrectAnswers" id="aspCorrectAnswers" type="hidden" />
-        <input asp-for="IncorrectAnswers" id="aspIncorrectAnswers" type="hidden" />
-        <input asp-for="UserEmail" id="aspUserEmail" type="hidden" value="@User.Identity.Name" />
+        <input asp-for="Question" id="aspQuestion" type="hidden" />
+        <input asp-for="UserEmail" id="aspUserEmail" value="@User.Identity.Name" type="hidden" />
         <input asp-for="ModifiedDate" id="aspModifiedDate" type="hidden" />
     </form>
 </section>
