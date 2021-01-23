@@ -22,9 +22,6 @@ namespace Dividni.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Marks")
-                        .HasColumnType("INTEGER");
-
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("TEXT");
 

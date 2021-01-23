@@ -13,9 +13,10 @@
             <p>Delete the following question?</p>
             <div>
                 <b>Name: </b>@Html.DisplayFor(model => model.Name)</br>
-                </br><b>Marks: </b>@Html.DisplayFor(model => model.Marks)</br>
                 </br><b>Question:</b></br>
-                 <div id="question"></div></br>
+                <div id="editorContainer">
+                    <div id="editor"></div>
+                </div></br>
             </div>
             <div class="row">
                 <div class="col">

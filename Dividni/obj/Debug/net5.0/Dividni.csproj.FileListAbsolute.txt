@@ -1433,7 +1433,6 @@ C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Dividni.pdb
 C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Dividni.genruntimeconfig.cache
 C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Simple\Template.cshtml.g.cs
 C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Simple\Share.cshtml.g.cs
-C:\Users\benpa\DividniApplication\Dividni\bin\Debug\net5.0\app.db
 C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Assessment\Create.cshtml.g.cs
 C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Assessment\Delete.cshtml.g.cs
 C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Assessment\Details.cshtml.g.cs
@@ -1444,3 +1443,4 @@ C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Assessmen
 C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\QuestionBank\Index.cshtml.g.cs
 C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Assessment\Download.cshtml.g.cs
 C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Advanced\Share.cshtml.g.cs
+C:\Users\benpa\DividniApplication\Dividni\bin\Debug\net5.0\app.db

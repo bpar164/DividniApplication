@@ -12,11 +12,10 @@ namespace Dividni.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: true),
-                    Type = table.Column<string>(type: "TEXT", nullable: true),
-                    Marks = table.Column<int>(type: "INTEGER", nullable: false),
-                    Question = table.Column<string>(type: "TEXT", nullable: true),
-                    UserEmail = table.Column<string>(type: "TEXT", nullable: true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Type = table.Column<string>(type: "TEXT", maxLength: 8, nullable: false),
+                    Question = table.Column<string>(type: "TEXT", nullable: false),
+                    UserEmail = table.Column<string>(type: "TEXT", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
@@ -64,17 +63,49 @@ namespace Dividni.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Assessment",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    CoverPage = table.Column<string>(type: "TEXT", nullable: false),
+                    QuestionList = table.Column<string>(type: "TEXT", nullable: false),
+                    Appendix = table.Column<string>(type: "TEXT", nullable: false),
+                    UserEmail = table.Column<string>(type: "TEXT", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Assessment", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "QuestionBank",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    QuestionList = table.Column<string>(type: "TEXT", nullable: false),
+                    UserEmail = table.Column<string>(type: "TEXT", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_QuestionBank", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Simple",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: true),
-                    Type = table.Column<string>(type: "TEXT", nullable: true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Type = table.Column<string>(type: "TEXT", nullable: false),
                     Marks = table.Column<int>(type: "INTEGER", nullable: false),
-                    QuestionText = table.Column<string>(type: "TEXT", nullable: true),
-                    CorrectAnswers = table.Column<string>(type: "TEXT", nullable: true),
-                    IncorrectAnswers = table.Column<string>(type: "TEXT", nullable: true),
-                    UserEmail = table.Column<string>(type: "TEXT", nullable: true),
+                    QuestionText = table.Column<string>(type: "TEXT", nullable: false),
+                    CorrectAnswers = table.Column<string>(type: "TEXT", nullable: false),
+                    IncorrectAnswers = table.Column<string>(type: "TEXT", nullable: false),
+                    UserEmail = table.Column<string>(type: "TEXT", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
@@ -245,6 +276,12 @@ namespace Dividni.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Assessment");
+
+            migrationBuilder.DropTable(
+                name: "QuestionBank");
 
             migrationBuilder.DropTable(
                 name: "Simple");

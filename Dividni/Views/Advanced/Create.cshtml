@@ -16,17 +16,13 @@
         for help.</p>
     </div>
   </div>
-  <form id="questionForm">
+  <form id="advancedQuestionForm">
     <div class="row">
       <div class="col s12 m8 l5">
         <div class="input-field">
           <label for="Name">Question name</label>
           <input for="Name" type="text" id="name" name="name" required pattern="^[a-zA-Z0-9][a-zA-Z0-9 ]*">
-        </div>
-        <div class="input-field">
-          <label for="Marks" for="marks">Marks</label>
-          <input for="Marks" type="number" min="0" max="10" step="0.5" id="marks" name="marks" required>
-        </div>         
+        </div>        
       </div>
     </div>
     <div class="row">
@@ -38,9 +34,9 @@
       </div>
     </div>
     <div class="row">
-      <a class="waves-effect waves-light btn right disabled modal-trigger" id="preview" href="#previewModal"
-        onClick="previewAnswer();">
-        Preview<i class="material-icons right">assignment_turned_in</i>
+      <a class="waves-effect waves-light btn right modal-trigger" href="#statusModal"
+        onClick="testAnswer();">
+        Test<i class="material-icons right">verified_user</i>
       </a>
     </div>
     <div class="row">
@@ -50,26 +46,13 @@
     </div>
   </form>
   <form asp-action="Create" id="aspQuestionForm">                         
-    <input asp-for="Name" id="aspName" type="hidden"/>            
-    <input asp-for="Type" id="aspType" value="Advanced" type="hidden"/>
-    <input asp-for="Marks" id="aspMarks" type="hidden"/>
-    <input asp-for="Question" id="aspQuestion" type="hidden"/>
-    <input asp-for="UserEmail" value="@User.Identity.Name" type="hidden"/>
-    <input asp-for="ModifiedDate" id="aspModifiedDate" type="hidden"/>
+    <input asp-for="Name" id="aspName" />            
+    <input asp-for="Type" id="aspType" value="Advanced" />
+    <input asp-for="Question" id="aspQuestion" />
+    <input asp-for="UserEmail" value="@User.Identity.Name" />
+    <input asp-for="ModifiedDate" id="aspModifiedDate" />
 </form>
 </section>
-
-@* <!-- Preview Modal -->
-<div id="previewModal" class="modal modal-fixed-footer">
-  <div class="modal-content">
-    <h4>Question Preview</h4>
-    <p>Review these details before clicking <b>GENERATE</b>:</p>
-    <div id="previewModalContent"></div>
-  </div>
-  <div class="modal-footer">
-    <a href="#!" class="modal-close waves-effect waves-green btn-flat">CLOSE</a>
-  </div>
-</div>
 
 <!-- Status Modal -->
 <div id="statusModal" class="modal modal-fixed-footer dialog-modal">
@@ -80,7 +63,7 @@
   <div class="modal-footer">
     <a href="#!" class="modal-close waves-effect waves-green btn-flat" id="statusModalClose">CLOSE</a>
   </div>
-</div> *@
+</div> 
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

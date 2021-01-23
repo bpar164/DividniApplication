@@ -225,7 +225,7 @@ generateQuestionPreviewContent = (question) => {
 }
 
 //When form is submitted, check for required fields and generate the status modal
-$("#questionForm").submit((event) => {
+$("#simpleQuestionForm").submit((event) => {
   event.preventDefault();
   //Reset the answer editors to remove empty fields
   createAnswers(currentType, null, null);
@@ -251,7 +251,7 @@ $("#questionForm").submit((event) => {
     let question = fetchQuestionFormValues();
     let duplicates = checkForDuplicateAnswers(question.correctAnswers.concat(question.incorrectAnswers));
     if (duplicates) {
-      content = '<p>Please ensure that all answers are unique.</p>'
+      content = '<p>Please ensure that all answers are unique.</p>';
     } else { //All required fields filled in and not duplicated
       content = '<p>Saving question...</p>';
       generate = true;
@@ -260,7 +260,7 @@ $("#questionForm").submit((event) => {
   document.getElementById('statusModalContent').innerHTML = content;
   if (generate === true) {
     document.getElementById('statusModalClose').classList.add("disabled");
-    generateQuestion();
+    generateSimpleQuestion();
   }
 });
 
@@ -270,7 +270,7 @@ checkForDuplicateAnswers = (array) => {
 }
 
 //Add the question details to asp form and submit the form
-generateQuestion = () => {
+generateSimpleQuestion = () => {
   let question = fetchQuestionFormValues();
   //Set the values in the hidden form
   document.getElementById('aspName').value = question.name;

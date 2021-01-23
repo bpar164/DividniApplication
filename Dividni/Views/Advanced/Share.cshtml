@@ -15,7 +15,6 @@
             <p>Share the following question?</p>
             <div>
                 <b>Name: </b>@Html.DisplayFor(model => model.Name)</br>
-                </br><b>Marks: </b>@Html.DisplayFor(model => model.Marks)</br>
                 </br><b>Question:</b></br>
                 <div id="question"></div></br>
             </div>
@@ -34,7 +33,6 @@
     <form asp-action="Share" id="aspQuestionForm">
         <input asp-for="Name" id="aspName" type="hidden" />
         <input asp-for="Type" id="aspType" value="Advanced" type="hidden" />
-        <input asp-for="Marks" id="aspMarks" type="hidden" />
         <input asp-for="Question" id="aspQuestion" type="hidden" />
         <input asp-for="UserEmail" id="aspUserEmail" value="@User.Identity.Name" type="hidden" />
         <input asp-for="ModifiedDate" id="aspModifiedDate" type="hidden" />

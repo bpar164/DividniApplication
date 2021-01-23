@@ -16,9 +16,6 @@ namespace Dividni.Models
         [StringLength(8)] //Can only be: Advanced
         public string Type { get; set; }
 
-        [Range(0, 10)]
-        public int Marks { get; set; }
-
         [Required]
         public string Question { get; set; }
 
