@@ -46,11 +46,11 @@
     </div>
   </form>
   <form asp-action="Create" id="aspQuestionForm">                         
-    <input asp-for="Name" id="aspName" />            
-    <input asp-for="Type" id="aspType" value="Advanced" />
-    <input asp-for="Question" id="aspQuestion" />
-    <input asp-for="UserEmail" value="@User.Identity.Name" />
-    <input asp-for="ModifiedDate" id="aspModifiedDate" />
+    <input asp-for="Name" id="aspName" type="hidden"/>            
+    <input asp-for="Type" id="aspType" value="Advanced" type="hidden"/>
+    <input asp-for="Question" id="aspQuestion" type="hidden"/>
+    <input asp-for="UserEmail" value="@User.Identity.Name" type="hidden"/>
+    <input asp-for="ModifiedDate" id="aspModifiedDate" type="hidden"/>
 </form>
 </section>
 

@@ -10,13 +10,15 @@
 
 <section class="section container blue lighten-5" id="main">
     <div class="row">
-        <div class="col">
+        <div class="col s12 m12 l10">
             <h5 class="teal-text">Question Details</h5>
             <p>Share the following question?</p>
             <div>
                 <b>Name: </b>@Html.DisplayFor(model => model.Name)</br>
                 </br><b>Question:</b></br>
-                <div id="question"></div></br>
+                <div id="editorContainer">
+                    <div id="editor" value="@Model.Question"></div>
+                </div></br>
             </div>
             <h6 class="teal-text">Share</h6>
             <form onSubmit="return shareAdvancedQuestionForm(event)">

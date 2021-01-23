@@ -11,6 +11,44 @@
             <p>Follow these instructions to create a <a asp-controller="Advanced" asp-action="Create"
                     target="_blank">code-base multiple-choice question
                     <i class="tiny material-icons">open_in_new</i></a>.</p>
+
+
+            <h5 class="teal-text">Managing your Questions</h5>
+            <p>The <a asp-controller="Advanced" asp-action="Index" target="_blank">advanced question management <i
+                        class="tiny material-icons">open_in_new</i></a> page displays all of the advanced questions that
+                you have
+                created/that have been shared with you.
+            </p>
+            <p>The questions are sorted newest to oldest by default (you can also sort by name), and you can search for
+                a question by name.</p>
+            <p>(The <i class="material-icons">link</i> icon next to each question's name copies that question's id to
+                the clipboard. This is only used when creating an assessment.)</p>
+            <p>You can click on the icons next to each question to perform a number of actions (which will open
+                a new page):</p>
+            <h6 class="teal-text">Viewing a Question <i class="material-icons">pageview</i></h6>
+            <p>Displays all of the question details. The code editor is set to read-only mode.</p>
+            <h6 class="teal-text">Editing a Question <i class="material-icons">edit</i></h6>
+            <p>Loads the question code into the code editor. Any changes need to be saved before
+                exiting.</p>
+            <h6 class="teal-text">Deleting a Question <i class="material-icons">delete</i></h6>
+            <p>The question details are displayed before you confirm the deletion. The code editor is set to read-only mode.</p>
+            <h6 class="teal-text">Using a Question as a Template <i class="material-icons">content_copy</i>
+            </h6>
+            <p>Loads the question code into the code editor. The question must be generated
+                before exiting.</p>
+            <p>Note that using a question as a template generates a new question and leaves the original unchanged.</p>
+            <h6 class="teal-text">Sharing a Question <i class="material-icons">share</i></h6>
+            <p>The code editor is set to read-only mode.</p>
+            <p>An input for the user's email is displayed underneath the question details.</p>
+            <p>The user must have an account before you are able to share questions with him/her.</p>
+            <p>The user receives a copy of the question and cannot make any changes to the original.</p>
+            <h6 class="teal-text">Add to Question Bank <i class="material-icons">playlist_add</i></h6>
+            <p>A dropdown list will appear displaying all of your question banks. Click on a name to add the question to
+                that question bank.</p>
+            <p>You can add a question to the same question bank multiple times, but it will only be listed once.</p>
+            <p>Question banks can be managed on the <a asp-controller="QuestionBank" asp-action="Index"
+                    target="_blank">my question banks
+                    <i class="tiny material-icons">open_in_new</i></a> page.</p>
         </div>
     </div>
 </section>
