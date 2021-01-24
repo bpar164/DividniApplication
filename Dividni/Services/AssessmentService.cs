@@ -117,7 +117,7 @@ namespace Dividni.Services
                             //Save id to list for the document
                             questionHTML += "<li class=\"q\"><p class=\"cws_code_q\">Q" + questionNumber + "</p></li>";
                             //Save C# string to a file
-                            System.IO.File.WriteAllText(assessmentPath + "\\Q" + questionNumber + ".cs", advanced.Question);
+                            System.IO.File.WriteAllText(assessmentPath + "\\Q" + questionNumber + ".cs", JsonSerializer.Deserialize<string>(advanced.Question));
                             questionNumber++;
                         }
                     }
@@ -149,12 +149,12 @@ namespace Dividni.Services
                 else
                 { //LMS Assessment
                     //Cover Page and Appendix
-                    if (assessment.CoverPage != "")
+                    if (assessment.CoverPage != null)
                     {
                         createHTMLDocument(assessmentPath + "\\Assessment.CoverPage.html", assessment.Name + " Cover Page", assessment.CoverPage);
                         questionIds = "Assessment.CoverPage.html " + questionIds;
                     }
-                    if (assessment.Appendix != "")
+                    if (assessment.Appendix != null)
                     {
                         createHTMLDocument(assessmentPath + "\\Assessment.Appendix.html", assessment.Name + " Appendix", assessment.Appendix);
                         questionIds += "Assessment.Appendix.html";
