@@ -85,7 +85,7 @@ namespace Dividni.Services
                 var questionHTML = "<div id=\"Questions\"><ol class=\"qlist\">";
                 //Get list of question ids from assessment model
                 var questionList = JsonSerializer.Deserialize<Question[]>(assessment.QuestionList);
-                //For counting questions (excludes instruction sections)
+                //For counting simple questions 
                 var questionNumber = 1;
                 //Process questions based on type, and add them to the HTML document
                 for (int i = 0; i < questionList.Length; i++)
@@ -113,12 +113,11 @@ namespace Dividni.Services
                         if (advanced != null)
                         {
                             //Save id to list for the commands
-                            questionIds += "Q" + questionNumber + ".cs ";
+                            questionIds += questionList[i].name + ".cs ";
                             //Save id to list for the document
-                            questionHTML += "<li class=\"q\"><p class=\"cws_code_q\">Q" + questionNumber + "</p></li>";
+                            questionHTML += "<li class=\"q\"><p class=\"cws_code_q\">" + questionList[i].name + "</p></li>";
                             //Save C# string to a file
-                            System.IO.File.WriteAllText(assessmentPath + "\\Q" + questionNumber + ".cs", JsonSerializer.Deserialize<string>(advanced.Question));
-                            questionNumber++;
+                            System.IO.File.WriteAllText(assessmentPath + "\\" + questionList[i].name + ".cs", JsonSerializer.Deserialize<string>(advanced.Question));
                         }
                     }
                     else

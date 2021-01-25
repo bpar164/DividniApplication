@@ -11,7 +11,19 @@
             <p>Follow these instructions to create a <a asp-controller="Advanced" asp-action="Create"
                     target="_blank">code-base multiple-choice question
                     <i class="tiny material-icons">open_in_new</i></a>.</p>
-
+            <div id="instructions">
+                <ol>
+                    <p>
+                        <li>Fill-in the question name (letters and numbers only; starting with a letter). The question
+                            name needs to be the same in 3 places (otherwise the question will not show-up on the
+                            assessment):</li>
+                    </p>
+                    <img src="~/images/advancedNaming.png">
+                    <p>
+                        <li>Next</li>
+                    </p>
+                </ol>
+            </div>
 
             <h5 class="teal-text">Managing your Questions</h5>
             <p>The <a asp-controller="Advanced" asp-action="Index" target="_blank">advanced question management <i
@@ -31,7 +43,8 @@
             <p>Loads the question code into the code editor. Any changes need to be saved before
                 exiting.</p>
             <h6 class="teal-text">Deleting a Question <i class="material-icons">delete</i></h6>
-            <p>The question details are displayed before you confirm the deletion. The code editor is set to read-only mode.</p>
+            <p>The question details are displayed before you confirm the deletion. The code editor is set to read-only
+                mode.</p>
             <h6 class="teal-text">Using a Question as a Template <i class="material-icons">content_copy</i>
             </h6>
             <p>Loads the question code into the code editor. The question must be generated

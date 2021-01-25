@@ -26,7 +26,7 @@ $(document).ready(() => {
 
 displayEditorEnabled = (displaySkeleton) => {
   if (displaySkeleton === true) {
-    let skeletonCode = `using System;\r\nusing System.Text;\r\n\r\nnamespace Utilities.Courses\r\n{\r\n   public partial class QHelper : IQHelper\r\n   {\r\n      public static string /*QuestionName*/(Random random, Action<string, ushort> registerAnswer, bool isProof) \r\n      {\r\n         var q = new /*Truth or Xyz*/Question(random, isProof); \r\n         q.Id = \"\"; //QuestionId\r\n         q.Marks = 1; //QuestionMarks\r\n         q.Stem = \"\"; //QuestionText\r\n         q.AddCorrects(\r\n            \r\n         ); \r\n         q.AddIncorrects(\r\n   \r\n         ); \r\n         string rval = q.GetQuestion(registerAnswer);\r\n         return rval;\r\n      } \r\n   } \r\n}\r\n`;
+    let skeletonCode = `using System;\r\nusing System.Text;\r\n\r\nnamespace Utilities.Courses\r\n{\r\n   public partial class QHelper : IQHelper\r\n   {\r\n      public static string /*QuestionId*/(Random random, Action<string, ushort> registerAnswer, bool isProof) \r\n      {\r\n         var q = new /*Truth or Xyz*/Question(random, isProof); \r\n         q.Id = \"\"; //QuestionId\r\n         q.Marks = 1; //QuestionMarks\r\n         q.Stem = \"\"; //QuestionText\r\n         q.AddCorrects(\r\n            \r\n         ); \r\n         q.AddIncorrects(\r\n   \r\n         ); \r\n         string rval = q.GetQuestion(registerAnswer);\r\n         return rval;\r\n      } \r\n   } \r\n}\r\n`;
     editor.setValue(skeletonCode, 1);
   } else { //Display existing question
     editor.setValue(JSON.parse(document.getElementById('editor').getAttribute('value')), 1);

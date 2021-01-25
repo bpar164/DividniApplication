@@ -9,7 +9,7 @@ namespace Dividni.Models
         public Guid Id { get; set; }
 
         [Required]
-        [RegularExpression(@"^[a-zA-Z0-9][a-zA-Z0-9 ]*")]
+        [RegularExpression(@"^[a-zA-Z][a-zA-Z0-9]*")]
         public string Name { get; set; }
 
         [Required]
