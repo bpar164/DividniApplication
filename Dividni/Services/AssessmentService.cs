@@ -130,8 +130,7 @@ namespace Dividni.Services
                 //Run the Dividni commands, based on the assessment type
                 if (downloadRequest.Type == "standard")
                 {
-                    //Compile all of the questions
-                    executeCommand("/c cd .. & cd Assessments\\" + assessment.Name + " & csc -t:library -lib:\"C:\\Program Files\\Dividni.com\\Dividni\" -r:Utilities.Courses.dll -out:QHelper.dll " + questionIds);
+                    
                     //Create HTML template
                     var templateHTML = "";
                     //Cover page
@@ -142,6 +141,8 @@ namespace Dividni.Services
                     if (assessment.Appendix != "") templateHTML += "<p style=\"page-break-before: always;\"/><div id=\"appendix\">" + assessment.Appendix + "</div>";
                     //Create the file
                     createHTMLDocument(assessmentPath + "\\Assessment.Template.html", assessment.Name, templateHTML);
+                    //Compile all of the questions
+                    executeCommand("/c cd .. & cd Assessments\\" + assessment.Name + " & csc -t:library -lib:\"C:\\Program Files\\Dividni.com\\Dividni\" -r:Utilities.Courses.dll -out:QHelper.dll " + questionIds);
                     //Generate assessment
                     executeCommand("/c cd .. & cd Assessments\\" + assessment.Name + " & TestGen -lib QHelper.dll -htmlFolder papers -answerFolder answers -paperCount " + downloadRequest.Versions + " Assessment.Template.html");
                 }
