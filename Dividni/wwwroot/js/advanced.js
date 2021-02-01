@@ -41,9 +41,36 @@ displayEditorDisabled = () => {
 
 testAnswer = () => {
   $('#statusModal').modal('open');
-  let content = 'Testing answer...';
+  let content = '';
+  //Check name matches regex 
+  let name = document.getElementById('name').value;
+  let re = new RegExp('^[a-zA-Z][a-zA-Z0-9]*');
+  if (!(re.test(name))) {
+    content = 'Name not suitable - please check the tutorial.';
+  } else if (editor.getValue() == "") { //Check code editor not empty
+    content += 'Please add some code to test.';
+  } else {
+    content = 'Compiling code...';
+    document.getElementById('statusModalContent').innerHTML = content;
+    //Send the code to the api for testing
+    $.ajax({
+      url: 'https://localhost:5003//api/Dividni/CompileQuestion',
+      method: 'POST',
+      data: { 'name': name, 'question': JSON.stringify(editor.getValue()) },
+      success: (res) => {
+        if (res == 'Success') {
+          console.log('Success');
+          document.getElementById('generate').classList.remove("disabled");
+        } else {
+          console.log(res);
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
   document.getElementById('statusModalContent').innerHTML = content;
-  document.getElementById('generate').classList.remove("disabled");
 }
 
 //When form is submitted, check for required fields and generate the status modal
