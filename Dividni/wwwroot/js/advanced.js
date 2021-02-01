@@ -48,52 +48,40 @@ testAnswer = () => {
   if (!(re.test(name))) {
     content = 'Name not suitable - please check the tutorial.';
   } else if (editor.getValue() == "") { //Check code editor not empty
-    content += 'Please add some code to test.';
+    content = 'Please add some code to test.';
   } else {
     content = 'Compiling code...';
     document.getElementById('statusModalContent').innerHTML = content;
     //Send the code to the api for testing
     $.ajax({
-      url: 'https://localhost:5003//api/Dividni/CompileQuestion',
+      url: 'https://localhost:5003/api/Dividni/CompileQuestion',
       method: 'POST',
       data: { 'name': name, 'question': JSON.stringify(editor.getValue()) },
       success: (res) => {
-        if (res == 'Success') {
-          console.log('Success');
-          document.getElementById('generate').classList.remove("disabled");
+        if (res === 'Success') {
+          content = '<p>Code compiled successfully.</p>';
+          content += `<button class="btn waves-effect waves-light" onClick="submitAdvancedQuestionForm();">Generate<i class="material-icons right">send</i></button>`;
         } else {
-          console.log(res);
+          content = '<p>Error in code:</p>';
+          content += res;
         }
+        document.getElementById('statusModalContent').innerHTML = content;
       },
       error: (err) => {
-        console.log(err);
+        content = '<p>Error compiling question, please try again.</p>';
+        document.getElementById('statusModalContent').innerHTML = content;
       }
     });
   }
   document.getElementById('statusModalContent').innerHTML = content;
 }
 
-//When form is submitted, check for required fields and generate the status modal
-$("#advancedQuestionForm").submit((event) => {
-  event.preventDefault();
-  //Display status modal
-  $('#statusModal').modal('open');
-  let content = '';
-  let generate = false;
-  //Check that question compiles without errors
-
-  if (generate == true) {
-    content = '<p>Display errors.</p>';
-  } else {
-    content = '<p>Saving question...</p>';
-    generate = true;
-  }
-  document.getElementById('statusModalContent').innerHTML = content;
-  if (generate === true) {
-    document.getElementById('statusModalClose').classList.add("disabled");
-    generateAdvancedQuestion();
-  }
-});
+//Submit the hidden question form
+submitAdvancedQuestionForm = () => {
+  document.getElementById('statusModalContent').innerHTML = '<p>Saving question...</p>';
+  document.getElementById("advancedQuestionForm").submit();
+  generateAdvancedQuestion();
+}
 
 generateAdvancedQuestion = () => {
   document.getElementById('aspName').value = document.getElementById('name').value;
