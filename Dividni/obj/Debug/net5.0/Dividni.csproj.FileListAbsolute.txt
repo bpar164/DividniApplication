@@ -1444,3 +1444,4 @@ C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\QuestionB
 C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Assessment\Download.cshtml.g.cs
 C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Advanced\Share.cshtml.g.cs
 C:\Users\benpa\DividniApplication\Dividni\bin\Debug\net5.0\app.db
+C:\Users\benpa\DividniApplication\Dividni\obj\Debug\net5.0\Razor\Views\Advanced\Template.cshtml.g.cs

@@ -200,6 +200,39 @@ namespace Dividni.Controllers
             return _context.Advanced.Any(e => e.Id == id);
         }
 
+        // GET: Advanced/Template/5
+        public async Task<IActionResult> Template(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var advanced = await _context.Advanced.FindAsync(id);
+            if (advanced == null)
+            {
+                return NotFound();
+            }
+            return View(advanced);
+        }
+
+        // POST: Advanced/Template
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Template([Bind("Id,Name,Type,Marks,Question,UserEmail,ModifiedDate")] Advanced advanced)
+        {
+            if (ModelState.IsValid)
+            {
+                advanced.Id = Guid.NewGuid();
+                _context.Add(advanced);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(advanced);
+        }
+
         // GET: Advanced/Share/5
         public async Task<IActionResult> Share(Guid? id)
         {

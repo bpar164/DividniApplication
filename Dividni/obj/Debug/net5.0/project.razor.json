@@ -15748,6 +15748,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\benpa\\DividniApplication\\Dividni\\Views\\Advanced\\Template.cshtml",
+      "TargetPath": "Views\\Advanced\\Template.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\benpa\\DividniApplication\\Dividni\\Views\\_ViewImports.cshtml",
       "TargetPath": "Views\\_ViewImports.cshtml",
       "FileKind": "mvc"
