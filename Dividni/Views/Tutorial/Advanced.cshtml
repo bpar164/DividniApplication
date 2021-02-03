@@ -20,11 +20,60 @@
                     </p>
                     <img src="~/images/advancedNaming.png">
                     <p>
-                        <li>Next</li>
+                        <li>Next, enter the question type. This can be 'TruthQuestion' or 'XyzQuestion'.
+                            See the <a asp-controller="Tutorial" asp-action="Simple" target="_blank">simple tutorial
+                                <i class="tiny material-icons">open_in_new</i></a> for an explanation of these types.
+                        </li>
+                    </p>
+                    <p>
+                        <li>The 'q.marks' variable is a positive integer value representing the question's mark count.
+                            Do not put any quotation marks around this value.
+                        </li>
+                    </p>
+                    <p>
+                        <li>The next step is to write some code to generate the correct/incorrect answers.
+                            Some tutorials for writing C# code can be found on <a
+                                href="https://docs.microsoft.com/en-us/dotnet/csharp/tutorials/intro-to-csharp/"
+                                target="_blank">Microsoft<i class="tiny material-icons">open_in_new</i></a> and <a
+                                href="https://www.w3schools.com/cs/" target="_blank">w3schools<i
+                                    class="tiny material-icons">open_in_new</i></a>.
+                            Alternatively, video tutorials can be found on <a
+                                href="https://www.youtube.com/results?search_query=C%23+Tutorial"
+                                target="_blank">YouTube<i class="tiny material-icons">open_in_new</i></a>.
+                            You can write comments in C# (code/text that is ignored when the code is compiled) by adding // in front of a line, 
+                            or by using /* */ for multi-line comments.
+                        </li>
+                    </p>
+                    <p>
+                        <li>Complete the question text inbetween the quotation marks in the 'q.stem' field.
+                            You will usually include some of the values used in calculating the answers in this text.
+                        </li>
+                    </p>
+                    <p>
+                        <li>The 'q.AddCorrects()' and 'q.AddIncorrects()' variables are for holding lists of answers
+                            (separated by commas).
+                            Most of these will include values from the code you have written.
+                            Remember to include at least the minimum required number of answers for the chosen question type: Truth
+                            requires 1 correct and 4 incorrect answers, whilst XYZ requires 3 correct and 3 incorrect
+                            answers.
+                        </li>
+                    </p>
+                    <p>
+                        <li>Once you are done, click on the <b>TEST</b> button to compile the code. 
+                        A dialog will pop-up to display any errors encountered when compiling the code.
+                        </li>
+                    </p>
+                     <p>
+                        <li>If there are no errors, there will be a <b>GENERATE</b> button that you can click on to save the question.
+                            You will then be redirected to the management page. If you close the dialog without generating the question, 
+                            you will need to test it again as this process has to be performed before saving the code.
+                        </li>
                     </p>
                 </ol>
             </div>
-
+            <h5 class="teal-text">Example Question</h5>
+            <p>This annotated example shows a sample Advanced question:</p>
+            <img src="~/images/advancedNaming.png">
             <h5 class="teal-text">Managing your Questions</h5>
             <p>The <a asp-controller="Advanced" asp-action="Index" target="_blank">advanced question management <i
                         class="tiny material-icons">open_in_new</i></a> page displays all of the advanced questions that
@@ -40,16 +89,16 @@
             <h6 class="teal-text">Viewing a Question <i class="material-icons">pageview</i></h6>
             <p>Displays all of the question details. The code editor is set to read-only mode.</p>
             <h6 class="teal-text">Editing a Question <i class="material-icons">edit</i></h6>
-            <p>Loads the question code into the code editor. Any changes need to be saved before
-                exiting.</p>
+            <p>Loads the question code into the code editor. You will need to follow the same test/generate process as
+                when creating the question, to save any changes.</p>
             <h6 class="teal-text">Deleting a Question <i class="material-icons">delete</i></h6>
             <p>The question details are displayed before you confirm the deletion. The code editor is set to read-only
                 mode.</p>
             <h6 class="teal-text">Using a Question as a Template <i class="material-icons">content_copy</i>
             </h6>
-            <p>Loads the question code into the code editor. The question must be generated
+            <p>Loads the question code into the code editor. The question must be tested/generated
                 before exiting.</p>
-            <p>Note that using a question as a template generates a new question and leaves the original unchanged.</p>
+            <p>Note that using a question as a template creates a new question and leaves the original unchanged.</p>
             <h6 class="teal-text">Sharing a Question <i class="material-icons">share</i></h6>
             <p>The code editor is set to read-only mode.</p>
             <p>An input for the user's email is displayed underneath the question details.</p>
