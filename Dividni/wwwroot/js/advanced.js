@@ -45,7 +45,7 @@ testAnswer = () => {
   //Check name matches regex 
   let name = document.getElementById('name').value;
   let re = new RegExp('^[a-zA-Z][a-zA-Z0-9]*');
-  if (!(re.test(name))) {
+  if (!(re.test(name)) || name.includes(" ")) {
     content = 'Name not suitable - please check the tutorial.';
   } else if (editor.getValue() == "") { //Check code editor not empty
     content = 'Please add some code to test.';
